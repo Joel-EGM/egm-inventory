@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class suppliers extends Model
+class Supplier extends Model
 {
     use HasFactory;
 
@@ -14,5 +14,5 @@ class suppliers extends Model
         'suppliers_name',
         'suppliers_email',
         'suppliers_contact',
-];
+    ];
 }
