@@ -35,7 +35,7 @@
                             </x-slot>
                             <x-slot name="content">
 
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('stock') }}">
                                     {{ __('Current Stock') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="#">
@@ -64,16 +64,16 @@
                             </x-slot>
                             <x-slot name="content">
 
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('branch') }}">
                                     {{ __('Branch') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('supplier') }}">
                                     {{ __('Supplier') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('items') }}">
                                     {{ __('Items') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('stock') }}">
                                     {{ __('Stock') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="#">
@@ -100,7 +100,7 @@
                             </x-slot>
                             <x-slot name="content">
 
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('order') }}">
                                     {{ __('Create Order') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="#">

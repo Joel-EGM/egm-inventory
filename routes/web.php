@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware([
@@ -25,4 +25,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/branch', \App\Http\Livewire\WireBranch::class, 'render')->name('branch');
+    Route::get('manage/items', \App\Http\Livewire\WireItem::class, 'render')->name('items');
+    Route::get('/order', \App\Http\Livewire\WireOrder::class, 'render')->name('order');
+    Route::get('/stock', \App\Http\Livewire\WireStock::class, 'render')->name('stock');
+    Route::get('/supplier', \App\Http\Livewire\WireSupplier::class, 'render')->name('supplier');
 });
