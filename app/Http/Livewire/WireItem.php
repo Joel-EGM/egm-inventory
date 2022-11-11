@@ -6,13 +6,21 @@ use Livewire\Component;
 use App\Models\Item;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
+use Carbon\Carbon;
 
 class WireItem extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
+    protected $rules = [
+        'itemName' => 'required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
+        'unitName'     => 'required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+        'piecesPerUnit'         => 'required|numeric',
+    ];
+
     public $layoutTitle = 'New Item';
     public $items = null;
+    public $itemArray = [];
     public $itemName;
     public $unitName;
     public $piecesPerUnit;
@@ -41,6 +49,27 @@ class WireItem extends Component implements FieldValidationMessage
             'unitName',
             'piecesPerUnit',
         ]);
+    }
+
+    public function submit()
+    {
+        $validatedItem = $this->validate();
+
+        if (is_null($this->itemIndex)) {
+            $validatedItem['id']         = 0;
+            $validatedItem['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
+            $validatedItem['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
+
+            array_push($this->itemArray, $validatedItem);
+            $this->emit('updateClientData', ['Address', true]);
+        } else {
+            $this->addresses[$this->itemIndex]['item_name'] = $this->item_name;
+            $this->addresses[$this->itemIndex]['unit_name'] = $this->unit_name;
+            $this->addresses[$this->itemIndex]['pieces_perUnit'] = $this->pieces_perUnit;
+            $this->itemIndex = null;
+        }
+
+        $this->modalToggle();
     }
 
     public function modalToggle($formAction = null)
