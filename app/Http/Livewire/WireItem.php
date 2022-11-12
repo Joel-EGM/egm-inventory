@@ -20,7 +20,6 @@ class WireItem extends Component implements FieldValidationMessage
 
     public $layoutTitle = 'New Item';
     public $items = null;
-    public $itemArray = [];
     public $itemName;
     public $unitName;
     public $piecesPerUnit;
@@ -28,9 +27,7 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        if (!$this->items) {
-            $this->items = Item::all();
-        }
+        $this->items = Item::all();
     }
 
     public function render()
@@ -51,6 +48,15 @@ class WireItem extends Component implements FieldValidationMessage
         ]);
     }
 
+    public function clearForm()
+    {
+        $this->reset([
+            'itemName',
+            'unitName',
+            'piecesPerUnit',
+        ]);
+    }
+
     public function submit()
     {
         $validatedItem = $this->validate();
@@ -59,17 +65,14 @@ class WireItem extends Component implements FieldValidationMessage
             $validatedItem['id']         = 0;
             $validatedItem['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
             $validatedItem['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
-
-            array_push($this->itemArray, $validatedItem);
-            $this->emit('updateClientData', ['Address', true]);
         } else {
-            $this->addresses[$this->itemIndex]['item_name'] = $this->item_name;
-            $this->addresses[$this->itemIndex]['unit_name'] = $this->unit_name;
-            $this->addresses[$this->itemIndex]['pieces_perUnit'] = $this->pieces_perUnit;
+            $this->itemsArray[$this->itemIndex]['item_name'] = $this->itemName;
+            $this->itemsArray[$this->itemIndex]['unit_name'] = $this->unitName;
+            $this->itemsArray[$this->itemIndex]['pieces_perUnit'] = $this->piecesPerUnit;
             $this->itemIndex = null;
         }
 
-        $this->modalToggle();
+        $this->clearForm();
     }
 
     public function modalToggle($formAction = null)
