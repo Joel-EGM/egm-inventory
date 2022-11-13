@@ -12,18 +12,20 @@ class WireItem extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
-    protected $rules = [
-        'itemName' => 'required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'unitName'     => 'required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
-        'piecesPerUnit'         => 'required|numeric',
-    ];
-
+    
     public $layoutTitle = 'New Item';
+    public $itemId;
     public $items = null;
     public $itemName;
     public $unitName;
     public $piecesPerUnit;
 
+
+    protected $rules = [
+        'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
+        'unitName'     => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+        'piecesPerUnit'         => 'bail|required|numeric',
+    ];
 
     public function mount()
     {
@@ -61,16 +63,16 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $validatedItem = $this->validate();
 
-        if (is_null($this->itemIndex)) {
-            $validatedItem['id']         = 0;
-            $validatedItem['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
-            $validatedItem['updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
-        } else {
-            $this->itemsArray[$this->itemIndex]['item_name'] = $this->itemName;
-            $this->itemsArray[$this->itemIndex]['unit_name'] = $this->unitName;
-            $this->itemsArray[$this->itemIndex]['pieces_perUnit'] = $this->piecesPerUnit;
-            $this->itemIndex = null;
-        }
+        Item::create([
+
+            'item_name' => $this->itemName,
+
+            'unit_name' => $this->unitName,
+
+            'pieces_perUnit' => $this->piecesPerUnit,
+
+        ]);
+        
 
         $this->clearForm();
     }
