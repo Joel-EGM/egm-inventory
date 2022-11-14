@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\Item;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
-use Carbon\Carbon;
 
 class WireItem extends Component implements FieldValidationMessage
 {
@@ -14,7 +13,6 @@ class WireItem extends Component implements FieldValidationMessage
 
 
     public $layoutTitle = 'New Item';
-    public $itemId;
     public $items = null;
     public $itemName;
     public $unitName;
@@ -23,18 +21,28 @@ class WireItem extends Component implements FieldValidationMessage
 
     protected $rules = [
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'unitName'     => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
-        'piecesPerUnit'         => 'bail|required|numeric',
+        'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+        'piecesPerUnit' => 'bail|required|numeric',
     ];
 
     public function mount()
     {
-        $this->refreshTable();
+        $this->items = Item::all();
     }
 
-    public function refreshTable()
+    public function updated($propertyName)
     {
-        $this->items = Item::all();
+        $wire_models = [
+            'itemName',
+            'unitName',
+        ];
+
+        if (in_array($propertyName, $wire_models)) {
+            $this->$propertyName = ucwords(strtolower($this->$propertyName));
+        }
+
+
+        $this->validateOnly($propertyName);
     }
 
     public function render()
@@ -47,7 +55,7 @@ class WireItem extends Component implements FieldValidationMessage
         $this->reset([
             'isFormOpen',
             'isDeleteOpen',
-            'itemIndex',
+            'Index',
             'formTitle',
             'itemName',
             'unitName',
@@ -68,7 +76,8 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $validatedItem = $this->validate();
 
-        Item::create([
+
+        $item = Item::create([
 
             'item_name' => $this->itemName,
 
@@ -78,15 +87,22 @@ class WireItem extends Component implements FieldValidationMessage
 
         ]);
 
+        $this->items->push($item);
 
         $this->clearForm();
-        $this->refreshTable();
+
+        $notificationMessage = 'Record successfully created.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
     }
 
     public function modalToggle($formAction = null)
     {
         if (!$formAction) {
-            if ($this->itemIndex === null) {
+            if ($this->Index === null) {
                 $this->formTitle = 'New Item';
             }
 

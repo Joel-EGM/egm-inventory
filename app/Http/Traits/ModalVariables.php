@@ -6,7 +6,7 @@ trait ModalVariables
 {
     public $isFormOpen   = false;
     public $isDeleteOpen = false;
-    public $itemIndex    = null;
+    public $Index    = null;
     public $formTitle    = null;
     public $clientId     = null;
     public $idToDelete   = [];
