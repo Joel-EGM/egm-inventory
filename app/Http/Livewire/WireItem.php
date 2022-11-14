@@ -12,7 +12,7 @@ class WireItem extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
-    
+
     public $layoutTitle = 'New Item';
     public $itemId;
     public $items = null;
@@ -28,6 +28,11 @@ class WireItem extends Component implements FieldValidationMessage
     ];
 
     public function mount()
+    {
+        $this->refreshTable();
+    }
+
+    public function refreshTable()
     {
         $this->items = Item::all();
     }
@@ -72,9 +77,10 @@ class WireItem extends Component implements FieldValidationMessage
             'pieces_perUnit' => $this->piecesPerUnit,
 
         ]);
-        
+
 
         $this->clearForm();
+        $this->refreshTable();
     }
 
     public function modalToggle($formAction = null)
