@@ -5,6 +5,7 @@
 </x-slot>
 
 <div class="py-8">
+    <x-modal.modal-notification />
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mt-4 grid grid-cols-1">
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">

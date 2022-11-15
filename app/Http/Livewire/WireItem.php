@@ -130,6 +130,12 @@ class WireItem extends Component implements FieldValidationMessage
         $filtered->all();
         $this->items = $filtered;
         $this->modalToggle('Delete');
+        $notificationMessage2 = 'Record successfully deleted.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'error',
+            'messagePrimary'   => $notificationMessage2
+        ]);
     }
 
     public function modalToggle($formAction = null)
