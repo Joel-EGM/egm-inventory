@@ -13,7 +13,7 @@ class WireItem extends Component implements FieldValidationMessage
 
 
     public $layoutTitle = 'New Item';
-    public $items = null;
+    public $items = [];
     public $itemName;
     public $unitName;
     public $piecesPerUnit;
@@ -30,6 +30,11 @@ class WireItem extends Component implements FieldValidationMessage
         $this->items = Item::all();
     }
 
+    public function render()
+    {
+        return view('livewire.item');
+    }
+
     public function updated($propertyName)
     {
         $wire_models = [
@@ -43,33 +48,6 @@ class WireItem extends Component implements FieldValidationMessage
 
 
         $this->validateOnly($propertyName);
-    }
-
-    public function render()
-    {
-        return view('livewire.item');
-    }
-
-    public function clearFormVariables()
-    {
-        $this->reset([
-            'isFormOpen',
-            'isDeleteOpen',
-            'Index',
-            'formTitle',
-            'itemName',
-            'unitName',
-            'piecesPerUnit',
-        ]);
-    }
-
-    public function clearForm()
-    {
-        $this->reset([
-            'itemName',
-            'unitName',
-            'piecesPerUnit',
-        ]);
     }
 
     public function submit()
@@ -97,6 +75,61 @@ class WireItem extends Component implements FieldValidationMessage
             'notificationType' => 'success',
             'messagePrimary'   => $notificationMessage
         ]);
+    }
+
+    public function clearFormVariables()
+    {
+        $this->reset([
+            'isFormOpen',
+            'isDeleteOpen',
+            'Index',
+            'formTitle',
+            'itemName',
+            'unitName',
+            'piecesPerUnit',
+        ]);
+    }
+
+    public function clearForm()
+    {
+        $this->reset([
+            'itemName',
+            'unitName',
+            'piecesPerUnit',
+        ]);
+    }
+
+    public function selectArrayItem($Index, $formAction = null)
+    {
+        $this->Index = $Index;
+
+        $this->itemName = $this->items[$this->Index]['itemName'];
+        $this->unitName = $this->items[$this->Index]['unitName'];
+        $this->piecesPerUnit = $this->items[$this->Index]['piecesPerUnit'];
+
+        if (!$formAction) {
+            $this->formTitle = 'Edit Item';
+            $this->isFormOpen = true;
+        } else {
+            $this->formTitle = 'Delete Item';
+            $this->isDeleteOpen = true;
+        }
+    }
+
+    public function deleteArrayItem()
+    {
+        $id = $this->items[$this->Index]['id'];
+        Item::find($id)->delete();
+
+
+        $filtered = $this->items->reject(function ($value, $key) use ($id) {
+            return $value->id === $id;
+        });
+
+
+        $filtered->all();
+        $this->items = $filtered;
+        $this->modalToggle('Delete');
     }
 
     public function modalToggle($formAction = null)

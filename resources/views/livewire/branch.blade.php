@@ -1,6 +1,6 @@
 <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight w-1/2">
-        {{ __('Branch') }}
+        {{ __('BRANCHES') }}
     </h2>
 </x-slot>
 
@@ -91,6 +91,16 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
+                                    @if (count($branches) === 0)
+                                        <tr>
+                                            <td colspan="2" class="px-3 py-3 whitespace-no-wrap">
+                                                <div class="flex items-center place-content-center">
+                                                    <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
+                                                        NO DATA AVAILABLE</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     @foreach ($branches as $branch)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_name }}</td>
