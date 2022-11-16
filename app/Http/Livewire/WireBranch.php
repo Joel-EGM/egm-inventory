@@ -13,7 +13,7 @@ class WireBranch extends Component
 
 
     public $layoutTitle = 'New Branch';
-    public $branches = null;
+    public $branches =[];
     public $branchName;
     public $branchAddress;
     public $branchContactNo;
@@ -50,28 +50,6 @@ class WireBranch extends Component
         return view('livewire.branch');
     }
 
-    public function clearFormVariables()
-    {
-        $this->reset([
-            'isFormOpen',
-            'isDeleteOpen',
-            'Index',
-            'formTitle',
-            'branchName',
-            'branchAddress',
-            'branchContactNo',
-        ]);
-    }
-
-    public function clearForm()
-    {
-        $this->reset([
-            'branchName',
-            'branchAddress',
-            'branchContactNo',
-        ]);
-    }
-
     public function submit()
     {
         $validatedItem = $this->validate();
@@ -96,6 +74,67 @@ class WireBranch extends Component
         $this->dispatchBrowserEvent('show-message', [
             'notificationType' => 'success',
             'messagePrimary'   => $notificationMessage
+        ]);
+    }
+
+    public function clearFormVariables()
+    {
+        $this->reset([
+            'isFormOpen',
+            'isDeleteOpen',
+            'Index',
+            'formTitle',
+            'branchName',
+            'branchAddress',
+            'branchContactNo',
+        ]);
+    }
+
+    public function clearForm()
+    {
+        $this->reset([
+            'branchName',
+            'branchAddress',
+            'branchContactNo',
+        ]);
+    }
+
+    public function selectArrayItem($Index, $formAction = null)
+    {
+        $this->Index = $Index;
+
+        $this->branchName = $this->branches[$this->Index]['branchName'];
+        $this->branchAddress = $this->branches[$this->Index]['branchAddress'];
+        $this->branchContactNo = $this->branches[$this->Index]['branchContactNo'];
+
+        if (!$formAction) {
+            $this->formTitle = 'Edit Item';
+            $this->isFormOpen = true;
+        } else {
+            $this->formTitle = 'Delete Item';
+            $this->isDeleteOpen = true;
+        }
+    }
+
+    public function deleteArrayItem()
+    {
+        $id = $this->branches[$this->Index]['id'];
+        Branch::find($id)->delete();
+
+
+        $filtered = $this->branches->reject(function ($value, $key) use ($id) {
+            return $value->id === $id;
+        });
+
+
+        $filtered->all();
+        $this->branches = $filtered;
+        $this->modalToggle('Delete');
+        $notificationMessage2 = 'Record successfully deleted.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'error',
+            'messagePrimary'   => $notificationMessage2
         ]);
     }
 

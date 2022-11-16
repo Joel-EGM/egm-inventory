@@ -5,6 +5,7 @@
 </x-slot>
 
 <div class="py-8">
+    <x-modal.modal-notification />
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mt-4 grid grid-cols-1">
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
@@ -73,15 +74,15 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Item Name
+                                            Branch Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Unit Name
+                                            Branch Address
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            PiecesPerUnit
+                                            Branch Contact No
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -116,8 +117,16 @@
                                                         class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                                     &nbsp;
                                                     &nbsp;
-                                                    <a href="#" title="Open"
-                                                        class="text-indigo-600 hover:text-indigo-900">Delete</a>
+                                                    <a href="javascript:" title="Delete"
+                                                        wire:click="selectArrayItem({{ $loop->index }}, 'Delete')"
+                                                        class="text-gray-500 mt-1 ml-2">
+                                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>

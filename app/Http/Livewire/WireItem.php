@@ -54,27 +54,47 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $validatedItem = $this->validate();
 
+        if (is_null($this->Index)) {
+            $item = Item::create([
 
-        $item = Item::create([
+                'item_name' => $this->itemName,
 
-            'item_name' => $this->itemName,
+                'unit_name' => $this->unitName,
 
-            'unit_name' => $this->unitName,
+                'pieces_perUnit' => $this->piecesPerUnit,
 
-            'pieces_perUnit' => $this->piecesPerUnit,
+            ]);
 
-        ]);
+            $this->items->push($item);
 
-        $this->items->push($item);
+            $this->clearForm();
 
-        $this->clearForm();
+            $notificationMessage = 'Record successfully created.';
 
-        $notificationMessage = 'Record successfully created.';
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
+        } else {
+            $id = $this->items[$this->Index]['id'];
+            Item::whereId($id)->update([
 
-        $this->dispatchBrowserEvent('show-message', [
-            'notificationType' => 'success',
-            'messagePrimary'   => $notificationMessage
-        ]);
+                'item_name' => $this->itemName,
+
+                'unit_name' => $this->unitName,
+
+                'pieces_perUnit' => $this->piecesPerUnit,
+
+            ]);
+
+            $this->items[$this->Index]['item_name'] = $this->itemName;
+            $this->items[$this->Index]['unit_name'] = $this->unitName;
+            $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+
+            $this->Index = null;
+            $this->clearForm();
+            $this->modalToggle();
+        }
     }
 
     public function clearFormVariables()
@@ -99,13 +119,13 @@ class WireItem extends Component implements FieldValidationMessage
         ]);
     }
 
-    public function selectArrayItem($Index, $formAction = null)
+    public function selectArrayItem($index, $formAction = null)
     {
-        $this->Index = $Index;
-
-        $this->itemName = $this->items[$this->Index]['itemName'];
-        $this->unitName = $this->items[$this->Index]['unitName'];
-        $this->piecesPerUnit = $this->items[$this->Index]['piecesPerUnit'];
+        $this->Index = $index;
+        // dd($this->items[$this->Index]);
+        $this->itemName = $this->items[$this->Index]['item_name'];
+        $this->unitName = $this->items[$this->Index]['unit_name'];
+        $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
