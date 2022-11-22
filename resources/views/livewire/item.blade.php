@@ -92,6 +92,16 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
+                                    @if (count($items) === 0)
+                                        <tr>
+                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
+                                                <div class="flex items-center place-content-center">
+                                                    <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
+                                                        NO DATA AVAILABLE</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                     @foreach ($items as $item)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->item_name }}</td>

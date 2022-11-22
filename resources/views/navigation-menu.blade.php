@@ -35,7 +35,7 @@
                             </x-slot>
                             <x-slot name="content">
 
-                                <x-jet-dropdown-link href="{{ route('stock') }}">
+                                <x-jet-dropdown-link href="{{ route('stocks') }}">
                                     {{ __('Current Stock') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="#">
@@ -64,19 +64,19 @@
                             </x-slot>
                             <x-slot name="content">
 
-                                <x-jet-dropdown-link href="{{ route('branch') }}">
+                                <x-jet-dropdown-link href="{{ route('branches') }}">
                                     {{ __('Branch') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="{{ route('supplier') }}">
+                                <x-jet-dropdown-link href="{{ route('suppliers') }}">
                                     {{ __('Supplier') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="{{ route('items') }}">
                                     {{ __('Items') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="{{ route('stock') }}">
+                                <x-jet-dropdown-link href="{{ route('stocks') }}">
                                     {{ __('Stock') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="#">
+                                <x-jet-dropdown-link href="{{ route('users') }}">
                                     {{ __('User') }}
                                 </x-jet-dropdown-link>
                             </x-slot>
@@ -100,7 +100,7 @@
                             </x-slot>
                             <x-slot name="content">
 
-                                <x-jet-dropdown-link href="{{ route('order') }}">
+                                <x-jet-dropdown-link href="{{ route('orders') }}">
                                     {{ __('Create Order') }}
                                 </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="#">

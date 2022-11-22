@@ -54,27 +54,54 @@ class WireBranch extends Component
     {
         $validatedItem = $this->validate();
 
+        if (is_null($this->Index)) {
+            $branch = Branch::create([
 
-        $branch = Branch::create([
+                'branch_name' => $this->branchName,
 
-            'branch_name' => $this->branchName,
+                'branch_address' => $this->branchAddress,
 
-            'branch_address' => $this->branchAddress,
+                'branch_contactNo' => $this->branchContactNo,
 
-            'branch_contactNo' => $this->branchContactNo,
+            ]);
 
-        ]);
+            $this->branches->push($branch);
 
-        $this->branches->push($branch);
+            $this->clearForm();
 
-        $this->clearForm();
+            $notificationMessage = 'Record successfully created.';
 
-        $notificationMessage = 'Record successfully created.';
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
+        } else {
+            $id = $this->branches[$this->Index]['id'];
+            Branch::whereId($id)->update([
 
-        $this->dispatchBrowserEvent('show-message', [
-            'notificationType' => 'success',
-            'messagePrimary'   => $notificationMessage
-        ]);
+                'branch_name' => $this->branchName,
+
+                'branch_address' => $this->branchAddress,
+
+                'branch_contactNo' => $this->branchContactNo,
+
+            ]);
+
+
+            $this->branches[$this->Index]['branch_name'] = $this->branchName;
+            $this->branches[$this->Index]['branch_address'] = $this->branchAddress;
+            $this->branches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
+
+            $this->Index = null;
+            $this->clearForm();
+            $this->modalToggle();
+            $notificationMessage = 'Record successfully updated.';
+
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
+        }
     }
 
     public function clearFormVariables()
@@ -103,9 +130,9 @@ class WireBranch extends Component
     {
         $this->Index = $Index;
 
-        $this->branchName = $this->branches[$this->Index]['branchName'];
-        $this->branchAddress = $this->branches[$this->Index]['branchAddress'];
-        $this->branchContactNo = $this->branches[$this->Index]['branchContactNo'];
+        $this->branchName = $this->branches[$this->Index]['branch_name'];
+        $this->branchAddress = $this->branches[$this->Index]['branch_address'];
+        $this->branchContactNo = $this->branches[$this->Index]['branch_contactNo'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';

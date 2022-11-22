@@ -94,6 +94,12 @@ class WireItem extends Component implements FieldValidationMessage
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();
+            $notificationMessage = 'Record successfully updated.';
+
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
         }
     }
 

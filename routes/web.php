@@ -25,9 +25,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/branch', \App\Http\Livewire\WireBranch::class, 'render')->name('branch');
+    Route::get('manage/branches', \App\Http\Livewire\WireBranch::class, 'render')->name('branches');
     Route::get('manage/items', \App\Http\Livewire\WireItem::class, 'render')->name('items');
-    Route::get('/order', \App\Http\Livewire\WireOrder::class, 'render')->name('order');
-    Route::get('/stock', \App\Http\Livewire\WireStock::class, 'render')->name('stock');
-    Route::get('/supplier', \App\Http\Livewire\WireSupplier::class, 'render')->name('supplier');
+    Route::get('manage/stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
+    Route::get('manage/suppliers', \App\Http\Livewire\WireSupplier::class, 'render')->name('suppliers');
+    Route::get('/manage/users', \App\Http\Livewire\WireSupplier::class, 'render')->name('users');
+    Route::get('/order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
 });
