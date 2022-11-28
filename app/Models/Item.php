@@ -18,18 +18,28 @@ class Item extends Model
         'pieces_perUnit',
     ];
 
-    public function stock()
+    public function stocks()
     {
         return $this->hasMany(Stock::class, 'item_id', 'id');
     }
 
-    public function orderDetail()
+    public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class, 'item_id', 'id');
     }
 
-    public function order()
+    public function orders()
     {
         return $this->hasMany(Order::class, 'item_id', 'id');
+    }
+
+    public function suppliers()
+    {
+        return $this->hasMany(Supplier::class, 'item_id', 'id');
+    }
+
+    public function itemPrices()
+    {
+        return $this->hasMany(ItemPrice::class, 'item_id', 'id');
     }
 }

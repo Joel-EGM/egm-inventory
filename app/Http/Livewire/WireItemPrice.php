@@ -3,35 +3,49 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\ItemPrice;
+use App\Models\Item;
 use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
-class WireSupplier extends Component implements FieldValidationMessage
+class WireItemPrice extends Component
 {
     use ModalVariables;
-    public $layoutTitle = 'New Supplier';
-    public $suppliers =[];
-    public $supplierName;
-    public $supplierEmail;
-    public $supplierContactNo;
+
+
+    public $layoutTitle = 'New Item';
+    public $itemprices = [];
+    public $itemName;
+    public $unitName;
+    public $piecesPerUnit;
+    public $items;
+    public $suppliers;
 
 
     protected $rules = [
-        'supplierName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'supplierEmail' => 'bail|required|email',
-        'supplierContactNo' => 'bail|required|numeric',
+        'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
+        'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+        'piecesPerUnit' => 'bail|required|numeric',
     ];
 
     public function mount()
     {
+        $this->items = Item::all();
         $this->suppliers = Supplier::all();
+        $this->itemprices = ItemPrice::all();
+    }
+
+    public function render()
+    {
+        return view('livewire.item-price');
     }
 
     public function updated($propertyName)
     {
         $wire_models = [
-            'supplierName',
+            'itemName',
+            'unitName',
         ];
 
         if (in_array($propertyName, $wire_models)) {
@@ -42,27 +56,22 @@ class WireSupplier extends Component implements FieldValidationMessage
         $this->validateOnly($propertyName);
     }
 
-    public function render()
-    {
-        return view('livewire.supplier');
-    }
-
     public function submit()
     {
         $validatedItem = $this->validate();
 
         if (is_null($this->Index)) {
-            $supplier = Supplier::create([
+            $item = ItemPrice::create([
 
-                'suppliers_name' => $this->supplierName,
+                'item_name' => $this->itemName,
 
-                'suppliers_email' => $this->supplierEmail,
+                'unit_name' => $this->unitName,
 
-                'suppliers_contact' => $this->supplierContactNo,
+                'pieces_perUnit' => $this->piecesPerUnit,
 
             ]);
 
-            $this->suppliers->push($supplier);
+            $this->itemprices->push($item);
 
             $this->clearForm();
 
@@ -73,21 +82,20 @@ class WireSupplier extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->suppliers[$this->Index]['id'];
-            Supplier::whereId($id)->update([
+            $id = $this->itemprices[$this->Index]['id'];
+            ItemPrice::whereId($id)->update([
 
-                'suppliers_name' => $this->supplierName,
+                'item_name' => $this->itemName,
 
-                'suppliers_email' => $this->supplierEmail,
+                'unit_name' => $this->unitName,
 
-                'suppliers_contact' => $this->supplierContactNo,
+                'pieces_perUnit' => $this->piecesPerUnit,
 
             ]);
 
-
-            $this->suppliers[$this->Index]['suppliers_name'] = $this->supplierName;
-            $this->suppliers[$this->Index]['suppliers_email'] = $this->supplierEmail;
-            $this->suppliers[$this->Index]['suppliers_contact'] = $this->supplierContactNo;
+            $this->itemprices[$this->Index]['item_name'] = $this->itemName;
+            $this->itemprices[$this->Index]['unit_name'] = $this->unitName;
+            $this->itemprices[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
 
             $this->Index = null;
             $this->clearForm();
@@ -108,28 +116,28 @@ class WireSupplier extends Component implements FieldValidationMessage
             'isDeleteOpen',
             'Index',
             'formTitle',
-            'supplierName',
-            'supplierEmail',
-            'supplierContactNo',
+            'itemName',
+            'unitName',
+            'piecesPerUnit',
         ]);
     }
 
     public function clearForm()
     {
         $this->reset([
-            'supplierName',
-            'supplierEmail',
-            'supplierContactNo',
+            'itemName',
+            'unitName',
+            'piecesPerUnit',
         ]);
     }
 
-    public function selectArrayItem($Index, $formAction = null)
+    public function selectArrayItem($index, $formAction = null)
     {
-        $this->Index = $Index;
-
-        $this->supplierName = $this->suppliers[$this->Index]['suppliers_name'];
-        $this->supplierEmail = $this->suppliers[$this->Index]['suppliers_email'];
-        $this->supplierContactNo = $this->suppliers[$this->Index]['suppliers_contact'];
+        $this->Index = $index;
+        // dd($this->itemprices[$this->Index]);
+        $this->itemName = $this->itemprices[$this->Index]['item_name'];
+        $this->unitName = $this->itemprices[$this->Index]['unit_name'];
+        $this->piecesPerUnit = $this->itemprices[$this->Index]['pieces_perUnit'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
@@ -142,17 +150,17 @@ class WireSupplier extends Component implements FieldValidationMessage
 
     public function deleteArrayItem()
     {
-        $id = $this->suppliers[$this->Index]['id'];
-        Supplier::find($id)->delete();
+        $id = $this->itemprices[$this->Index]['id'];
+        ItemPrice::find($id)->delete();
 
 
-        $filtered = $this->suppliers->reject(function ($value, $key) use ($id) {
+        $filtered = $this->itemprices->reject(function ($value, $key) use ($id) {
             return $value->id === $id;
         });
 
 
         $filtered->all();
-        $this->suppliers = $filtered;
+        $this->itemprices = $filtered;
         $this->modalToggle('Delete');
         $notificationMessage2 = 'Record successfully deleted.';
 
@@ -166,7 +174,7 @@ class WireSupplier extends Component implements FieldValidationMessage
     {
         if (!$formAction) {
             if ($this->Index === null) {
-                $this->formTitle = 'New Supplier';
+                $this->formTitle = 'New Item';
             }
 
             $this->isFormOpen = !$this->isFormOpen;

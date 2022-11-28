@@ -25,10 +25,13 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
     Route::get('manage/branches', \App\Http\Livewire\WireBranch::class, 'render')->name('branches');
-    Route::get('manage/items', \App\Http\Livewire\WireItem::class, 'render')->name('items');
-    Route::get('manage/stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
     Route::get('manage/suppliers', \App\Http\Livewire\WireSupplier::class, 'render')->name('suppliers');
-    Route::get('/manage/users', \App\Http\Livewire\WireSupplier::class, 'render')->name('users');
+    Route::get('manage/items', \App\Http\Livewire\WireItem::class, 'render')->name('items');
+    Route::get('/manage/price', \App\Http\Livewire\WireItemPrice::class, 'render')->name('prices');
+    Route::get('manage/stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
+    Route::get('/manage/users', \App\Http\Livewire\WireUser::class, 'render')->name('users');
+
     Route::get('/order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
 });

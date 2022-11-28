@@ -1,6 +1,6 @@
 <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight w-1/2">
-        {{ __('USERS') }}
+        {{ __('Pricing') }}
     </h2>
 </x-slot>
 
@@ -20,11 +20,11 @@
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    New User
+                                    Add Price
                                 </a>
 
                                 <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen">
-                                    @include('partials.user')
+                                    @include('partials.item-price')
                                 </x-modals.modal-form>
 
                                 <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
@@ -74,15 +74,15 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Name
+                                            Item Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Email
+                                            Unit Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Password
+                                            PiecesPerUnit
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -92,7 +92,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @if (count($users) === 0)
+                                    {{-- @if (count($items) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
@@ -101,16 +101,12 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif
-                                    @foreach ($users as $user)
+                                    @endif --}}
+                                    {{-- @foreach ($items as $item)
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $user->name }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $user->email }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ Str::limit($user->password, 30) }}
-                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->item_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->pieces_perUnit }}</td>
 
 
                                             <td
@@ -143,7 +139,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
 

@@ -73,6 +73,9 @@
                                 <x-jet-dropdown-link href="{{ route('items') }}">
                                     {{ __('Items') }}
                                 </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('prices') }}">
+                                    {{ __('Pricing') }}
+                                </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="{{ route('stocks') }}">
                                     {{ __('Stock') }}
                                 </x-jet-dropdown-link>
