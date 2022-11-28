@@ -132,10 +132,10 @@ class WireSupplier extends Component implements FieldValidationMessage
         $this->supplierContactNo = $this->suppliers[$this->Index]['suppliers_contact'];
 
         if (!$formAction) {
-            $this->formTitle = 'Edit Item';
+            $this->formTitle = 'Edit Supplier';
             $this->isFormOpen = true;
         } else {
-            $this->formTitle = 'Delete Item';
+            $this->formTitle = 'Delete Supplier';
             $this->isDeleteOpen = true;
         }
     }

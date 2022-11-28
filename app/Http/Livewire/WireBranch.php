@@ -135,10 +135,10 @@ class WireBranch extends Component
         $this->branchContactNo = $this->branches[$this->Index]['branch_contactNo'];
 
         if (!$formAction) {
-            $this->formTitle = 'Edit Item';
+            $this->formTitle = 'Edit Branch';
             $this->isFormOpen = true;
         } else {
-            $this->formTitle = 'Delete Item';
+            $this->formTitle = 'Delete Branch';
             $this->isDeleteOpen = true;
         }
     }

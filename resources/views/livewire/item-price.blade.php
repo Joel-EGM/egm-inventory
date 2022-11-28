@@ -92,7 +92,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    {{-- @if (count($items) === 0)
+                                    @if (count($itemprices) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
@@ -101,7 +101,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif --}}
+                                    @endif
                                     {{-- @foreach ($items as $item)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->item_name }}</td>

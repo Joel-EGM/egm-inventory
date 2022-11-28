@@ -14,19 +14,20 @@ class WireItemPrice extends Component
     use ModalVariables;
 
 
-    public $layoutTitle = 'New Item';
+    public $layoutTitle = 'Add Item Price';
     public $itemprices = [];
-    public $itemName;
-    public $unitName;
-    public $piecesPerUnit;
+    public $supplier_id;
+    public $item_id;
+    public $price;
     public $items;
     public $suppliers;
+    public $priceArray = [];
 
 
     protected $rules = [
-        'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
-        'piecesPerUnit' => 'bail|required|numeric',
+        'supplier_id' => 'bail|required',
+        'item_id' => 'bail|required',
+        'price' => 'bail|required',
     ];
 
     public function mount()
@@ -44,8 +45,8 @@ class WireItemPrice extends Component
     public function updated($propertyName)
     {
         $wire_models = [
-            'itemName',
-            'unitName',
+            'supplier_id',
+            'item_id',
         ];
 
         if (in_array($propertyName, $wire_models)) {
@@ -63,11 +64,11 @@ class WireItemPrice extends Component
         if (is_null($this->Index)) {
             $item = ItemPrice::create([
 
-                'item_name' => $this->itemName,
+                'item_name' => $this->supplier_id,
 
-                'unit_name' => $this->unitName,
+                'unit_name' => $this->item_id,
 
-                'pieces_perUnit' => $this->piecesPerUnit,
+                'pieces_perUnit' => $this->price,
 
             ]);
 
@@ -85,17 +86,17 @@ class WireItemPrice extends Component
             $id = $this->itemprices[$this->Index]['id'];
             ItemPrice::whereId($id)->update([
 
-                'item_name' => $this->itemName,
+                'item_name' => $this->supplier_id,
 
-                'unit_name' => $this->unitName,
+                'unit_name' => $this->item_id,
 
-                'pieces_perUnit' => $this->piecesPerUnit,
+                'pieces_perUnit' => $this->price,
 
             ]);
 
-            $this->itemprices[$this->Index]['item_name'] = $this->itemName;
-            $this->itemprices[$this->Index]['unit_name'] = $this->unitName;
-            $this->itemprices[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+            $this->itemprices[$this->Index]['item_name'] = $this->supplier_id;
+            $this->itemprices[$this->Index]['unit_name'] = $this->item_id;
+            $this->itemprices[$this->Index]['pieces_perUnit'] = $this->price;
 
             $this->Index = null;
             $this->clearForm();
@@ -109,6 +110,17 @@ class WireItemPrice extends Component
         }
     }
 
+    public function addPriceArray()
+    {
+        $this->validate();
+        // insert items into temporary table
+        array_push($this->priceArray, [
+            'supplier_id' => $this->supplier_id,
+            'item_id' => $this->item_id,
+            'price' => $this->price,
+        ]);
+    }
+
     public function clearFormVariables()
     {
         $this->reset([
@@ -116,18 +128,18 @@ class WireItemPrice extends Component
             'isDeleteOpen',
             'Index',
             'formTitle',
-            'itemName',
-            'unitName',
-            'piecesPerUnit',
+            'supplier_id',
+            'item_id',
+            'price',
         ]);
     }
 
     public function clearForm()
     {
         $this->reset([
-            'itemName',
-            'unitName',
-            'piecesPerUnit',
+            'supplier_id',
+            'item_id',
+            'price',
         ]);
     }
 
@@ -135,9 +147,9 @@ class WireItemPrice extends Component
     {
         $this->Index = $index;
         // dd($this->itemprices[$this->Index]);
-        $this->itemName = $this->itemprices[$this->Index]['item_name'];
-        $this->unitName = $this->itemprices[$this->Index]['unit_name'];
-        $this->piecesPerUnit = $this->itemprices[$this->Index]['pieces_perUnit'];
+        $this->supplier_id = $this->itemprices[$this->Index]['item_name'];
+        $this->item_id = $this->itemprices[$this->Index]['unit_name'];
+        $this->price = $this->itemprices[$this->Index]['pieces_perUnit'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
@@ -174,7 +186,7 @@ class WireItemPrice extends Component
     {
         if (!$formAction) {
             if ($this->Index === null) {
-                $this->formTitle = 'New Item';
+                $this->formTitle = 'Add Item Price';
             }
 
             $this->isFormOpen = !$this->isFormOpen;

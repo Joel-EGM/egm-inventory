@@ -142,10 +142,10 @@ class WireUser extends Component implements FieldValidationMessage
         $this->password = $this->users[$this->Index]['password'];
 
         if (!$formAction) {
-            $this->formTitle = 'Edit Item';
+            $this->formTitle = 'Edit User';
             $this->isFormOpen = true;
         } else {
-            $this->formTitle = 'Delete Item';
+            $this->formTitle = 'Delete User';
             $this->isDeleteOpen = true;
         }
     }
