@@ -25,9 +25,9 @@ class WireItemPrice extends Component
 
 
     protected $rules = [
-        'supplier_id' => 'bail|required',
-        'item_id' => 'bail|required',
-        'price' => 'bail|required',
+        'supplier_id' => 'required',
+        'item_id' => 'required',
+        'price' => 'required',
     ];
 
     public function mount()
@@ -64,11 +64,11 @@ class WireItemPrice extends Component
         if (is_null($this->Index)) {
             $item = ItemPrice::create([
 
-                'item_name' => $this->supplier_id,
+                'supplier_id' => $this->supplier_id,
 
-                'unit_name' => $this->item_id,
+                'item_id' => $this->item_id,
 
-                'pieces_perUnit' => $this->price,
+                'price' => $this->price,
 
             ]);
 
@@ -86,17 +86,17 @@ class WireItemPrice extends Component
             $id = $this->itemprices[$this->Index]['id'];
             ItemPrice::whereId($id)->update([
 
-                'item_name' => $this->supplier_id,
+                'supplier_id' => $this->supplier_id,
 
-                'unit_name' => $this->item_id,
+                'item_id' => $this->item_id,
 
-                'pieces_perUnit' => $this->price,
+                'price' => $this->price,
 
             ]);
 
-            $this->itemprices[$this->Index]['item_name'] = $this->supplier_id;
-            $this->itemprices[$this->Index]['unit_name'] = $this->item_id;
-            $this->itemprices[$this->Index]['pieces_perUnit'] = $this->price;
+            $this->itemprices[$this->Index]['supplier_id'] = $this->supplier_id;
+            $this->itemprices[$this->Index]['item_id'] = $this->item_id;
+            $this->itemprices[$this->Index]['price'] = $this->price;
 
             $this->Index = null;
             $this->clearForm();
@@ -147,9 +147,9 @@ class WireItemPrice extends Component
     {
         $this->Index = $index;
         // dd($this->itemprices[$this->Index]);
-        $this->supplier_id = $this->itemprices[$this->Index]['item_name'];
-        $this->item_id = $this->itemprices[$this->Index]['unit_name'];
-        $this->price = $this->itemprices[$this->Index]['pieces_perUnit'];
+        $this->supplier_id = $this->itemprices[$this->Index]['supplier_id'];
+        $this->item_id = $this->itemprices[$this->Index]['item_id'];
+        $this->price = $this->itemprices[$this->Index]['price'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';

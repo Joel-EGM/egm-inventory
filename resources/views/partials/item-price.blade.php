@@ -37,18 +37,16 @@
     <tbody>
         @foreach ($itemprices as $price)
             <tr>
-                {{-- 
 
-                        <td class="border px-4 py-2">{{ $price['item_id'] }}</td>
+                {{-- <td class="border px-4 py-2">{{ $price['supplier_id'] }}</td>
 
-                        <td class="border px-4 py-2">{{ $price['quantity'] }}</td>
+                <td class="border px-4 py-2">{{ $price['item_id'] }}</td>
 
-                        <td class="border px-4 py-2">{{ $price['price'] }}</td>
-
-                        <td class="border px-4 py-2">{{ $price['total_amount'] }}</td> --}}
+                <td class="border px-4 py-2">{{ $price['price'] }}</td> --}}
 
             </tr>
         @endforeach
     </tbody>
 </table>
-<button wire:click.prevent="addPriceArray" class="btn">ADD</button>
+
+<x-jet-button wire:click.prevent="addPriceArray">ADD</x-jet-button>
