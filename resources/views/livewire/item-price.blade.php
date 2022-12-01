@@ -23,7 +23,7 @@
                                     Add Price
                                 </a>
 
-                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen">
+                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="md">
                                     @include('partials.item-price')
                                 </x-modals.modal-form>
 
