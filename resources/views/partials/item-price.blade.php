@@ -35,14 +35,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($itemprices as $price)
+        @foreach ($priceArrays as $price)
             <tr>
 
-                {{-- <td class="border px-4 py-2">{{ $price['supplier_id'] }}</td>
+                <td class="border px-4 py-2">{{ $price['suppliers_name'] }}</td>
 
                 <td class="border px-4 py-2">{{ $price['item_id'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['price'] }}</td> --}}
+                <td class="border px-4 py-2">{{ $price['price'] }}</td>
 
             </tr>
         @endforeach

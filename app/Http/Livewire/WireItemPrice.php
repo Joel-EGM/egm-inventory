@@ -17,11 +17,12 @@ class WireItemPrice extends Component
     public $layoutTitle = 'Add Item Price';
     public $itemprices = [];
     public $supplier_id;
+    public $suppliers_name;
     public $item_id;
     public $price;
     public $items;
     public $suppliers;
-    public $priceArray = [];
+    public $priceArrays = [];
 
 
     protected $rules = [
@@ -62,17 +63,18 @@ class WireItemPrice extends Component
         $validatedItem = $this->validate();
 
         if (is_null($this->Index)) {
-            $item = ItemPrice::create([
+            foreach ($this->priceArrays as $priceArray) {
+                $price = ItemPrice::create([
 
-                'supplier_id' => $this->supplier_id,
+                    'supplier_id' => $priceArray['supplier_id'],
 
-                'item_id' => $this->item_id,
+                    'item_id' => $priceArray['item_id'],
 
-                'price' => $this->price,
+                    'price' => $priceArray['price'],
 
-            ]);
-
-            $this->itemprices->push($item);
+                ]);
+            }
+            $this->itemprices->push($price);
 
             $this->clearForm();
 
@@ -113,9 +115,17 @@ class WireItemPrice extends Component
     public function addPriceArray()
     {
         $this->validate();
-        // insert items into temporary table
-        array_push($this->priceArray, [
+        $supplierName = '';
+
+        foreach ($this->suppliers as $supplier) {
+            if ($supplier->id === (int) $this->supplier_id) {
+                $supplierName = $supplier->suppliers_name;
+                break;
+            }
+        }
+        array_push($this->priceArrays, [
             'supplier_id' => $this->supplier_id,
+            'suppliers_name' => $supplierName,
             'item_id' => $this->item_id,
             'price' => $this->price,
         ]);
@@ -148,6 +158,7 @@ class WireItemPrice extends Component
         $this->Index = $index;
         // dd($this->itemprices[$this->Index]);
         $this->supplier_id = $this->itemprices[$this->Index]['supplier_id'];
+        $this->suppliers_name = $this->itemprices[$this->Index]['suppliers_name'];
         $this->item_id = $this->itemprices[$this->Index]['item_id'];
         $this->price = $this->itemprices[$this->Index]['price'];
 

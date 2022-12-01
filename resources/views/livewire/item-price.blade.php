@@ -47,9 +47,9 @@
                         <div class="relative">
                             <select
                                 class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300">
-                                <option>All</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
+                                @foreach ($suppliers as $supplier)
+                                    <option value="{{ $supplier->id }}">{{ $supplier->suppliers_name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -74,15 +74,15 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Supplier Name
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Item Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Unit Name
-                                        </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            PiecesPerUnit
+                                            Price
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -102,11 +102,12 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    {{-- @foreach ($items as $item)
+                                    @foreach ($itemprices as $price)
                                         <tr>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->item_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->pieces_perUnit }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{ $price->supplier->suppliers_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->item->item_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->price }}</td>
 
 
                                             <td
@@ -139,7 +140,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
 
