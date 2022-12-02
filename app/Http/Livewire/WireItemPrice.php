@@ -19,6 +19,7 @@ class WireItemPrice extends Component
     public $supplier_id;
     public $suppliers_name;
     public $item_id;
+    public $item_name;
     public $price;
     public $items;
     public $suppliers;
@@ -115,20 +116,35 @@ class WireItemPrice extends Component
     public function addPriceArray()
     {
         $this->validate();
-        $supplierName = '';
 
+        $supplierName = '';
         foreach ($this->suppliers as $supplier) {
             if ($supplier->id === (int) $this->supplier_id) {
                 $supplierName = $supplier->suppliers_name;
                 break;
             }
         }
+
+
+        $itemName = '';
+        foreach ($this->items as $item) {
+            if ($item->id === (int) $this->item_id) {
+                $itemName = $item->item_name;
+                break;
+            }
+        }
+
         array_push($this->priceArrays, [
             'supplier_id' => $this->supplier_id,
             'suppliers_name' => $supplierName,
             'item_id' => $this->item_id,
+            'item_name' => $itemName,
             'price' => $this->price,
         ]);
+    }
+
+    public function removeItem()
+    {
     }
 
     public function clearFormVariables()
@@ -158,7 +174,6 @@ class WireItemPrice extends Component
         $this->Index = $index;
         // dd($this->itemprices[$this->Index]);
         $this->supplier_id = $this->itemprices[$this->Index]['supplier_id'];
-        $this->suppliers_name = $this->itemprices[$this->Index]['suppliers_name'];
         $this->item_id = $this->itemprices[$this->Index]['item_id'];
         $this->price = $this->itemprices[$this->Index]['price'];
 
@@ -174,6 +189,7 @@ class WireItemPrice extends Component
     public function deleteArrayItem()
     {
         $id = $this->itemprices[$this->Index]['id'];
+
         ItemPrice::find($id)->delete();
 
 
