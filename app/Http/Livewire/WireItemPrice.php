@@ -143,8 +143,10 @@ class WireItemPrice extends Component
         ]);
     }
 
-    public function removeItem()
+    public function removeItem($index)
     {
+        unset($this->priceArrays[$index]);
+        $this->modalToggle('Delete');
     }
 
     public function clearFormVariables()
