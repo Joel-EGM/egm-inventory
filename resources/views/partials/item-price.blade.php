@@ -53,7 +53,7 @@
                 <td class="border px-4 py-2">{{ $price['price'] }}</td>
 
                 <td class="border px-4 py-2">
-                    <a href="javascript:" title="Delete" wire:click="removeItem({{ $loop->index }})"
+                    <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
                         class="text-gray-500 mt-1 ml-2 inline-flex">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"

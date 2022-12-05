@@ -7,7 +7,7 @@ use App\Models\Branch;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
-class WireBranch extends Component
+class WireBranch extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 

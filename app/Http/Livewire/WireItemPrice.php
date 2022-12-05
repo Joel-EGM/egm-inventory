@@ -9,7 +9,7 @@ use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
-class WireItemPrice extends Component
+class WireItemPrice extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
@@ -146,7 +146,6 @@ class WireItemPrice extends Component
     public function removeItem($index)
     {
         unset($this->priceArrays[$index]);
-        $this->modalToggle('Delete');
     }
 
     public function clearFormVariables()
@@ -169,6 +168,8 @@ class WireItemPrice extends Component
             'item_id',
             'price',
         ]);
+
+        $this->priceArrays = array();
     }
 
     public function selectArrayItem($index, $formAction = null)
