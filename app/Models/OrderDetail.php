@@ -16,7 +16,7 @@ class OrderDetail extends Model
         'item_id',
         'order_id',
         'quantity',
-        'price',
+        'price_id',
         'total_amount',
         'order_status',
     ];
@@ -29,5 +29,10 @@ class OrderDetail extends Model
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
+    public function price()
+    {
+        return $this->belongsTo(ItemPrice::class, 'price_id', 'id');
     }
 }

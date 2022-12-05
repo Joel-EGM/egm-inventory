@@ -76,22 +76,19 @@
                                 <x-jet-dropdown-link href="{{ route('prices') }}">
                                     {{ __('Pricing') }}
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="{{ route('stocks') }}">
-                                    {{ __('Stock') }}
-                                </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="{{ route('users') }}">
                                     {{ __('User') }}
                                 </x-jet-dropdown-link>
                             </x-slot>
                         </x-jet-dropdown>
 
-                        <!-- Order DropDown List -->
+                        <!-- Orders DropDown List -->
                         <x-jet-dropdown align="right" width="48" class="bg-gray-800">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
                                         class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white-300 hover:bg-gray-700 hover:text-white focus:bg-gray-400 focus:outline-none transition ease-in-out duration-150">
-                                        {{ __('Order') }}
+                                        {{ __('Orders') }}
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"

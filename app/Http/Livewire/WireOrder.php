@@ -14,7 +14,7 @@ class WireOrder extends Component implements FieldValidationMessage
     use ModalVariables;
 
 
-    public $layoutTitle = 'Add Item Price';
+    public $layoutTitle = 'Create Order';
     public $itemprices = [];
     public $supplier_id;
     public $suppliers_name;

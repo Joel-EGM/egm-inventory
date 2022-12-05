@@ -1,6 +1,6 @@
 <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight w-1/2">
-        {{ __('Order') }}
+        {{ __('Orders') }}
     </h2>
 </x-slot>
 
@@ -20,11 +20,11 @@
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    Add Price
+                                    Create Order
                                 </a>
 
                                 <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="md">
-                                    @include('partials.item-price')
+                                    @include('partials.order')
                                 </x-modals.modal-form>
 
                                 <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
@@ -45,12 +45,12 @@
                         </div>
 
                         <div class="relative">
-                            <select
+                            {{-- <select
                                 class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300">
                                 @foreach ($suppliers as $supplier)
                                     <option value="{{ $supplier->id }}">{{ $supplier->suppliers_name }}</option>
                                 @endforeach
-                            </select>
+                            </select> --}}
                         </div>
 
                         <div class="block relative">
@@ -73,8 +73,12 @@
                                 <thead>
                                     <tr>
                                         <th
-                                            class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Supplier Name
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Branch Name
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Order Date
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -82,17 +86,21 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Price
+                                            Quantity
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Action
+                                            Total Amount
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Order Status
                                         </th>
 
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @if (count($itemprices) === 0)
+                                    {{-- @if (count($itemprices) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
@@ -101,8 +109,8 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif
-                                    @foreach ($itemprices as $price)
+                                    @endif --}}
+                                    {{-- @foreach ($itemprices as $price)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ $price->supplier->suppliers_name }}</td>
@@ -140,7 +148,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
 
