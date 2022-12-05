@@ -14,7 +14,7 @@ return new class () extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('branch_id');
+            $table->foreignId('branch_id');
             $table->date('order_date');
             $table->string('order_status');
             $table->timestamps();
