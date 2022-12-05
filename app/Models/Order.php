@@ -18,18 +18,23 @@ class Order extends Model
         'order_status',
     ];
 
-    public function branch()
+    public function branches()
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
+
+    public function suppliers()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+    }
+
+    public function items()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
-    }
-
-    public function item()
-    {
-        return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 }

@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->integer('total_amount');
             $table->string('order_status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

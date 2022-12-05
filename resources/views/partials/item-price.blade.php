@@ -1,7 +1,7 @@
 <x-modal.modal-notification />
 <!--Body-->
 <div>
-    <x-jet-label for="price" value="{{ __('Supplier') }}" />
+    <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
     <select name="supplier_id" wire:model="supplier_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select supplier--</option>
         @foreach ($suppliers as $supplier)
@@ -11,7 +11,7 @@
 </div>
 <br />
 <div>
-    <x-jet-label for="price" value="{{ __('Item') }}" />
+    <x-jet-label for="item_id" value="{{ __('Item') }}" />
     <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select item--</option>
         @foreach ($items as $item)

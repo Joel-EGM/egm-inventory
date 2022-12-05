@@ -21,17 +21,17 @@ class OrderDetail extends Model
         'order_status',
     ];
 
-    public function item()
+    public function items()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
-    public function order()
+    public function orders()
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 
-    public function price()
+    public function prices()
     {
         return $this->belongsTo(ItemPrice::class, 'price_id', 'id');
     }

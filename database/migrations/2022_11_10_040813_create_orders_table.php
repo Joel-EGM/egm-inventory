@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->date('order_date');
             $table->string('order_status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
