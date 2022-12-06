@@ -16,7 +16,7 @@ class Branch extends Model
         'branch_contactNo'
     ];
 
-    public function order()
+    public function orders()
     {
         return $this->hasMany(Order::class, 'branch_id', 'id');
     }

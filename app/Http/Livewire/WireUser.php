@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class WireUser extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+
     public $layoutTitle = 'New User';
     public $users =[];
     public $userName;

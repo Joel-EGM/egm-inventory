@@ -14,11 +14,12 @@ return new class () extends Migration {
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id');
             $table->foreignId('order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_id');
+            $table->foreignId('item_id');
             $table->integer('quantity');
-            $table->foreignId('price_id');
-            $table->integer('total_amount');
+            $table->decimal('price');
+            $table->decimal('total_amount');
             $table->string('order_status');
             $table->timestamps();
             $table->softDeletes();

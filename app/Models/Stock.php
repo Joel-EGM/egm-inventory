@@ -20,7 +20,7 @@ class Stock extends Model
         'total_amount'
     ];
 
-    public function item()
+    public function items()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }

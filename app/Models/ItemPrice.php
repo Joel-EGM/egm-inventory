@@ -16,12 +16,12 @@ class ItemPrice extends Model
         'price',
     ];
 
-    public function supplier()
+    public function suppliers()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
     }
 
-    public function item()
+    public function items()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
     }

@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Branch;
+use App\Models\Item;
+use App\Models\Supplier;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +23,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        Branch::factory()->count(10)->create();
+        Item::factory()->count(10)->create();
+        Supplier::factory()->count(10)->create();
     }
 }

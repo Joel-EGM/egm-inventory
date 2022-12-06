@@ -105,8 +105,8 @@
                                     @foreach ($itemprices as $price)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ $price->supplier->suppliers_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->item->item_name }}</td>
+                                                {{ $price->suppliers->suppliers_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->items->item_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $price->price }}</td>
 
 

@@ -31,5 +31,8 @@
         <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">
             Save
         </x-jet-button>
+        <span wire:loading.delay wire:target="submit">
+            Loading...
+        </span>
     </div>
 </x-jet-modal>

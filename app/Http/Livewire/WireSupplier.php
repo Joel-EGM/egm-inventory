@@ -10,6 +10,7 @@ use App\Http\Interfaces\FieldValidationMessage;
 class WireSupplier extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+
     public $layoutTitle = 'New Supplier';
     public $suppliers =[];
     public $supplierName;
