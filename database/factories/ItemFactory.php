@@ -15,9 +15,9 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            'item_name' => $this->faker->word,
-            'unit_name' => $this->faker->word,
-            'pieces_perUnit' => $this->faker->randomDigit(5),
+            'item_name' => $this->faker->lastName(),
+            'unit_name' => $this->faker->cityPrefix(),
+            'pieces_perUnit' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

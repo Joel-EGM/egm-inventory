@@ -23,7 +23,7 @@
                                     Add Price
                                 </a>
 
-                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="md">
+                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="2xl">
                                     @include('partials.item-price')
                                 </x-modals.modal-form>
 
@@ -73,7 +73,7 @@
                                 <thead>
                                     <tr>
                                         <th
-                                            class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            class="w-1/4 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Supplier Name
                                         </th>
                                         <th
@@ -82,7 +82,11 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Price
+                                            Price Per Unit
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Price Per Pieces
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -94,7 +98,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($itemprices) === 0)
                                         <tr>
-                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
+                                            <td colspan="6" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
                                                         NO DATA AVAILABLE</div>
@@ -107,7 +111,8 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ $price->suppliers->suppliers_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $price->items->item_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->price }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->price_perUnit }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $price->price_perPieces }}</td>
 
 
                                             <td

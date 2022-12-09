@@ -15,8 +15,8 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            'suppliers_name' => $this->faker->randomLetter,
-            'suppliers_email' => $this->faker->randomLetter,
+            'suppliers_name' => $this->faker->firstNameMale(),
+            'suppliers_email' => $this->faker->email(),
             'suppliers_contact' => $this->faker->randomNumber(5, true)
         ];
     }

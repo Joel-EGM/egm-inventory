@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Branch;
 use App\Models\Item;
 use App\Models\Supplier;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,10 +20,11 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'egm',
+            'email' => 'e@g.com',
+            'password' => '$2y$10$hg3Pn45ZiQlaD./r8RfEQeQvFrhAmmkL0exf7DWpk32g9t0.RGeKu',
+        ]);
 
         Branch::factory()->count(10)->create();
         Item::factory()->count(10)->create();

@@ -20,16 +20,19 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public $suppliers_name;
     public $item_id;
     public $item_name;
-    public $price;
+    public $price_perUnit;
+    public $price_perPieces;
     public $items;
     public $suppliers;
     public $priceArrays = [];
+    public $unitName;
 
 
     protected $rules = [
         'supplier_id' => 'required',
         'item_id' => 'required',
-        'price' => 'required',
+        'price_perUnit' => 'required|numeric',
+        'price_perPieces' => 'required|numeric',
     ];
 
     public function mount()
@@ -71,7 +74,9 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
                     'item_id' => $priceArray['item_id'],
 
-                    'price' => $priceArray['price'],
+                    'price_perUnit' => $priceArray['price_perUnit'],
+
+                    'price_perPieces' => $priceArray['price_perPieces'],
 
                 ]);
             }
@@ -93,13 +98,16 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
                 'item_id' => $this->item_id,
 
-                'price' => $this->price,
+                'price_perUnit' => $this->price_perUnit,
+
+                'price_perPieces' => $this->price_perPieces,
 
             ]);
 
             $this->itemprices[$this->Index]['supplier_id'] = $this->supplier_id;
             $this->itemprices[$this->Index]['item_id'] = $this->item_id;
-            $this->itemprices[$this->Index]['price'] = $this->price;
+            $this->itemprices[$this->Index]['price_perUnit'] = $this->price_perUnit;
+            $this->itemprices[$this->Index]['price_perPieces'] = $this->price_perPieces;
 
             $this->Index = null;
             $this->clearForm();
@@ -139,7 +147,9 @@ class WireItemPrice extends Component implements FieldValidationMessage
             'suppliers_name' => $supplierName,
             'item_id' => $this->item_id,
             'item_name' => $itemName,
-            'price' => $this->price,
+            'price_perUnit' => $this->price_perUnit,
+            'price_perPieces' => $this->price_perPieces,
+
         ]);
     }
 
@@ -157,7 +167,8 @@ class WireItemPrice extends Component implements FieldValidationMessage
             'formTitle',
             'supplier_id',
             'item_id',
-            'price',
+            'price_perUnit',
+            'price_perPieces',
         ]);
     }
 
@@ -166,7 +177,8 @@ class WireItemPrice extends Component implements FieldValidationMessage
         $this->reset([
             'supplier_id',
             'item_id',
-            'price',
+            'price_perUnit',
+            'price_perPieces',
         ]);
 
         $this->priceArrays = array();
@@ -178,7 +190,8 @@ class WireItemPrice extends Component implements FieldValidationMessage
         // dd($this->itemprices[$this->Index]);
         $this->supplier_id = $this->itemprices[$this->Index]['supplier_id'];
         $this->item_id = $this->itemprices[$this->Index]['item_id'];
-        $this->price = $this->itemprices[$this->Index]['price'];
+        $this->price_perUnit = $this->itemprices[$this->Index]['price_perUnit'];
+        $this->price_perPieces = $this->itemprices[$this->Index]['price_perPieces'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
@@ -210,6 +223,11 @@ class WireItemPrice extends Component implements FieldValidationMessage
             'notificationType' => 'error',
             'messagePrimary'   => $notificationMessage2
         ]);
+    }
+
+    public function fetchUnit()
+    {
+        $this->unitName = Item::select()->where('id', $this->item_id)->get();
     }
 
     public function modalToggle($formAction = null)

@@ -13,7 +13,8 @@ class ItemPrice extends Model
 
         'supplier_id',
         'item_id',
-        'price',
+        'price_perUnit',
+        'price_perPieces',
     ];
 
     public function suppliers()

@@ -12,19 +12,36 @@
 <br />
 <div>
     <x-jet-label for="item_id" value="{{ __('Item') }}" />
-    <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
+    <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full" wire:click="fetchUnit">
         <option value="" class="text-center">--select item--</option>
         @foreach ($items as $item)
-            <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}</option>
+            <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
+            </option>
         @endforeach
     </select>
 </div>
 <br />
 <div>
-    <x-jet-label for="price" value="{{ __('Price') }}" />
-    <x-jet-input wire:model.debounce.1000ms="price" x-ref="price" id="price" type="text" maxlength="50"
-        class="mt-1 block w-full text-center" autocomplete="price" />
-    <x-jet-input-error for="price" class="mt-2" />
+    <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
+    @if (!empty($unitName))
+        @foreach ($unitName as $unit)
+            <input type="text" maxlength="50" class="w-full text-center" value="{{ $unit->unit_name }}"readonly />
+        @endforeach
+    @endif
+</div>
+<br />
+<div>
+    <x-jet-label for="price_perUnit" value="{{ __('Price Per Unit') }}" />
+    <x-jet-input wire:model.debounce.1000ms="price_perUnit" x-ref="price_perUnit" id="price_perUnit" type="text"
+        maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perUnit" />
+    <x-jet-input-error for="price_perUnit" class="mt-2" />
+</div>
+<br />
+<div>
+    <x-jet-label for="price_perPieces" value="{{ __('Price Per Pieces') }}" />
+    <x-jet-input wire:model.debounce.1000ms="price_perPieces" x-ref="price_perPieces" id="price_perPieces"
+        type="text" maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perPieces" />
+    <x-jet-input-error for="price_perPieces" class="mt-2" />
 </div>
 
 <br />
@@ -37,7 +54,9 @@
 
             <th class="px-4 py-2">Item</th>
 
-            <th class="px-4 py-2">Price</th>
+            <th class="px-4 py-2">Price Per Unit</th>
+
+            <th class="px-4 py-2">Price Per Pieces</th>
 
             <th class="px-4 py-2">Action</th>
         </tr>
@@ -50,7 +69,9 @@
 
                 <td class="border px-4 py-2">{{ $price['item_name'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['price'] }}</td>
+                <td class="border px-4 py-2">{{ $price['price_perUnit'] }}</td>
+
+                <td class="border px-4 py-2">{{ $price['price_perPieces'] }}</td>
 
                 <td class="border px-4 py-2">
                     <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
