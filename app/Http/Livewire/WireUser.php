@@ -74,6 +74,7 @@ class WireUser extends Component implements FieldValidationMessage
             $this->users->push($user);
 
             $this->clearForm();
+            $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
 

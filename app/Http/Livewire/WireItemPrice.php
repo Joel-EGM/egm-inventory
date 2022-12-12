@@ -25,7 +25,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public $items;
     public $suppliers;
     public $priceArrays = [];
-    public $unitName;
+    public $unitName = [];
 
 
     protected $rules = [
@@ -83,6 +83,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
             $this->itemprices->push($price);
 
             $this->clearForm();
+            $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
 

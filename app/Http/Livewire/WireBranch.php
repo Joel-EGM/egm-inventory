@@ -68,6 +68,7 @@ class WireBranch extends Component implements FieldValidationMessage
             $this->branches->push($branch);
 
             $this->clearForm();
+            $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
 

@@ -68,6 +68,7 @@ class WireItem extends Component implements FieldValidationMessage
             $this->items->push($item);
 
             $this->clearForm();
+            $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
 

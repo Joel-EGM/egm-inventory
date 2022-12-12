@@ -66,6 +66,7 @@ class WireSupplier extends Component implements FieldValidationMessage
             $this->suppliers->push($supplier);
 
             $this->clearForm();
+            $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
 

@@ -1,8 +1,7 @@
-<x-modal.modal-notification />
 <!--Body-->
 <div>
     <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
-    <select name="supplier_id" wire:model="supplier_id" class="form-control mt-1 block w-full">
+    <select name="supplier_id" wire:model.debounce.1000ms="supplier_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select supplier--</option>
         @foreach ($suppliers as $supplier)
             <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
@@ -12,7 +11,8 @@
 <br />
 <div>
     <x-jet-label for="item_id" value="{{ __('Item') }}" />
-    <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full" wire:click="fetchUnit">
+    <select name="item_id" wire:model.debounce.1000ms="item_id" class="form-control mt-1 block w-full"
+        wire:click="fetchUnit">
         <option value="" class="text-center">--select item--</option>
         @foreach ($items as $item)
             <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
@@ -23,11 +23,11 @@
 <br />
 <div>
     <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
-    @if (!empty($unitName))
-        @foreach ($unitName as $unit)
-            <input type="text" maxlength="50" class="w-full text-center" value="{{ $unit->unit_name }}"readonly />
-        @endforeach
-    @endif
+    {{-- @if (!empty($unitName)) --}}
+    @foreach ($unitName as $unit)
+        <input type="text" maxlength="50" class="w-full text-center" value="{{ $unit->unit_name }}"readonly />
+    @endforeach
+    {{-- @endif --}}
 </div>
 <br />
 <div>
