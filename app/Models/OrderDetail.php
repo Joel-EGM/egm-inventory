@@ -13,6 +13,7 @@ class OrderDetail extends Model
 
     protected $fillable = [
 
+        'supplier_id',
         'item_id',
         'order_id',
         'quantity',
@@ -20,6 +21,11 @@ class OrderDetail extends Model
         'total_amount',
         'order_status',
     ];
+
+    public function suppliers()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+    }
 
     public function items()
     {

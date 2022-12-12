@@ -4,6 +4,10 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Order;
+use App\Models\Supplier;
+use App\Models\Branch;
+use App\Models\Item;
+use App\Models\ItemPrice;
 use App\Models\OrderDetail;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
@@ -13,20 +17,32 @@ class WireOrder extends Component implements FieldValidationMessage
     use ModalVariables;
 
     public $layoutTitle = 'New Item';
-    public $orders = [];
-    public $itemName;
-    public $unitName;
-    public $piecesPerUnit;
+    public $order_id;
+    public $orders;
+    public $orderArray = [];
+    public $supplier_id;
+    public $order_date;
+    public $order_status;
+    public $branch_id;
+    public $item_id;
+    public $quantity;
+    public $price;
+    public $total_amount;
+    public $items;
+    public $branches;
 
 
     protected $rules = [
-        'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
-        'piecesPerUnit' => 'bail|required|numeric',
+        'item_id' => 'required',
+        'supplier_id' => 'required',
+        'branch_id' => 'required',
     ];
 
     public function mount()
     {
+        $this->items = Item::all();
+        $this->suppliers = Supplier::all();
+        $this->branches = Branch::all();
         $this->orders = Order::all();
     }
 
@@ -35,20 +51,21 @@ class WireOrder extends Component implements FieldValidationMessage
         return view('livewire.order');
     }
 
-    public function updated($propertyName)
-    {
-        $wire_models = [
-            'itemName',
-            'unitName',
-        ];
+    // public function updated($propertyName)
+    // {
+    //     $wire_models = [
+    //         'branch_id',
+    //         'item_id',
+    //         'supplier_id',
+    //     ];
 
-        if (in_array($propertyName, $wire_models)) {
-            $this->$propertyName = ucwords(strtolower($this->$propertyName));
-        }
+    //     if (in_array($propertyName, $wire_models)) {
+    //         $this->$propertyName = ucwords(strtolower($this->$propertyName));
+    //     }
 
 
-        $this->validateOnly($propertyName);
-    }
+    //     $this->validateOnly($propertyName);
+    // }
 
     public function submit()
     {
@@ -57,11 +74,9 @@ class WireOrder extends Component implements FieldValidationMessage
         if (is_null($this->Index)) {
             $item = Order::create([
 
-                'item_name' => $this->itemName,
-
-                'unit_name' => $this->unitName,
-
-                'pieces_perUnit' => $this->piecesPerUnit,
+                'branch_name' => $this->branch_id,
+                'supplier_name' => $this->supplier_id,
+                'item_name' => $this->item_id,
 
             ]);
 
@@ -79,17 +94,15 @@ class WireOrder extends Component implements FieldValidationMessage
             $id = $this->orders[$this->Index]['id'];
             Order::whereId($id)->update([
 
-                'item_name' => $this->itemName,
-
-                'unit_name' => $this->unitName,
-
-                'pieces_perUnit' => $this->piecesPerUnit,
+                'branch_name' => $this->branch_id,
+                'supplier_name' => $this->supplier_id,
+                'item_name' => $this->item_id,
 
             ]);
 
-            $this->orders[$this->Index]['item_name'] = $this->itemName;
-            $this->orders[$this->Index]['unit_name'] = $this->unitName;
-            $this->orders[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+            $this->orders[$this->Index]['branch_name'] = $this->branch_id;
+            $this->orders[$this->Index]['supplier_name'] = $this->supplier_id;
+            $this->orders[$this->Index]['item_name'] = $this->item_id;
 
             $this->Index = null;
             $this->clearForm();
@@ -110,18 +123,18 @@ class WireOrder extends Component implements FieldValidationMessage
             'isDeleteOpen',
             'Index',
             'formTitle',
-            'itemName',
-            'unitName',
-            'piecesPerUnit',
+            'branch_id',
+            'item_id',
+            'supplier_id',
         ]);
     }
 
     public function clearForm()
     {
         $this->reset([
-            'itemName',
-            'unitName',
-            'piecesPerUnit',
+            'branch_id',
+            'item_id',
+            'supplier_id',
         ]);
     }
 
@@ -129,15 +142,15 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
         // dd($this->orders[$this->Index]);
-        $this->itemName = $this->orders[$this->Index]['item_name'];
-        $this->unitName = $this->orders[$this->Index]['unit_name'];
-        $this->piecesPerUnit = $this->orders[$this->Index]['pieces_perUnit'];
+        $this->branch_id = $this->orders[$this->Index]['branch_name'];
+        $this->item_id = $this->orders[$this->Index]['item_name'];
+        $this->supplier_id = $this->orders[$this->Index]['supplier_name'];
 
         if (!$formAction) {
-            $this->formTitle = 'Edit Item';
+            $this->formTitle = 'Edit Order';
             $this->isFormOpen = true;
         } else {
-            $this->formTitle = 'Delete Item';
+            $this->formTitle = 'Delete Order';
             $this->isDeleteOpen = true;
         }
     }
@@ -168,7 +181,7 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         if (!$formAction) {
             if ($this->Index === null) {
-                $this->formTitle = 'New Item';
+                $this->formTitle = 'Create Order';
             }
 
             $this->isFormOpen = !$this->isFormOpen;
