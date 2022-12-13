@@ -16,15 +16,18 @@ class WireOrder extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
-    public $layoutTitle = 'New Item';
+    public $layoutTitle = 'Create Order';
     public $order_id;
     public $orders;
-    public $orderArray = [];
+    public $orderArrays = [];
     public $supplier_id;
+    public $supplier_name = [];
     public $order_date;
     public $order_status;
     public $branch_id;
+    public $branch_name = [];
     public $item_id;
+    public $item_name = [];
     public $quantity;
     public $price;
     public $total_amount;
@@ -34,8 +37,12 @@ class WireOrder extends Component implements FieldValidationMessage
 
     protected $rules = [
         'item_id' => 'required',
+        'order_date'  => 'required|date',
         'supplier_id' => 'required',
         'branch_id' => 'required',
+        'quantity'  => 'required|numeric',
+        'price'  => 'required|numeric',
+        'total_amount'  => 'required|numeric',
     ];
 
     public function mount()
@@ -116,6 +123,53 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
+    public function addOrderArray()
+    {
+        $this->validate();
+
+        $branchName = '';
+        foreach ($this->branches as $branch) {
+            if ($branch->id === (int) $this->branch_id) {
+                $branchName = $branch->branch_name;
+                break;
+            }
+        }
+
+        $supplierName = '';
+        foreach ($this->suppliers as $supplier) {
+            if ($supplier->id === (int) $this->supplier_id) {
+                $supplierName = $supplier->suppliers_name;
+                break;
+            }
+        }
+
+        $itemName = '';
+        foreach ($this->items as $item) {
+            if ($item->id === (int) $this->item_id) {
+                $itemName = $item->item_name;
+                break;
+            }
+        }
+
+        array_push($this->orderArrays, [
+        'branch_id'  => $this->branch_id,
+        'branch_name'  => $branchName,
+        'item_id' => $this->item_id,
+        'item_name'  => $itemName,
+        'order_date' => $this->order_date,
+        'supplier_id' => $this->supplier_id,
+        'suppliers_name' => $supplierName,
+        'quantity' => $this->quantity,
+        'price' => $this->price,
+        'total_amount' => $this->total_amount,
+        ]);
+    }
+
+    public function removeItem($index)
+    {
+        unset($this->orderArrays[$index]);
+    }
+
     public function clearFormVariables()
     {
         $this->reset([
@@ -142,9 +196,14 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
         // dd($this->orders[$this->Index]);
-        $this->branch_id = $this->orders[$this->Index]['branch_name'];
-        $this->item_id = $this->orders[$this->Index]['item_name'];
-        $this->supplier_id = $this->orders[$this->Index]['supplier_name'];
+        $this->branch_id = $this->orders[$this->Index]['branch_id'];
+        $this->order_date = $this->orders[$this->Index]['order_date'];
+        $this->supplier_id = $this->orders[$this->Index]['supplier_id'];
+        $this->item_id = $this->orders[$this->Index]['item_id'];
+        $this->quantity = $this->orders[$this->Index]['quantity'];
+        $this->price = $this->orders[$this->Index]['price'];
+        $this->total_amount = $this->orders[$this->Index]['total_amount'];
+
 
         if (!$formAction) {
             $this->formTitle = 'Edit Order';

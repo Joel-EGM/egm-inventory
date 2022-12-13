@@ -1,5 +1,10 @@
 <!--Body-->
 <div>
+    <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
+    <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" />
+    <x-jet-input-error for="order_date" class="mt-2" />
+</div>
+<div>
     <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
     <select name="branch_id" wire:model.debounce.1000ms="branch_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select item--</option>
@@ -8,6 +13,7 @@
             </option>
         @endforeach
     </select>
+    <x-jet-input-error for="branch_id" class="mt-2" />
 </div>
 <div>
     <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
@@ -17,8 +23,8 @@
             <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
         @endforeach
     </select>
+    <x-jet-input-error for="supplier_id" class="mt-2" />
 </div>
-<br />
 <div>
     <x-jet-label for="item_id" value="{{ __('Item') }}" />
     <select name="item_id" wire:model.debounce.1000ms="item_id" class="form-control mt-1 block w-full">
@@ -28,6 +34,26 @@
             </option>
         @endforeach
     </select>
+    <x-jet-input-error for="item_id" class="mt-2" />
+</div>
+<br />
+<div>
+    <x-jet-label for="quantity" value="{{ __('Quantity') }}" />
+    <x-jet-input wire:model.debounce.1000ms="quantity" x-ref="quantity" id="quantity" type="text" maxlength="50"
+        class="mt-1 block w-full text-center" autocomplete="quantity" />
+    <x-jet-input-error for="quantity" class="mt-2" />
+</div>
+<div>
+    <x-jet-label for="price" value="{{ __('Price') }}" />
+    <x-jet-input wire:model.debounce.1000ms="price" x-ref="price" id="price" type="text" maxlength="50"
+        class="mt-1 block w-full text-center" autocomplete="price" />
+    <x-jet-input-error for="price" class="mt-2" />
+</div>
+<div>
+    <x-jet-label for="total_amount" value="{{ __('Total Amount') }}" />
+    <x-jet-input wire:model.debounce.1000ms="total_amount" x-ref="total_amount" id="total_amount" type="text"
+        maxlength="50" class="mt-1 block w-full text-center" autocomplete="total_amount" />
+    <x-jet-input-error for="total_amount" class="mt-2" />
 </div>
 {{-- <br />
 <div>
@@ -59,28 +85,38 @@
         <tr class="bg-gray-100">
             <th class="px-4 py-2">Branch</th>
 
+            <th class="px-4 py-2">Date</th>
+
             <th class="px-4 py-2">Supplier</th>
 
             <th class="px-4 py-2">Item</th>
 
-            <th class="px-4 py-2">Price Per Unit</th>
+            <th class="px-2 py-2">Quantity</th>
 
-            <th class="px-4 py-2">Price Per Pieces</th>
+            <th class="px-4 py-2">Price</th>
+
+            <th class="px-4 py-2">Total Amount</th>
 
             <th class="px-4 py-2">Action</th>
         </tr>
     </thead>
     <tbody>
-        {{-- @foreach ($priceArrays as $price)
+        @foreach ($orderArrays as $order)
             <tr>
 
-                <td class="border px-4 py-2">{{ $price['suppliers_name'] }}</td>
+                <td class="border px-4 py-2">{{ $order['branch_name'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['item_name'] }}</td>
+                <td class="border px-4 py-2 text-sm">{{ $order['order_date'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['price_perUnit'] }}</td>
+                <td class="border px-4 py-2">{{ $order['suppliers_name'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['price_perPieces'] }}</td>
+                <td class="border px-4 py-2">{{ $order['item_name'] }}</td>
+
+                <td class="border px-4 py-2">{{ $order['quantity'] }}</td>
+
+                <td class="border px-4 py-2">{{ $order['price'] }}</td>
+
+                <td class="border px-4 py-2">{{ $order['total_amount'] }}</td>
 
                 <td class="border px-4 py-2">
                     <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
@@ -95,9 +131,9 @@
                     </a>
                 </td>
             </tr>
-        @endforeach --}}
+        @endforeach
     </tbody>
 </table>
 <br />
-<button wire:click.prevent="addPriceArray"
+<button wire:click.prevent="addOrderArray"
     class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">ADD</button>
