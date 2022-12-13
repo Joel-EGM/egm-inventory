@@ -1,7 +1,8 @@
 <!--Body-->
 <div>
     <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
-    <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" />
+    <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" value=""
+        onfocus="this.max=new Date().toISOString().split('T')[0]" />
     <x-jet-input-error for="order_date" class="mt-2" />
 </div>
 <div>
