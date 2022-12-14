@@ -7,7 +7,7 @@
 <div>
     <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
     <select name="branch_id" wire:model.debounce.1000ms="branch_id" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select item--</option>
+        <option value="" class="text-center">--select branch--</option>
         @foreach ($branches as $branch)
             <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
             </option>
@@ -27,7 +27,7 @@
 </div>
 <div>
     <x-jet-label for="item_id" value="{{ __('Item') }}" />
-    <select name="item_id" wire:model.debounce.1000ms="item_id" class="form-control mt-1 block w-full">
+    <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select item--</option>
         @foreach ($items as $item)
             <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
@@ -36,6 +36,19 @@
     </select>
     <x-jet-input-error for="item_id" class="mt-2" />
 </div>
+
+<div>
+    <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
+    {{-- @if (!empty($unitName)) --}}
+    <select name="unit_id" wire:model="unit_id" class="form-control mt-1 block w-full">
+        <option value="" class="text-center">--select item--</option>
+        @foreach ($unitName as $unit)
+            <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+        @endforeach
+        {{-- @endif --}}
+    </select>
+</div>
+
 <br />
 <div>
     <x-jet-label for="quantity" value="{{ __('Quantity') }}" />
@@ -44,10 +57,10 @@
     <x-jet-input-error for="quantity" class="mt-2" />
 </div>
 <div>
-    <x-jet-label for="price" value="{{ __('Price') }}" />
-    <x-jet-input wire:model.debounce.1000ms="price" x-ref="price" id="price" type="text" maxlength="50"
-        class="mt-1 block w-full text-center" autocomplete="price" />
-    <x-jet-input-error for="price" class="mt-2" />
+    <x-jet-label for="unitPrice" value="{{ __('Price') }}" />
+    <x-jet-input wire:model.debounce.1000ms="unitPrice" x-ref="unitPrice" id="unitPrice" type="text" maxlength="50"
+        class="mt-1 block w-full text-center" autocomplete="unitPrice" />
+    <x-jet-input-error for="unitPrice" class="mt-2" />
 </div>
 <div>
     <x-jet-label for="total_amount" value="{{ __('Total Amount') }}" />
@@ -91,6 +104,8 @@
 
             <th class="px-4 py-2">Item</th>
 
+            <th class="px-4 py-2">Unit Name</th>
+
             <th class="px-2 py-2">Quantity</th>
 
             <th class="px-4 py-2">Price</th>
@@ -121,7 +136,8 @@
                 <td class="border px-4 py-2">
                     <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
                         class="text-gray-500 mt-1 ml-2 inline-flex">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 
                                 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 

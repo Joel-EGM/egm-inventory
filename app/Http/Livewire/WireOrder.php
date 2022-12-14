@@ -33,6 +33,10 @@ class WireOrder extends Component implements FieldValidationMessage
     public $total_amount;
     public $items;
     public $branches;
+    public $unitName = [];
+    public $unitPrice;
+    public $unit_id;
+
 
 
     protected $rules = [
@@ -156,6 +160,7 @@ class WireOrder extends Component implements FieldValidationMessage
         'branch_name'  => $branchName,
         'item_id' => $this->item_id,
         'item_name'  => $itemName,
+        'unit_name' => $this->unitName,
         'order_date' => $this->order_date,
         'supplier_id' => $this->supplier_id,
         'suppliers_name' => $supplierName,
@@ -249,5 +254,16 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->isDeleteOpen = !$this->isDeleteOpen;
             $this->clearAndResetDelete();
         }
+    }
+
+    public function updatedItemId()
+    {
+        $this->unitName = Item::where('id', (int) $this->item_id)->get();
+    }
+
+    public function updatedUnitId()
+    {
+        $unitPrice = ItemPrice::select('price_perUnit')->where('item_id', (int) $this->unit_id)->first();
+        $this->unitPrice = $unitPrice->price_perUnit;
     }
 }

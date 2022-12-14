@@ -39,6 +39,6 @@ class OrderDetail extends Model
 
     public function prices()
     {
-        return $this->belongsTo(ItemPrice::class, 'price_id', 'id');
+        return $this->belongsTo(ItemPrice::class, 'unit_id', 'id');
     }
 }
