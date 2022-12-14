@@ -226,7 +226,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
         ]);
     }
 
-    public function fetchUnit()
+    public function updatedItemId()
     {
         $this->unitName = Item::select()->where('id', $this->item_id)->get();
     }
