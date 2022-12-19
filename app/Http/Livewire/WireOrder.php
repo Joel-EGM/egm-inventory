@@ -57,7 +57,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->orders = Order::all();
     }
 
-    public function updated()
+    public function updatedQuantity()
     {
         $this->total_amount = $this->quantity * $this->unitPrice;
     }
@@ -199,6 +199,9 @@ class WireOrder extends Component implements FieldValidationMessage
             'branch_id',
             'item_id',
             'supplier_id',
+            'quantity',
+            'price',
+            'total_amount',
         ]);
     }
 

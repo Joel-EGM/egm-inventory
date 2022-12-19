@@ -61,7 +61,7 @@
 <br />
 <div>
     <x-jet-label for="quantity" value="{{ __('Quantity') }}" />
-    <x-jet-input wire:model.debounce.1000ms="quantity" x-ref="quantity" id="quantity" type="text" maxlength="50"
+    <x-jet-input wire:model.debounce.250ms="quantity" x-ref="quantity" id="quantity" type="text" maxlength="50"
         class="mt-1 block w-full text-center" autocomplete="quantity" />
     <x-jet-input-error for="quantity" class="mt-2" />
 </div>
