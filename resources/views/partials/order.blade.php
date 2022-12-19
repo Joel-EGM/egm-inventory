@@ -40,7 +40,7 @@
 <div>
     <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
     {{-- @if (!empty($unitName)) --}}
-    <select name="unit_id" wire:model="unit_id" class="form-control mt-1 block w-full">
+    <select name="unit_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select item--</option>
         @foreach ($unitName as $unit)
             <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
@@ -48,7 +48,16 @@
         {{-- @endif --}}
     </select>
 </div>
-
+<div>
+    <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
+    <select name="unit_id" wire:model="unit_id" class="form-control mt-1 block w-full">
+        <option value="" class="text-center">--select pricing--</option>
+        @foreach ($unitName as $unit)
+            <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
+            <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
+        @endforeach
+    </select>
+</div>
 <br />
 <div>
     <x-jet-label for="quantity" value="{{ __('Quantity') }}" />
@@ -59,13 +68,13 @@
 <div>
     <x-jet-label for="unitPrice" value="{{ __('Price') }}" />
     <x-jet-input wire:model.debounce.1000ms="unitPrice" x-ref="unitPrice" id="unitPrice" type="text" maxlength="50"
-        class="mt-1 block w-full text-center" autocomplete="unitPrice" />
+        class="mt-1 block w-full text-center" autocomplete="unitPrice" readonly />
     <x-jet-input-error for="unitPrice" class="mt-2" />
 </div>
 <div>
     <x-jet-label for="total_amount" value="{{ __('Total Amount') }}" />
-    <x-jet-input wire:model.debounce.1000ms="total_amount" x-ref="total_amount" id="total_amount" type="text"
-        maxlength="50" class="mt-1 block w-full text-center" autocomplete="total_amount" />
+    <x-jet-input wire:model="total_amount" x-ref="total_amount" id="total_amount" type="text" maxlength="50"
+        class="mt-1 block w-full text-center" autocomplete="total_amount" value="{{ $total_amount }}" />
     <x-jet-input-error for="total_amount" class="mt-2" />
 </div>
 {{-- <br />

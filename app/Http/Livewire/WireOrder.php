@@ -57,6 +57,11 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->orders = Order::all();
     }
 
+    public function updated()
+    {
+        $this->total_amount = $this->quantity * $this->unitPrice;
+    }
+
     public function render()
     {
         return view('livewire.order');
@@ -263,7 +268,25 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedUnitId()
     {
-        $unitPrice = ItemPrice::select('price_perUnit')->where('item_id', (int) $this->unit_id)->first();
-        $this->unitPrice = $unitPrice->price_perUnit;
+        // explode
+        $explodeResult = explode(' ', $this->unit_id);
+        // dd($explodeResult);
+        // pass data to variable
+        $unitId = (int) $explodeResult[0];
+        $unitString = $explodeResult[1];
+
+        //pull out data from database
+        $unitPrice = ItemPrice::where('item_id', (int) $unitId)->first();
+
+        //create condition to load price unit or per pieces
+        $this->unitPrice = $unitPrice->price_perPieces;
+
+        if ($unitString === "Unit") {
+            $this->unitPrice = $unitPrice->price_perUnit;
+        }
+
+        if ($this->quantity > 0) {
+            $this->total_amount = $this->quantity * $this->unitPrice;
+        }
     }
 }
