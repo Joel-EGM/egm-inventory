@@ -51,7 +51,7 @@
 <div>
     <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
     <select name="unit_id" wire:model="unit_id" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select pricing--</option>
+        <option value="None" class="text-center">--select pricing--</option>
         @foreach ($unitName as $unit)
             <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
             <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
