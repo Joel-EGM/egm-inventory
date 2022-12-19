@@ -1,7 +1,7 @@
 <!--Body-->
 <div>
     <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
-    <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" value="2022-12-12" />
+    <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" value="" />
     <x-jet-input-error for="order_date" class="mt-2" />
 </div>
 <div>
@@ -41,7 +41,7 @@
     <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
     {{-- @if (!empty($unitName)) --}}
     <select name="unit_id" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select item--</option>
+        <option value="" class="text-center">--select unit--</option>
         @foreach ($unitName as $unit)
             <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
         @endforeach

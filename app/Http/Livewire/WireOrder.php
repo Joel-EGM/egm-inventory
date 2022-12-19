@@ -38,7 +38,6 @@ class WireOrder extends Component implements FieldValidationMessage
     public $unit_id;
 
 
-
     protected $rules = [
         'item_id' => 'required',
         'order_date'  => 'required|date',
@@ -271,6 +270,15 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedUnitId()
     {
+        if ($this->unit_id === "None") {
+            $this->reset([
+                'quantity',
+                'unitPrice',
+                'total_amount',
+            ]);
+
+            return;
+        }
         // explode
         $explodeResult = explode(' ', $this->unit_id);
         // dd($explodeResult);
