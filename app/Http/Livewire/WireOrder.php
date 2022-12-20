@@ -41,14 +41,14 @@ class WireOrder extends Component implements FieldValidationMessage
     public $unitType;
 
     protected $rules = [
-        'item_id' => 'required',
-        'order_date'  => 'required|date',
-        'supplier_id' => 'required',
-        'branch_id' => 'required',
-        'unitType' => 'required',
-        'quantity'  => 'required|numeric',
-        'unitPrice'  => 'required|numeric',
-        'total_amount'  => 'required|numeric',
+        'item_id' => 'bail|required',
+        'order_date'  => 'bail|required|date',
+        'supplier_id' => 'bail|required',
+        'branch_id' => 'bail|required',
+        'unitType' => 'bail|required',
+        'quantity'  => 'bail|required|numeric',
+        'unitPrice'  => 'bail|required|numeric',
+        'total_amount'  => 'bail|required|numeric',
     ];
 
     public function mount()

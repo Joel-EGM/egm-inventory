@@ -23,7 +23,7 @@
                                     Create Order
                                 </a>
 
-                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="4xl">
+                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
                                     @include('partials.order')
                                 </x-modals.modal-form>
 
