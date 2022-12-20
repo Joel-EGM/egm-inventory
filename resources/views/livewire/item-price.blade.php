@@ -107,7 +107,8 @@
                                         </tr>
                                     @endif
                                     @foreach ($itemprices as $price)
-                                        <tr>
+                                        <tr
+                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ $price->suppliers->suppliers_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $price->items->item_name }}</td>

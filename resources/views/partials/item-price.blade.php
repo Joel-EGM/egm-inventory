@@ -62,7 +62,7 @@
     </thead>
     <tbody>
         @foreach ($priceArrays as $price)
-            <tr>
+            <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                 <td class="border px-4 py-2">{{ $price['suppliers_name'] }}</td>
 

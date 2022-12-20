@@ -103,7 +103,8 @@
                                         </tr>
                                     @endif
                                     @foreach ($branches as $branch)
-                                        <tr>
+                                        <tr
+                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_address }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_contactNo }}

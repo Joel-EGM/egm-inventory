@@ -166,6 +166,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if (count($orderArrays) === 0)
+                            <tr>
+                                <td colspan="9"
+                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center place-content-center">
+                                        <div class="text-lg leading-5 font-medium text-gray-500 font-bold">
+                                            NO DATA AVAILABLE</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+
                         @foreach ($orderArrays as $order)
                             <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -200,8 +212,8 @@
                                             fill="currentColor">
                                             <path fill-rule="evenodd"
                                                 d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 
-                                2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 
-                                1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 
+                                                1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </a>
