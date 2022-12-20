@@ -92,24 +92,48 @@ class WireOrder extends Component implements FieldValidationMessage
         $validatedItem = $this->validate();
 
         if (is_null($this->Index)) {
-            $item = Order::create([
+            $orders = Order::create([
 
-                'branch_name' => $this->branch_id,
-                'supplier_name' => $this->supplier_id,
-                'item_name' => $this->item_id,
+                'branch_id' => $this->branch_id,
+
+                'order_date' => $this->order_date,
+
+                'order_status' => 'pending'
 
             ]);
 
-            $this->orders->push($item);
+            foreach ($this->orderArrays as $orderArray) {
+                $orders->orderDetails()->create([
 
-            $this->clearForm();
+                    'order_id' => $orders->id,
 
-            $notificationMessage = 'Record successfully created.';
+                    'supplier_id' => $orderArray['supplier_id'],
 
-            $this->dispatchBrowserEvent('show-message', [
-                'notificationType' => 'success',
-                'messagePrimary'   => $notificationMessage
-            ]);
+                    'item_id' => $orderArray['item_id'],
+
+                    'unit_name' => $orderArray['unit_name'],
+
+                    'price' => $orderArray['price'],
+
+                    'quantity' => $orderArray['quantity'],
+
+                    'total_amount' => $orderArray['total_amount'],
+
+                    'order_status' => 'pending',
+
+                ]);
+
+                $this->orders->push($orders);
+
+                $this->clearForm();
+
+                $notificationMessage = 'Record successfully created.';
+
+                $this->dispatchBrowserEvent('show-message', [
+                    'notificationType' => 'success',
+                    'messagePrimary'   => $notificationMessage
+                ]);
+            }
         } else {
             $id = $this->orders[$this->Index]['id'];
             Order::whereId($id)->update([
@@ -222,6 +246,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->branch_id = $this->orders[$this->Index]['branch_id'];
         $this->supplier_id = $this->orders[$this->Index]['supplier_id'];
         $this->item_id = $this->orders[$this->Index]['item_id'];
+        $this->unitType = $this->orders[$this->Index]['unit_name'];
         $this->quantity = $this->orders[$this->Index]['quantity'];
         $this->unitPrice = $this->orders[$this->Index]['price'];
         $this->total_amount = $this->orders[$this->Index]['total_amount'];

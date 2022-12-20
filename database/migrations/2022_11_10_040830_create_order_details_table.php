@@ -17,7 +17,7 @@ return new class () extends Migration {
             $table->foreignId('order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('supplier_id');
             $table->foreignId('item_id');
-            $table->foreignId('unit_name');
+            $table->string('unit_name');
             $table->integer('quantity');
             $table->decimal('price');
             $table->decimal('total_amount');
