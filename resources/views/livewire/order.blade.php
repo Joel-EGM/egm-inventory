@@ -93,8 +93,7 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($orders) === 0)
-                                        <tr
-                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                        <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
@@ -104,7 +103,8 @@
                                         </tr>
                                     @endif
                                     @foreach ($orders as $order)
-                                        <tr>
+                                        <tr
+                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->item_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->unit_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->pieces_perUnit }}</td>
