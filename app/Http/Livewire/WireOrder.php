@@ -61,6 +61,11 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->order_date = Carbon::now()->format('Y-m-d');
     }
 
+    public function updatedQuantity()
+    {
+        $this->total_amount = $this->quantity * $this->unitPrice;
+    }
+
     public function render()
     {
         return view('livewire.order');

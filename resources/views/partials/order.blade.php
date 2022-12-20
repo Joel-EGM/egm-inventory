@@ -1,66 +1,94 @@
 <!--Body-->
-<div>
-    <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
-    <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" value="" />
-    <x-jet-input-error for="order_date" class="mt-2" />
+<div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
+        <input type="date" wire:model="order_date" maxlength="50"
+            class="appearance-none block w-full bg-gray-200 
+            text-gray-700 border border-red-500 rounded 
+            py-3 px-4 mb-3 leading-tight focus:outline-none 
+            focus:bg-white"
+            value="" />
+        <x-jet-input-error for="order_date" class="mt-2" />
+    </div>
+
+    <div class="w-full md:w-1/2 px-3">
+        <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
+        <select name="branch_id" wire:model.debounce.1000ms="branch_id"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 
+            border border-gray-200 rounded py-3 px-4 leading-tight 
+            focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="" class="text-center">--select branch--</option>
+            @foreach ($branches as $branch)
+                <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
+                </option>
+            @endforeach
+        </select>
+        <x-jet-input-error for="branch_id" class="mt-2" />
+    </div>
+
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
+        <select name="supplier_id" wire:model.debounce.1000ms="supplier_id"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 
+            border border-gray-200 rounded py-3 px-4 leading-tight 
+            focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="" class="text-center">--select supplier--</option>
+            @foreach ($suppliers as $supplier)
+                <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
+            @endforeach
+        </select>
+        <x-jet-input-error for="supplier_id" class="mt-2" />
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <div class="w-full md:w-1/2 px-3">
+        <x-jet-label for="item_id" value="{{ __('Item') }}" />
+        <select name="item_id" wire:model="item_id"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 
+        border border-gray-200 rounded py-3 px-4 leading-tight 
+        focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="" class="text-center">--select item--</option>
+            @foreach ($items as $item)
+                <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
+                </option>
+            @endforeach
+        </select>
+        <x-jet-input-error for="item_id" class="mt-2" />
+    </div>
+
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
+        {{-- @if (!empty($unitName)) --}}
+        <select name="unit_id" wire:model="unitType"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 
+        border border-gray-200 rounded py-3 px-4 leading-tight 
+        focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="" class="text-center">--select unit--</option>
+            @foreach ($unitName as $unit)
+                <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+            @endforeach
+            {{-- @endif --}}
+        </select>
+    </div>
+
+    <div class="w-full md:w-1/2 px-3">
+        <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
+        <select name="unit_id" wire:model="unit_id"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 
+        border border-gray-200 rounded py-3 px-4 leading-tight 
+        focus:outline-none focus:bg-white focus:border-gray-500">
+            <option value="None" class="text-center">--select pricing--</option>
+            @foreach ($unitName as $unit)
+                <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
+                <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
+            @endforeach
+        </select>
+    </div>
 </div>
 
-<div>
-    <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
-    <select name="branch_id" wire:model.debounce.1000ms="branch_id" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select branch--</option>
-        @foreach ($branches as $branch)
-            <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
-            </option>
-        @endforeach
-    </select>
-    <x-jet-input-error for="branch_id" class="mt-2" />
-</div>
-
-<div>
-    <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
-    <select name="supplier_id" wire:model.debounce.1000ms="supplier_id" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select supplier--</option>
-        @foreach ($suppliers as $supplier)
-            <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
-        @endforeach
-    </select>
-    <x-jet-input-error for="supplier_id" class="mt-2" />
-</div>
-
-<div>
-    <x-jet-label for="item_id" value="{{ __('Item') }}" />
-    <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select item--</option>
-        @foreach ($items as $item)
-            <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
-            </option>
-        @endforeach
-    </select>
-    <x-jet-input-error for="item_id" class="mt-2" />
-</div>
-
-<div>
-    <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
-    {{-- @if (!empty($unitName)) --}}
-    <select name="unit_id" wire:model="unitType" class="form-control mt-1 block w-full">
-        <option value="" class="text-center">--select unit--</option>
-        @foreach ($unitName as $unit)
-            <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-        @endforeach
-        {{-- @endif --}}
-    </select>
-</div>
-<div>
-    <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
-    <select name="unit_id" wire:model="unit_id" class="form-control mt-1 block w-full">
-        <option value="None" class="text-center">--select pricing--</option>
-        @foreach ($unitName as $unit)
-            <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
-            <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
-        @endforeach
-    </select>
-</div>
 <br />
 <div>
     <x-jet-label for="quantity" value="{{ __('Quantity') }}" />
