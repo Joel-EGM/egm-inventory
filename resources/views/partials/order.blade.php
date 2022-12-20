@@ -16,7 +16,7 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-            <option value="" class="text-center">--select branch--</option>
+            <option value="" class="text-center text-gray-400">--select branch--</option>
             @foreach ($branches as $branch)
                 <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
                 </option>
@@ -33,7 +33,7 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-            <option value="" class="text-center">--select supplier--</option>
+            <option value="" class="text-center text-gray-400">--select supplier--</option>
             @foreach ($suppliers as $supplier)
                 <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
             @endforeach
@@ -49,7 +49,7 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-            <option value="" class="text-center">--select item--</option>
+            <option value="" class="text-center text-gray-400">--select item--</option>
             @foreach ($items as $item)
                 <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
                 </option>
@@ -67,7 +67,7 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-            <option value="" class="text-center">--select unit--</option>
+            <option value="" class="text-center text-gray-400">--select unit--</option>
             @foreach ($unitName as $unit)
                 <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
             @endforeach
@@ -81,7 +81,7 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-            <option value="None" class="text-center">--select pricing--</option>
+            <option value="None" class="text-center text-gray-400">--select pricing--</option>
             @foreach ($unitName as $unit)
                 <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
                 <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>

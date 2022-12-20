@@ -28,8 +28,8 @@ class WireUser extends Component implements FieldValidationMessage
     protected $rules = [
         'userName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
         'userEmail' => 'bail|required|email',
-        'password' => 'required|min:8|confirmed',
-        'password_confirmation' => 'required|min:8',
+        'password' => 'bail|required|min:8|confirmed',
+        'password_confirmation' => 'bail|required|min:8',
     ];
 
     public function mount()

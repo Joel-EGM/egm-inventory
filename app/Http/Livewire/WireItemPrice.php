@@ -29,10 +29,10 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
 
     protected $rules = [
-        'supplier_id' => 'required',
-        'item_id' => 'required',
-        'price_perUnit' => 'required|numeric',
-        'price_perPieces' => 'required|numeric',
+        'supplier_id' => 'bail|required',
+        'item_id' => 'bail|required',
+        'price_perUnit' => 'bail|required|numeric',
+        'price_perPieces' => 'bail|required|numeric',
     ];
 
     public function mount()
