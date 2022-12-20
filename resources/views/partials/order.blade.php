@@ -4,6 +4,7 @@
     <input type="date" wire:model="order_date" maxlength="50" class="w-full text-center" value="" />
     <x-jet-input-error for="order_date" class="mt-2" />
 </div>
+
 <div>
     <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
     <select name="branch_id" wire:model.debounce.1000ms="branch_id" class="form-control mt-1 block w-full">
@@ -15,6 +16,7 @@
     </select>
     <x-jet-input-error for="branch_id" class="mt-2" />
 </div>
+
 <div>
     <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
     <select name="supplier_id" wire:model.debounce.1000ms="supplier_id" class="form-control mt-1 block w-full">
@@ -25,6 +27,7 @@
     </select>
     <x-jet-input-error for="supplier_id" class="mt-2" />
 </div>
+
 <div>
     <x-jet-label for="item_id" value="{{ __('Item') }}" />
     <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
@@ -40,7 +43,7 @@
 <div>
     <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
     {{-- @if (!empty($unitName)) --}}
-    <select name="unit_id" class="form-control mt-1 block w-full">
+    <select name="unit_id" wire:model="unitType" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select unit--</option>
         @foreach ($unitName as $unit)
             <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
@@ -113,7 +116,7 @@
 
             <th class="px-4 py-2">Item</th>
 
-            <th class="px-4 py-2">Unit Name</th>
+            <th class="px-4 py-2">Unit</th>
 
             <th class="px-2 py-2">Quantity</th>
 
@@ -135,6 +138,8 @@
                 <td class="border px-4 py-2">{{ $order['suppliers_name'] }}</td>
 
                 <td class="border px-4 py-2">{{ $order['item_name'] }}</td>
+
+                <td class="border px-4 py-2">{{ $order['unit_name'] }}</td>
 
                 <td class="border px-4 py-2">{{ $order['quantity'] }}</td>
 

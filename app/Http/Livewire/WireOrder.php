@@ -11,6 +11,7 @@ use App\Models\ItemPrice;
 use App\Models\OrderDetail;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
+use Carbon\Carbon;
 
 class WireOrder extends Component implements FieldValidationMessage
 {
@@ -19,15 +20,16 @@ class WireOrder extends Component implements FieldValidationMessage
     public $layoutTitle = 'Create Order';
     public $order_id;
     public $orders;
+    public $order_details;
     public $orderArrays = [];
     public $supplier_id;
-    public $supplier_name = [];
+    public $supplier_name;
     public $order_date;
     public $order_status;
     public $branch_id;
-    public $branch_name = [];
+    public $branch_name;
     public $item_id;
-    public $item_name = [];
+    public $item_name;
     public $quantity;
     public $price;
     public $total_amount;
@@ -36,15 +38,16 @@ class WireOrder extends Component implements FieldValidationMessage
     public $unitName = [];
     public $unitPrice;
     public $unit_id;
-
+    public $unitType;
 
     protected $rules = [
         'item_id' => 'required',
         'order_date'  => 'required|date',
         'supplier_id' => 'required',
         'branch_id' => 'required',
+        'unitType' => 'required',
         'quantity'  => 'required|numeric',
-        'price'  => 'required|numeric',
+        'unitPrice'  => 'required|numeric',
         'total_amount'  => 'required|numeric',
     ];
 
@@ -54,11 +57,8 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->suppliers = Supplier::all();
         $this->branches = Branch::all();
         $this->orders = Order::all();
-    }
-
-    public function updatedQuantity()
-    {
-        $this->total_amount = $this->quantity * $this->unitPrice;
+        $this->order_details = OrderDetail::all();
+        $this->order_date = Carbon::now()->format('Y-m-d');
     }
 
     public function render()
@@ -160,16 +160,21 @@ class WireOrder extends Component implements FieldValidationMessage
         }
 
         array_push($this->orderArrays, [
+        'order_date' => $this->order_date,
+
         'branch_id'  => $this->branch_id,
         'branch_name'  => $branchName,
-        'item_id' => $this->item_id,
-        'item_name'  => $itemName,
-        'unit_name' => $this->unitName,
-        'order_date' => $this->order_date,
+
         'supplier_id' => $this->supplier_id,
         'suppliers_name' => $supplierName,
+
+        'item_id' => $this->item_id,
+        'item_name'  => $itemName,
+
+        'unit_name' => $this->unitType,
+
         'quantity' => $this->quantity,
-        'price' => $this->price,
+        'price' => $this->unitPrice,
         'total_amount' => $this->total_amount,
         ]);
     }
@@ -208,12 +213,12 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
         // dd($this->orders[$this->Index]);
-        $this->branch_id = $this->orders[$this->Index]['branch_id'];
         $this->order_date = $this->orders[$this->Index]['order_date'];
+        $this->branch_id = $this->orders[$this->Index]['branch_id'];
         $this->supplier_id = $this->orders[$this->Index]['supplier_id'];
         $this->item_id = $this->orders[$this->Index]['item_id'];
         $this->quantity = $this->orders[$this->Index]['quantity'];
-        $this->price = $this->orders[$this->Index]['price'];
+        $this->unitPrice = $this->orders[$this->Index]['price'];
         $this->total_amount = $this->orders[$this->Index]['total_amount'];
 
 

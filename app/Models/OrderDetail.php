@@ -22,6 +22,10 @@ class OrderDetail extends Model
         'order_status',
     ];
 
+    protected $casts = [
+        'order_date' => 'date:Y-m-d'
+    ];
+
     public function suppliers()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
