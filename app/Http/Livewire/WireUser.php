@@ -13,6 +13,7 @@ class WireUser extends Component implements FieldValidationMessage
     use ModalVariables;
 
     public $layoutTitle = 'New User';
+
     public $users =[];
     public $userName;
     public $userEmail;

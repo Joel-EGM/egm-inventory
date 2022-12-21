@@ -1,21 +1,22 @@
 <!--Body-->
-<div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+<div class="flex flex-row -mx-3 mb-6 space-x-4">
+
+    <div class="w-full px-3">
         <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
         <input type="date" wire:model="order_date" maxlength="50"
             class="block appearance-none w-full bg-white border border-gray-400
-            hover:border-gray-500 px-4 py-2 rounded shadow 
-            leading-tight focus:outline-none focus:shadow-outline"
+                hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                leading-tight focus:outline-none focus:shadow-outline"
             value="" />
         <x-jet-input-error for="order_date" class="mt-2" />
     </div>
 
-    <div class="w-full md:w-1/2 px-3">
+    <div class="w-full">
         <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
         <select name="branch_id" wire:model.debounce.1000ms="branch_id"
             class="block appearance-none w-full bg-white border border-gray-400
-             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-             leading-tight focus:outline-none focus:shadow-outline">
+                hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                leading-tight focus:outline-none focus:shadow-outline">
             <option value="" class="text-center text-gray-400">--select branch--</option>
             @foreach ($branches as $branch)
                 <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
@@ -24,15 +25,13 @@
         </select>
         <x-jet-input-error for="branch_id" class="mt-2" />
     </div>
-    <br />
-    <br />
-    <br />
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+    <div class="w-full px-3">
         <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
         <select name="supplier_id" wire:model.debounce.1000ms="supplier_id"
             class="block appearance-none w-full bg-white border border-gray-400
-             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-             leading-tight focus:outline-none focus:shadow-outline">
+                hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                leading-tight focus:outline-none focus:shadow-outline">
             <option value="" class="text-center text-gray-400">--select supplier--</option>
             @foreach ($suppliers as $supplier)
                 <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
@@ -41,41 +40,46 @@
         <x-jet-input-error for="supplier_id" class="mt-2" />
     </div>
 
+</div>
 
+<div class="flex flex-row -mx-3 mb-6 space-x-4">
 
-    <div class="w-full md:w-1/2 px-3">
+    <div class="w-full px-3">
         <x-jet-label for="item_id" value="{{ __('Item') }}" />
+
         <select name="item_id" wire:model="item_id"
             class="block appearance-none w-full bg-white border border-gray-400
-             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-             leading-tight focus:outline-none focus:shadow-outline">
+                hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                leading-tight focus:outline-none focus:shadow-outline">
             <option value="" class="text-center text-gray-400">--select item--</option>
+
             @foreach ($items as $item)
                 <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
                 </option>
             @endforeach
+
         </select>
         <x-jet-input-error for="item_id" class="mt-2" />
     </div>
-    <br />
-    <br />
-    <br />
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+
+    <div class="w-full">
         <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
-        {{-- @if (!empty($unitName)) --}}
-        <select name="unit_id" wire:model="unitType"
+
+        <select name="unitType" wire:model="unitType"
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
             <option value="" class="text-center text-gray-400">--select unit--</option>
+            
             @foreach ($unitName as $unit)
                 <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
             @endforeach
-            {{-- @endif --}}
+
         </select>
+        <x-jet-input-error for="unitType" class="mt-2" />
     </div>
 
-    <div class="w-full md:w-1/2 px-3">
+    <div class="w-full px-3">
         <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
         <select name="unit_id" wire:model="unit_id"
             class="block appearance-none w-full bg-white border border-gray-400
@@ -87,9 +91,11 @@
                 <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
             @endforeach
         </select>
+        <x-jet-input-error for="unitPrice" class="mt-2" />
     </div>
-</div>
 
+</div>
+<br />
 <div class="flex flex-row space-x-4">
 
     <x-jet-input wire:model.debounce.250ms="quantity" x-ref="quantity" id="quantity" type="text" maxlength="50"
@@ -101,10 +107,12 @@
     <x-jet-input-error for="unitPrice" class="mt-2" />
 
     <x-jet-input wire:model="total_amount" x-ref="total_amount" id="total_amount" type="text" maxlength="50"
-        class="mt-1 block w-full text-center" placeholder="Input Total Amount" autocomplete="total_amount"
-        value="{{ $total_amount }}" />
+        class="mt-1 block w-full text-center bg-gray-300" placeholder="Total Amount" autocomplete="total_amount"
+        value="{{ $total_amount }}" readonly />
     <x-jet-input-error for="total_amount" class="mt-2" />
+
 </div>
+
 {{-- <br />
 <div>
     <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />

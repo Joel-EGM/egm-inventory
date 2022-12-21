@@ -18,23 +18,29 @@ class WireOrder extends Component implements FieldValidationMessage
     use ModalVariables;
 
     public $layoutTitle = 'Create Order';
+
     public $order_id;
     public $orders;
     public $order_details;
     public $orderArrays = [];
-    public $supplier_id;
-    public $supplier_name;
     public $order_date;
     public $order_status;
+
+    public $supplier_id;
+    public $supplier_name;
+
+    public $branches;
     public $branch_id;
     public $branch_name;
+
+    public $items;
     public $item_id;
     public $item_name;
     public $quantity;
+
     public $price;
     public $total_amount;
-    public $items;
-    public $branches;
+
     public $unitName = [];
     public $unitPrice;
     public $unit_id;
@@ -127,6 +133,8 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 $this->clearForm();
 
+                $this->modalToggle();
+
                 $notificationMessage = 'Record successfully created.';
 
                 $this->dispatchBrowserEvent('show-message', [
@@ -188,6 +196,14 @@ class WireOrder extends Component implements FieldValidationMessage
             }
         }
 
+        $NameUnit = '';
+        foreach ($this->items as $unit) {
+            if ($unit->id === (int) $this->unitType) {
+                $NameUnit = $unit->unit_name;
+                break;
+            }
+        }
+
         array_push($this->orderArrays, [
         'order_date' => $this->order_date,
 
@@ -200,7 +216,8 @@ class WireOrder extends Component implements FieldValidationMessage
         'item_id' => $this->item_id,
         'item_name'  => $itemName,
 
-        'unit_name' => $this->unitType,
+        'unit_id' => $this->unitType,
+        'unit_name' => $NameUnit,
 
         'quantity' => $this->quantity,
         'price' => $this->unitPrice,
@@ -229,11 +246,14 @@ class WireOrder extends Component implements FieldValidationMessage
     public function clearForm()
     {
         $this->reset([
+            'order_date',
             'branch_id',
             'item_id',
             'supplier_id',
+            'unitType',
+            'unit_id',
             'quantity',
-            'price',
+            'unitPrice',
             'total_amount',
         ]);
     }

@@ -11,8 +11,8 @@ class WireBranch extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
-
     public $layoutTitle = 'New Branch';
+
     public $branches =[];
     public $branchName;
     public $branchAddress;

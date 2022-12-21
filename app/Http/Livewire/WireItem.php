@@ -11,11 +11,12 @@ class WireItem extends Component implements FieldValidationMessage
 {
     use ModalVariables;
 
-
     public $layoutTitle = 'New Item';
+
     public $items = [];
     public $itemName;
     public $unitName;
+
     public $piecesPerUnit;
 
 

@@ -74,15 +74,15 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Item Name
+                                            Branch Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Unit Name
+                                            Order Date
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            PiecesPerUnit
+                                            Status
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -105,9 +105,10 @@
                                     @foreach ($orders as $order)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->item_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->unit_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->pieces_perUnit }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_status }}</td>
 
 
                                             <td

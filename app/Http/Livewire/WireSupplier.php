@@ -12,6 +12,7 @@ class WireSupplier extends Component implements FieldValidationMessage
     use ModalVariables;
 
     public $layoutTitle = 'New Supplier';
+
     public $suppliers =[];
     public $supplierName;
     public $supplierEmail;
