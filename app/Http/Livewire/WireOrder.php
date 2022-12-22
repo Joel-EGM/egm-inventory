@@ -117,7 +117,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
                     'item_id' => $orderArray['item_id'],
 
-                    'unit_name' => $orderArray['unit_name'],
+                    'unit_id' => $orderArray['unit_id'],
 
                     'price' => $orderArray['price'],
 

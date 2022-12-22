@@ -27,7 +27,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Branch::factory()->count(10)->create();
-        Item::factory()->count(10)->create();
+        Item::factory()->count(10)->create([
+            'supplier_id' => '1',
+        ]);
         Supplier::factory()->count(10)->create();
     }
 }

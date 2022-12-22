@@ -113,6 +113,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
             $this->itemprices[$this->Index]['price_perUnit'] = $this->price_perUnit;
             $this->itemprices[$this->Index]['price_perPieces'] = $this->price_perPieces;
 
+            $this->itemprices->push();
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();

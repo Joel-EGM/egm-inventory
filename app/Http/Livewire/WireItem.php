@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Item;
+use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
@@ -17,10 +18,14 @@ class WireItem extends Component implements FieldValidationMessage
     public $itemName;
     public $unitName;
 
+    public $suppliers;
+    public $supplier_id;
+
     public $piecesPerUnit;
 
 
     protected $rules = [
+        'supplier_id' => "bail|required",
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
         'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
         'piecesPerUnit' => 'bail|required|numeric',
@@ -29,6 +34,7 @@ class WireItem extends Component implements FieldValidationMessage
     public function mount()
     {
         $this->items = Item::all();
+        $this->suppliers = Supplier::all();
     }
 
     public function render()
@@ -58,6 +64,8 @@ class WireItem extends Component implements FieldValidationMessage
         if (is_null($this->Index)) {
             $item = Item::create([
 
+                'supplier_id' => $this->supplier_id,
+
                 'item_name' => $this->itemName,
 
                 'unit_name' => $this->unitName,
@@ -81,6 +89,8 @@ class WireItem extends Component implements FieldValidationMessage
             $id = $this->items[$this->Index]['id'];
             Item::whereId($id)->update([
 
+                'supplier_id' => $this->supplier_id,
+
                 'item_name' => $this->itemName,
 
                 'unit_name' => $this->unitName,
@@ -89,10 +99,12 @@ class WireItem extends Component implements FieldValidationMessage
 
             ]);
 
+            $this->items[$this->Index]['supplier_id'] = $this->supplier_id;
             $this->items[$this->Index]['item_name'] = $this->itemName;
             $this->items[$this->Index]['unit_name'] = $this->unitName;
             $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
 
+            $this->items->push();
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();
@@ -121,6 +133,7 @@ class WireItem extends Component implements FieldValidationMessage
     public function clearForm()
     {
         $this->reset([
+            'supplier_id',
             'itemName',
             'unitName',
             'piecesPerUnit',
@@ -131,6 +144,7 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
         // dd($this->items[$this->Index]);
+        $this->supplier_id = $this->items[$this->Index]['supplier_id'];
         $this->itemName = $this->items[$this->Index]['item_name'];
         $this->unitName = $this->items[$this->Index]['unit_name'];
         $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];

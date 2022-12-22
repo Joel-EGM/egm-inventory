@@ -74,6 +74,10 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Supplier Name
+                                        </th>
+                                        <th
+                                            class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Item Name
                                         </th>
                                         <th
@@ -105,6 +109,8 @@
                                     @foreach ($items as $item)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{ $item->suppliers->suppliers_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->item_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->pieces_perUnit }}</td>

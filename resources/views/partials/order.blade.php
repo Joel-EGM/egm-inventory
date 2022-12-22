@@ -13,7 +13,7 @@
 
     <div class="w-full">
         <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
-        <select name="branch_id" wire:model.debounce.1000ms="branch_id"
+        <select name="branch_id" wire:model="branch_id"
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
@@ -28,7 +28,7 @@
 
     <div class="w-full px-3">
         <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
-        <select name="supplier_id" wire:model.debounce.1000ms="supplier_id"
+        <select name="supplier_id" wire:model="supplier_id"
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
@@ -70,7 +70,7 @@
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
             <option value="" class="text-center text-gray-400">--select unit--</option>
-            
+
             @foreach ($unitName as $unit)
                 <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
             @endforeach

@@ -12,7 +12,7 @@ class Item extends Model
     protected $table = 'items';
 
     protected $fillable = [
-
+        'supplier_id',
         'item_name',
         'unit_name',
         'pieces_perUnit',
@@ -35,7 +35,7 @@ class Item extends Model
 
     public function suppliers()
     {
-        return $this->hasMany(Supplier::class, 'item_id', 'id');
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
     }
 
     public function itemPrices()

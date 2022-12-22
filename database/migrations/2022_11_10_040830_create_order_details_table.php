@@ -14,10 +14,10 @@ return new class () extends Migration {
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('order_id')->constrained('orders')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('supplier_id');
             $table->foreignId('item_id');
-            $table->string('unit_name');
+            $table->string('unit_id');
             $table->integer('quantity');
             $table->decimal('price');
             $table->decimal('total_amount');
