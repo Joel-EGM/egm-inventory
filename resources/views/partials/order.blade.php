@@ -102,7 +102,7 @@
         class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
     <x-jet-input-error for="quantity" class="mt-2" />
 
-    <x-jet-input wire:model.debounce.1000ms="unitPrice" x-ref="unitPrice" id="unitPrice" type="text" maxlength="50"
+    <x-jet-input wire:model="unitPrice" x-ref="unitPrice" id="unitPrice" type="text" maxlength="50"
         class="mt-1 block w-full text-center bg-gray-300" placeholder="Price" autocomplete="unitPrice" readonly />
     <x-jet-input-error for="unitPrice" class="mt-2" />
 

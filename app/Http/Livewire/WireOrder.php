@@ -321,8 +321,14 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedSupplierId()
     {
-        //query item by supplier
-        $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)->get();
+        // if (ItemPrice::where('supplier_id', (int) $this->supplier_id)->exists()) {
+        //     $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)
+        //     ->get();
+        // }
+        // dd($this->itemList);
+        $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)
+        ->with('itemPrices')
+        ->get();
     }
 
     public function updatedItemId()
@@ -351,18 +357,16 @@ class WireOrder extends Component implements FieldValidationMessage
 
         //pull out data from database
         $unitPrice = ItemPrice::where('item_id', (int) $unitId)->first();
-        if ($unitPrice) {
-            $this->unitPrice = $unitPrice->price_perPieces;
-
-            if ($unitString === "Unit") {
-                $this->unitPrice = $unitPrice->price_perUnit;
-            }
-
-            if ($this->quantity > 0) {
-                $this->total_amount = $this->quantity * $this->unitPrice;
-            }
-        }
 
         //create condition to load price unit or per pieces
+        $this->unitPrice = $unitPrice->price_perPieces;
+
+        if ($unitString === "Unit") {
+            $this->unitPrice = $unitPrice->price_perUnit;
+        }
+
+        if ($this->quantity > 0) {
+            $this->total_amount = $this->quantity * $this->unitPrice;
+        }
     }
 }
