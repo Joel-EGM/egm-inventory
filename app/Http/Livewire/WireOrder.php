@@ -36,6 +36,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $items;
     public $item_id;
     public $item_name;
+    public $itemList = [];
     public $quantity;
 
     public $price;
@@ -316,6 +317,11 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->isDeleteOpen = !$this->isDeleteOpen;
             $this->clearAndResetDelete();
         }
+    }
+
+    public function updatedSupplierId()
+    {
+        $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)->get();
     }
 
     public function updatedItemId()

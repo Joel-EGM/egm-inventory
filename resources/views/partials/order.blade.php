@@ -53,7 +53,7 @@
                 leading-tight focus:outline-none focus:shadow-outline">
             <option value="" class="text-center text-gray-400">--select item--</option>
 
-            @foreach ($items as $item)
+            @foreach ($itemList as $item)
                 <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
                 </option>
             @endforeach
