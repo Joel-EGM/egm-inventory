@@ -351,16 +351,18 @@ class WireOrder extends Component implements FieldValidationMessage
 
         //pull out data from database
         $unitPrice = ItemPrice::where('item_id', (int) $unitId)->first();
+        if ($unitPrice) {
+            $this->unitPrice = $unitPrice->price_perPieces;
+
+            if ($unitString === "Unit") {
+                $this->unitPrice = $unitPrice->price_perUnit;
+            }
+
+            if ($this->quantity > 0) {
+                $this->total_amount = $this->quantity * $this->unitPrice;
+            }
+        }
 
         //create condition to load price unit or per pieces
-        $this->unitPrice = $unitPrice->price_perPieces;
-
-        if ($unitString === "Unit") {
-            $this->unitPrice = $unitPrice->price_perUnit;
-        }
-
-        if ($this->quantity > 0) {
-            $this->total_amount = $this->quantity * $this->unitPrice;
-        }
     }
 }
