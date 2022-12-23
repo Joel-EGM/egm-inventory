@@ -84,6 +84,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
                 ]);
             }
             $this->itemprices->push($price);
+            $this->itemprices->all();
 
             $this->clearForm();
             $this->modalToggle();

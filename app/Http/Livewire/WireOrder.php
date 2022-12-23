@@ -325,10 +325,17 @@ class WireOrder extends Component implements FieldValidationMessage
         //     $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)
         //     ->get();
         // }
-        // dd($this->itemList);
-        $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)
+
+        $collection = Item::where('supplier_id', (int) $this->supplier_id)
         ->with('itemPrices')
         ->get();
+
+        $filtered = $collection->filter(function ($value, $key) {
+            return $value->itemPrices->count(1);
+        });
+
+        $filtered->all();
+        $this->itemList = $filtered;
     }
 
     public function updatedItemId()
