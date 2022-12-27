@@ -19,7 +19,6 @@ class WireItem extends Component implements FieldValidationMessage
     public $unitName;
 
     public $suppliers;
-    public $supplier_id;
 
     public $piecesPerUnit;
 
@@ -64,7 +63,6 @@ class WireItem extends Component implements FieldValidationMessage
         if (is_null($this->Index)) {
             $item = Item::create([
 
-                'supplier_id' => $this->supplier_id,
 
                 'item_name' => $this->itemName,
 
@@ -89,7 +87,6 @@ class WireItem extends Component implements FieldValidationMessage
             $id = $this->items[$this->Index]['id'];
             Item::whereId($id)->update([
 
-                'supplier_id' => $this->supplier_id,
 
                 'item_name' => $this->itemName,
 
@@ -99,7 +96,6 @@ class WireItem extends Component implements FieldValidationMessage
 
             ]);
 
-            $this->items[$this->Index]['supplier_id'] = $this->supplier_id;
             $this->items[$this->Index]['item_name'] = $this->itemName;
             $this->items[$this->Index]['unit_name'] = $this->unitName;
             $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
@@ -133,7 +129,6 @@ class WireItem extends Component implements FieldValidationMessage
     public function clearForm()
     {
         $this->reset([
-            'supplier_id',
             'itemName',
             'unitName',
             'piecesPerUnit',
@@ -144,7 +139,6 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
         // dd($this->items[$this->Index]);
-        $this->supplier_id = $this->items[$this->Index]['supplier_id'];
         $this->itemName = $this->items[$this->Index]['item_name'];
         $this->unitName = $this->items[$this->Index]['unit_name'];
         $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];

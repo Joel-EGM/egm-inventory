@@ -37,8 +37,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public $item_id;
     public $item_name;
     public $itemList = [];
-    public $quantity;
 
+    public $quantity;
     public $price;
     public $total_amount;
 
@@ -53,7 +53,7 @@ class WireOrder extends Component implements FieldValidationMessage
         'supplier_id' => 'bail|required',
         'branch_id' => 'bail|required',
         'unitType' => 'bail|required',
-        'quantity'  => 'bail|required|numeric',
+        'quantity'  => 'bail|required|numeric| max: 999',
         'unitPrice'  => 'bail|required|numeric',
         'total_amount'  => 'bail|required|numeric',
     ];
@@ -130,19 +130,20 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 ]);
 
+                // Item::where('id', $this->item_id)->decrement('pieces_perUnit', (int)$this->quantity);
                 $this->orders->push($orders);
-
-                $this->clearForm();
-
-                $this->modalToggle();
-
-                $notificationMessage = 'Record successfully created.';
-
-                $this->dispatchBrowserEvent('show-message', [
-                    'notificationType' => 'success',
-                    'messagePrimary'   => $notificationMessage
-                ]);
             }
+
+            $this->clearForm();
+
+            $this->modalToggle();
+
+            $notificationMessage = 'Record successfully created.';
+
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
         } else {
             $id = $this->orders[$this->Index]['id'];
             Order::whereId($id)->update([
@@ -321,27 +322,36 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedSupplierId()
     {
-        // if (ItemPrice::where('supplier_id', (int) $this->supplier_id)->exists()) {
-        //     $this->itemList = Item::where('supplier_id', (int) $this->supplier_id)
-        //     ->get();
-        // }
+        // $this->itemList = ItemPrice::where('supplier_id', (int) $this->supplier_id)
+        // ->get();
+        if ($this->supplier_id === "None") {
+            $this->reset([
+                'item_id',
+                'unitType',
+                'quantity',
+                'unitPrice',
+                'total_amount',
+            ]);
 
-        $collection = Item::where('supplier_id', (int) $this->supplier_id)
-        ->with('itemPrices')
+            return;
+        }
+
+        $collection = ItemPrice::where('supplier_id', (int) $this->supplier_id)
         ->get();
 
         $filtered = $collection->filter(function ($value, $key) {
-            return $value->itemPrices->count(1);
+            return $value->count() > 0;
         });
 
-        $filtered->all();
-        $this->itemList = $filtered;
+        $this->itemList = $filtered->all();
+        // dd($this->itemList);
     }
 
     public function updatedItemId()
     {
         //query unit by item
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
+        // dd($this->unitName);
     }
 
     public function updatedUnitId()

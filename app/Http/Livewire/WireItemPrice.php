@@ -82,9 +82,11 @@ class WireItemPrice extends Component implements FieldValidationMessage
                     'price_perPieces' => $priceArray['price_perPieces'],
 
                 ]);
+
+                $this->itemprices->push($price);
+                $this->itemprices->all();
             }
-            $this->itemprices->push($price);
-            $this->itemprices->all();
+
 
             $this->clearForm();
             $this->modalToggle();
