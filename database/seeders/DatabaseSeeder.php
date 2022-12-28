@@ -26,8 +26,16 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$hg3Pn45ZiQlaD./r8RfEQeQvFrhAmmkL0exf7DWpk32g9t0.RGeKu',
         ]);
 
-        Branch::factory()->count(10)->create();
-        Item::factory()->count(10)->create();
+        Branch::factory()->count(1)->create([
+            'branch_name' => 'HO',
+            'branch_address' => 'Cabanatuan',
+            'branch_contactNo' => '12345678',
+        ]);
+        Item::factory()->count(1)->create([
+            'item_name' => 'bond paper',
+            'unit_name' => 'rim',
+            'branch_name' => 'HO',
+        ]);
         Supplier::factory()->count(10)->create();
     }
 }

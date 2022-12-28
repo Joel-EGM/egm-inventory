@@ -70,7 +70,12 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedQuantity()
     {
-        $this->total_amount = $this->quantity * $this->unitPrice;
+        $this->computeTotalAmount();
+    }
+
+    private function computeTotalAmount()
+    {
+        $this->total_amount = number_format($this->quantity * $this->unitPrice, 2);
     }
 
     public function render()
@@ -131,11 +136,10 @@ class WireOrder extends Component implements FieldValidationMessage
                 ]);
 
                 // Item::where('id', $this->item_id)->decrement('pieces_perUnit', (int)$this->quantity);
-                $this->orders->push($orders);
             }
 
+            $this->orders->push($orders);
             $this->clearForm();
-
             $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
@@ -157,6 +161,8 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->orders[$this->Index]['branch_name'] = $this->branch_id;
             $this->orders[$this->Index]['supplier_name'] = $this->supplier_id;
             $this->orders[$this->Index]['item_name'] = $this->item_id;
+
+            
 
             $this->Index = null;
             $this->clearForm();
@@ -383,7 +389,7 @@ class WireOrder extends Component implements FieldValidationMessage
         }
 
         if ($this->quantity > 0) {
-            $this->total_amount = $this->quantity * $this->unitPrice;
+            $this->computeTotalAmount();
         }
     }
 }
