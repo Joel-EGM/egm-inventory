@@ -24,7 +24,6 @@ class WireItem extends Component implements FieldValidationMessage
 
 
     protected $rules = [
-        'supplier_id' => "bail|required",
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
         'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
         'piecesPerUnit' => 'bail|required|numeric',

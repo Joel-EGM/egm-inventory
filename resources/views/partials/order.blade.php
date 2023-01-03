@@ -58,7 +58,7 @@
             <option value="None" class="text-center text-gray-400">--select item--</option>
 
             @foreach ($itemList as $item)
-                <option value="{{ $item['id'] }}" class="text-center">{{ $item['items']['item_name'] }}
+                <option value="{{ $item['item_id'] }}" class="text-center">{{ $item['items']['item_name'] }}
                     {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
                 </option>
             @endforeach
@@ -113,7 +113,7 @@
 
     <x-jet-input wire:model="total_amount" x-ref="total_amount" id="total_amount" type="text" maxlength="50"
         class="mt-1 block w-full text-center bg-gray-300" placeholder="Total Amount" autocomplete="total_amount"
-        value="{{ $total_amount }}" readonly />
+        readonly />
     <x-jet-input-error for="total_amount" class="mt-2" />
 
 </div>

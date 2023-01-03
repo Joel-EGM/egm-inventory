@@ -68,15 +68,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->order_date = Carbon::now()->format('Y-m-d');
     }
 
-    public function updatedQuantity()
-    {
-        $this->computeTotalAmount();
-    }
 
-    private function computeTotalAmount()
-    {
-        $this->total_amount = number_format($this->quantity * $this->unitPrice, 2);
-    }
 
     public function render()
     {
@@ -162,7 +154,7 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->orders[$this->Index]['supplier_name'] = $this->supplier_id;
             $this->orders[$this->Index]['item_name'] = $this->item_id;
 
-            
+
 
             $this->Index = null;
             $this->clearForm();
@@ -391,5 +383,15 @@ class WireOrder extends Component implements FieldValidationMessage
         if ($this->quantity > 0) {
             $this->computeTotalAmount();
         }
+    }
+
+    public function updatedQuantity()
+    {
+        $this->computeTotalAmount();
+    }
+
+    private function computeTotalAmount()
+    {
+        $this->total_amount = number_format($this->quantity * $this->unitPrice, 2, '.', '');
     }
 }

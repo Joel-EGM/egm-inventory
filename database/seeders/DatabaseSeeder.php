@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Branch;
 use App\Models\Item;
+use App\Models\ItemPrice;
 use App\Models\Supplier;
 use App\Models\User;
 
@@ -34,8 +35,18 @@ class DatabaseSeeder extends Seeder
         Item::factory()->count(1)->create([
             'item_name' => 'bond paper',
             'unit_name' => 'rim',
-            'branch_name' => 'HO',
+            'pieces_perUnit' => '200',
         ]);
-        Supplier::factory()->count(10)->create();
+        Supplier::factory()->count(1)->create([
+            'suppliers_name' => 'National Bookstrore',
+            'suppliers_email' => 'nation@l.com',
+            'suppliers_contact' => '098765432',
+        ]);
+        ItemPrice::factory()->count(1)->create([
+            'supplier_id' => '1',
+            'item_id' => '1',
+            'price_perUnit' => '1000',
+            'price_perPieces' => '10',
+        ]);
     }
 }
