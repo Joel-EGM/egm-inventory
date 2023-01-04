@@ -24,7 +24,13 @@
                                 </a>
 
                                 <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
-                                    @include('partials.order')
+                                    @if ($formTitle === 'Create Order' || $formTitle === 'Edit Order')
+                                        @include('partials.order')
+                                    @endif
+
+                                    @if ($formTitle === 'Order Details')
+                                        @include('partials.order-view')
+                                    @endif
                                 </x-modals.modal-form>
 
                                 <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
@@ -108,7 +114,8 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap"><a href="#"
+                                            <td class="px-6 py-4 whitespace-no-wrap"> <a href="javascript:"
+                                                    title="Details" wire:click="selectArrayItem2({{ $loop->index }})"
                                                     class="no-underline hover:underline font-mono text-blue-500">{{ $order->order_status }}</a>
                                             </td>
 

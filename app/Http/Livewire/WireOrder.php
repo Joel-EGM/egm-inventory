@@ -264,12 +264,12 @@ class WireOrder extends Component implements FieldValidationMessage
         // dd($this->orders[$this->Index]);
         $this->order_date = $this->orders[$this->Index]['order_date'];
         $this->branch_id = $this->orders[$this->Index]['branch_id'];
-        $this->supplier_id = $this->orders[$this->Index]['supplier_id'];
-        $this->item_id = $this->orders[$this->Index]['item_id'];
-        $this->unitType = $this->orders[$this->Index]['unit_name'];
-        $this->quantity = $this->orders[$this->Index]['quantity'];
-        $this->unitPrice = $this->orders[$this->Index]['price'];
-        $this->total_amount = $this->orders[$this->Index]['total_amount'];
+        $this->supplier_id = $this->order_details[$this->Index]['supplier_id'];
+        $this->item_id = $this->order_details[$this->Index]['item_id'];
+        $this->unitType = $this->order_details[$this->Index]['unit_name'];
+        $this->quantity = $this->order_details[$this->Index]['quantity'];
+        $this->unitPrice = $this->order_details[$this->Index]['price'];
+        $this->total_amount = $this->order_details[$this->Index]['total_amount'];
 
 
         if (!$formAction) {
@@ -280,6 +280,22 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->isDeleteOpen = true;
         }
     }
+
+    public function selectArrayItem2($index, $formAction = null)
+    {
+        // $collection = OrderDetail::where('order_id', (int) $this->order_id)
+        // ->get();
+        // dd($collection);
+
+        $this->Index = $index;
+        // dd($this->orders[$this->Index]);
+
+        if (!$formAction) {
+            $this->formTitle = 'Order Details';
+            $this->isFormOpen = true;
+        }
+    }
+
 
     public function deleteArrayItem()
     {
@@ -316,6 +332,8 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->isDeleteOpen = !$this->isDeleteOpen;
             $this->clearAndResetDelete();
         }
+
+        // dd($this->Index);
     }
 
     public function updatedSupplierId()

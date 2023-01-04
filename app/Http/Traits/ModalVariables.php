@@ -5,6 +5,7 @@ namespace App\Http\Traits;
 trait ModalVariables
 {
     public $isFormOpen   = false;
+    public $isFormOpen2   = false;
     public $isDeleteOpen = false;
     public $Index    = null;
     public $formTitle    = null;
