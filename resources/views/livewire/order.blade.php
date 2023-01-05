@@ -115,7 +115,7 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap"> <a href="javascript:"
-                                                    title="Details" wire:click="selectArrayItem2({{ $loop->index }})"
+                                                    title="Details" wire:click="viewOrderDetails({{ $order->id }})"
                                                     class="no-underline hover:underline font-mono text-blue-500">{{ $order->order_status }}</a>
                                             </td>
 

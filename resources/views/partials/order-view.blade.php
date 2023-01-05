@@ -51,21 +51,23 @@
                             </td>
                         </tr>
                     @endif
-                    @foreach ($order_details as $details)
+
+                    @foreach ($details as $detail)
                         <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                            <td>{{ $details->suppliers->suppliers_name }}</td>
 
-                            <td>{{ $details->items->item_name }}</td>
+                            <td>{{ $detail->suppliers->suppliers_name }}</td>
 
-                            <td>{{ $details->items->unit_name }}</td>
+                            <td>{{ $detail->items->item_name }}</td>
 
-                            <td>{{ $details->quantity }}</td>
+                            <td>{{ $detail->items->unit_name }}</td>
 
-                            <td>{{ $details->price }}</td>
+                            <td>{{ $detail->quantity }}</td>
 
-                            <td>{{ $details->total_amount }}</td>
+                            <td>{{ $detail->price }}</td>
 
-                            <td>{{ $details->order_status }}</td>
+                            <td>{{ $detail->total_amount }}</td>
+
+                            <td>{{ $detail->order_status }}</td>
                         </tr>
                     @endforeach
             </table>

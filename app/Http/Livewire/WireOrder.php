@@ -25,6 +25,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $orderArrays = [];
     public $order_date;
     public $order_status;
+    public $details;
 
     public $supplier_id;
     public $supplier_name;
@@ -281,14 +282,17 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
-    public function selectArrayItem2($index, $formAction = null)
+    public function viewOrderDetails($id, $formAction = null)
     {
-        // $collection = OrderDetail::where('order_id', (int) $this->order_id)
+        $this->details = OrderDetail::where('order_id', $id)->get();
+        // $this->orders_details = OrderDetail::where('order_id', $this->order_id)
         // ->get();
-        // dd($collection);
+        // // dd($this->order_id);
 
-        $this->Index = $index;
-        // dd($this->orders[$this->Index]);
+        // dd($this->details);
+        // $this->quantity = $this->details->quantity;
+        // $this->price = $this->details->price;
+        // $this->total_amount = $this->details->total_amount;
 
         if (!$formAction) {
             $this->formTitle = 'Order Details';
