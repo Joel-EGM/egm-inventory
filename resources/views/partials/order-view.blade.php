@@ -55,19 +55,19 @@
                     @foreach ($details as $detail)
                         <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
-                            <td>{{ $detail->suppliers->suppliers_name }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->suppliers->suppliers_name }}</td>
 
-                            <td>{{ $detail->items->item_name }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->items->item_name }}</td>
 
-                            <td>{{ $detail->items->unit_name }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->items->unit_name }}</td>
 
-                            <td>{{ $detail->quantity }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
 
-                            <td>{{ $detail->price }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->price }}</td>
 
-                            <td>{{ $detail->total_amount }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
 
-                            <td>{{ $detail->order_status }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
                         </tr>
                     @endforeach
             </table>

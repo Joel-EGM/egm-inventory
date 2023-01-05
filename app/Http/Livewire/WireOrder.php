@@ -285,8 +285,12 @@ class WireOrder extends Component implements FieldValidationMessage
     public function viewOrderDetails($id, $formAction = null)
     {
         $this->details = OrderDetail::where('order_id', $id)->get();
+
         // $this->orders_details = OrderDetail::where('order_id', $this->order_id)
         // ->get();
+        // $filtered = $this->orders->filter(function ($value, $key){
+        //     return $value->order_id === $id;
+        // });
         // // dd($this->order_id);
 
         // dd($this->details);
