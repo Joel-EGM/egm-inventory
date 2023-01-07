@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->decimal('price');
             $table->decimal('total_amount');
             $table->string('order_status');
+            $table->boolean('is_received');
             $table->timestamps();
             $table->softDeletes();
         });

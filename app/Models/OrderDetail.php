@@ -21,6 +21,7 @@ class OrderDetail extends Model
         'price',
         'total_amount',
         'order_status',
+        'is_received',
     ];
 
     protected $casts = [

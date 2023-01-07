@@ -9,6 +9,7 @@ use App\Models\Branch;
 use App\Models\Item;
 use App\Models\ItemPrice;
 use App\Models\OrderDetail;
+use App\Models\Stock;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Carbon\Carbon;
@@ -48,6 +49,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public $unit_id;
     public $unitType;
 
+    public $selectedRecord = [];
+
     protected $rules = [
         'item_id' => 'bail|required',
         'order_date'  => 'bail|required|date',
@@ -66,10 +69,9 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->branches = Branch::all();
         $this->orders = Order::all();
         $this->order_details = OrderDetail::all();
+        $this->stocks = Stock::all();
         $this->order_date = Carbon::now()->format('Y-m-d');
     }
-
-
 
     public function render()
     {
@@ -91,6 +93,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
     //     $this->validateOnly($propertyName);
     // }
+
 
     public function submit()
     {
@@ -125,6 +128,8 @@ class WireOrder extends Component implements FieldValidationMessage
                     'total_amount' => $orderArray['total_amount'],
 
                     'order_status' => 'pending',
+
+                    'is_received'   => 0,
 
                 ]);
 
@@ -302,6 +307,29 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->formTitle = 'Order Details';
             $this->isFormOpen = true;
         }
+    }
+
+    public function saveCheckedItems()
+    {
+        foreach ($this->details as $detail) {
+            $stock = Stock::create([
+                'order_id' => $detail['order_id'],
+                'item_id' => $detail['item_id'],
+                'quantity' => $detail['quantity'],
+                'price' => $detail['price'],
+            ]);
+        }
+
+
+        $this->stocks->push($stock);
+
+
+        $notificationMessage = 'Items has been received.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
     }
 
 

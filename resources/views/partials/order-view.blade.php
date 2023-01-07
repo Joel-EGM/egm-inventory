@@ -38,20 +38,14 @@
                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Status
                         </th>
+
+                        <th
+                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Received
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @if (count($order_details) === 0)
-                        <tr>
-                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
-                                <div class="flex items-center place-content-center">
-                                    <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
-                                        NO DATA AVAILABLE</div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endif
-
                     @foreach ($details as $detail)
                         <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
@@ -68,9 +62,17 @@
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
+
+                            <td class="px-6 py-4 whitespace-no-wrap">
+                                <input type="checkbox" wire:model="selectedRecord" value="{{ $detail->id }}" />
+                            </td>
                         </tr>
                     @endforeach
             </table>
         </div>
     </div>
 </div>
+<button wire:click.prevent="saveCheckedItems"
+    class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">SAVE</button>
+
+<p>Selected: {{ var_export($selectedRecord) }}</p>

@@ -12,12 +12,10 @@ class Stock extends Model
     protected $table = 'stocks';
 
     protected $fillable = [
-
-        'supplier_id',
+        'order_id',
         'item_id',
-        'per_pieces',
+        'quantity',
         'price',
-        'total_amount'
     ];
 
     public function items()
