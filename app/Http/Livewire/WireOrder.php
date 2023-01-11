@@ -311,19 +311,22 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function saveCheckedItems()
     {
-        foreach ($this->details as $detail) {
-            $stock = Stock::create([
+        $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get();
+        // dd($this->selectedRecord);
+        foreach ($getid as $detail) {
+            Stock::create([
                 'order_id' => $detail['order_id'],
                 'item_id' => $detail['item_id'],
                 'quantity' => $detail['quantity'],
                 'price' => $detail['price'],
             ]);
         }
+        OrderDetail::whereIn('id', $this->selectedRecord)->update([
+            'order_status' => 'received',
+            'is_received' => 1
+        ]);
 
-
-        $this->stocks->push($stock);
-
-
+        $this->modalToggle();
         $notificationMessage = 'Items has been received.';
 
         $this->dispatchBrowserEvent('show-message', [
