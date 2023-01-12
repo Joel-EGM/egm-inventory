@@ -80,5 +80,6 @@
         </div>
     </div>
 </div>
+<input type="checkbox" wire:model="completedOrder">Order Complete
 <button wire:click.prevent="saveCheckedItems"
     class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">SAVE</button>

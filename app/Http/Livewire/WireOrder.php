@@ -50,6 +50,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public $unitType;
 
     public $selectedRecord = [];
+    public $completedOrder = false;
+    public $getOrderID;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -290,6 +292,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public function viewOrderDetails($id, $formAction = null)
     {
         $this->details = OrderDetail::where('order_id', $id)->get();
+        $this->getOrderID = Order::where('id', $id)->pluck('id');
 
         // $this->orders_details = OrderDetail::where('order_id', $this->order_id)
         // ->get();
@@ -326,7 +329,23 @@ class WireOrder extends Component implements FieldValidationMessage
             'is_received' => 1
         ]);
 
+        // dd($this->getOrderID);
+        if ($this->completedOrder === true) {
+            // dd('Event Recognized');
+            // dd($this->getOrderID);
+            Order::where('id', $this->getOrderID)->update([
+                             'order_status' => 'received',
+                         ]);
+
+        // dd($update);
+        } else {
+            Order::where('id', $this->getOrderID)->update([
+                'order_status' => 'incomplete',
+            ]);
+        }
+
         $this->modalToggle();
+
         $notificationMessage = 'Items has been received.';
 
         $this->dispatchBrowserEvent('show-message', [
