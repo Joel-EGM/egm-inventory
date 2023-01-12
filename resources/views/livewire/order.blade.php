@@ -114,10 +114,20 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap"><a href="javascript:"
-                                                    title="Details" wire:click="viewOrderDetails({{ $order->id }})"
-                                                    class="no-underline hover:underline font-mono text-blue-500"
-                                                    wire:poll.3s>{{ $order->order_status }}</a>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')
+                                                    <a href="javascript:" title="Details"
+                                                        wire:click="viewOrderDetails({{ $order->id }})"
+                                                        class="no-underline hover:underline font-mono text-blue-500"
+                                                        wire:poll.3s>{{ $order->order_status }}</a>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                @endif
                                             </td>
 
 

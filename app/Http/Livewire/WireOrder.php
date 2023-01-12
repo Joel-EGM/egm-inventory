@@ -345,7 +345,7 @@ class WireOrder extends Component implements FieldValidationMessage
         }
 
         $this->modalToggle();
-
+        $this->mount();
         $notificationMessage = 'Items has been received.';
 
         $this->dispatchBrowserEvent('show-message', [
