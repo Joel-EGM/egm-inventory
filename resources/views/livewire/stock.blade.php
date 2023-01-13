@@ -10,17 +10,7 @@
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
                     <div class="flex flex-row mt-0 sm:mb-0">
-                        <div class="relative">
-                            <a href="#"
-                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                New Client
-                            </a>
-                        </div>
+
                     </div>
 
                     <div class="flex flex-row mb-0 sm:mb-0">
@@ -63,219 +53,32 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Client
+                                            Item Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Account
+                                            Quantity
                                         </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Credit Limit
-                                        </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Loan Status
-                                        </th>
-                                        <th class="w-1/8 px-6 py-3 bg-gray-50"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-md leading-5 font-semibold text-gray-900">Juan
-                                                        Dela Cruz</div>
-                                                    <div class="text-sm leading-5 text-gray-500">Cabanatuan City
-                                                    </div>
+                                    @if (count($stocks) === 0)
+                                        <tr>
+                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
+                                                <div class="flex items-center place-content-center">
+                                                    <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
+                                                        NO DATA AVAILABLE</div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                                        0123456789</div>
-                                                    <div class="text-xs leading-5 text-gray-500">BDO Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="text-sm leading-5 text-gray-900">₱100,000.00</div>
-                                            <div class="text-xs leading-5 text-gray-500">₱900,000.00</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <div class="flex items-center">
-                                                <a href="#" title="Open"
-                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-md leading-5 font-semibold text-gray-900">Juan
-                                                        Dela Cruz</div>
-                                                    <div class="text-sm leading-5 text-gray-500">Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                                        0123456789</div>
-                                                    <div class="text-xs leading-5 text-gray-500">BDO Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="text-sm leading-5 text-gray-900">₱100,000.00</div>
-                                            <div class="text-xs leading-5 text-gray-500">₱900,000.00</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <div class="flex items-center">
-                                                <a href="#" title="Open"
-                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-md leading-5 font-semibold text-gray-900">Juan
-                                                        Dela Cruz</div>
-                                                    <div class="text-sm leading-5 text-gray-500">Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                                        0123456789</div>
-                                                    <div class="text-xs leading-5 text-gray-500">BDO Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="text-sm leading-5 text-gray-900">₱100,000.00</div>
-                                            <div class="text-xs leading-5 text-gray-500">₱900,000.00</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <div class="flex items-center">
-                                                <a href="#" title="Open"
-                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-md leading-5 font-semibold text-gray-900">Juan
-                                                        Dela Cruz</div>
-                                                    <div class="text-sm leading-5 text-gray-500">Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                                        0123456789</div>
-                                                    <div class="text-xs leading-5 text-gray-500">BDO Cabanatuan
-                                                        City</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="text-sm leading-5 text-gray-900">₱100,000.00</div>
-                                            <div class="text-xs leading-5 text-gray-500">₱900,000.00</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <div class="flex items-center">
-                                                <a href="#" title="Open"
-                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-md leading-5 font-semibold text-gray-900">Juan
-                                                        Dela Cruz</div>
-                                                    <div class="text-sm leading-5 text-gray-500">Cabanatuan City
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <div>
-                                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                                        0123456789</div>
-                                                    <div class="text-xs leading-5 text-gray-500">BDO Cabanatuan
-                                                        City</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="text-sm leading-5 text-gray-900">₱100,000.00</div>
-                                            <div class="text-xs leading-5 text-gray-500">₱900,000.00</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                            <div class="flex items-center">
-                                                <a href="#" title="Open"
-                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    @foreach ($stocks as $stock)
+                                        <tr
+                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->items->item_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->quantity }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
 
