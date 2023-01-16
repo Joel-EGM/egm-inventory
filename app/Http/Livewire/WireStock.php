@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Stock;
+use App\Models\ViewData;
 
 class WireStock extends Component
 {
@@ -11,7 +12,8 @@ class WireStock extends Component
 
     public function mount()
     {
-        $this->stocks = Stock::all();
+        $this->stocks = ViewData::all();
+        // dd($this->stocks);
     }
 
     public function render()

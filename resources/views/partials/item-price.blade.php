@@ -14,7 +14,8 @@
     <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select item--</option>
         @foreach ($items as $item)
-            <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
+            <option value="{{ $item->
+            id }}" class="text-center">{{ $item->item_name }}
             </option>
         @endforeach
     </select>
