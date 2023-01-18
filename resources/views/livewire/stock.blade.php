@@ -25,10 +25,11 @@
 
                         <div class="relative">
                             <select
-                                class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300">
-                                <option>All</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
+                                class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 
+                                text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300"
+                                wire:model="viewMode">
+                                <option value="1">Summary</option>
+                                <option value="2">Detailed</option>
                             </select>
                         </div>
 
@@ -40,7 +41,10 @@
                                 </svg>
                             </span>
                             <input placeholder="Search"
-                                class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
+                                class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 
+                                py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white 
+                                focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
+
                         </div>
                     </div>
                 </div>
@@ -72,10 +76,13 @@
                                             </td>
                                         </tr>
                                     @endif --}}
+
                                     @foreach ($stocks as $stock)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->item_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{ ucfirst(trans($stock->item_name)) }}
+                                            </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
 
                                         </tr>

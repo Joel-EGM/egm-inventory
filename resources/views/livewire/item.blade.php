@@ -106,7 +106,8 @@
                                     @foreach ($items as $item)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->item_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{ ucfirst(trans($item->item_name)) }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->pieces_perUnit }}</td>
 

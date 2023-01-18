@@ -14,8 +14,7 @@
     <select name="item_id" wire:model="item_id" class="form-control mt-1 block w-full">
         <option value="" class="text-center">--select item--</option>
         @foreach ($items as $item)
-            <option value="{{ $item->
-            id }}" class="text-center">{{ $item->item_name }}
+            <option value="{{ $item->id }}" class="text-center">{{ $item->item_name }}
             </option>
         @endforeach
     </select>
@@ -67,7 +66,7 @@
 
                 <td class="border px-4 py-2">{{ $price['suppliers_name'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['item_name'] }}</td>
+                <td class="border px-4 py-2">{{ ucfirst(trans($price['item_name'])) }}</td>
 
                 <td class="border px-4 py-2">{{ $price['price_perUnit'] }}</td>
 
