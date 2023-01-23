@@ -14,21 +14,12 @@ class WireItemPrice extends Component implements FieldValidationMessage
     use ModalVariables;
 
     public $layoutTitle = 'Add Item Price';
-    public $itemprices = [];
-
-    public $suppliers;
-    public $supplier_id;
-    public $suppliers_name;
 
     public $items;
-    public $item_id;
-    public $item_name;
-
+    public $itemprices = [];
     public $priceArrays = [];
-    public $price_perUnit;
-    public $price_perPieces;
-
     public $unitName = [];
+    public $suppliers;
 
 
     protected $rules = [

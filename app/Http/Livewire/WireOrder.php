@@ -28,16 +28,12 @@ class WireOrder extends Component implements FieldValidationMessage
     public $order_status;
     public $details;
 
-    public $supplier_id;
-    public $supplier_name;
-
     public $branches;
     public $branch_id;
     public $branch_name;
 
     public $items;
-    public $item_id;
-    public $item_name;
+
     public $itemList = [];
 
     public $quantity;

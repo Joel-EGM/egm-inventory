@@ -17,9 +17,7 @@ class WireItem extends Component implements FieldValidationMessage
     public $items = [];
     public $itemName;
     public $unitName;
-
     public $suppliers;
-
     public $piecesPerUnit;
 
 

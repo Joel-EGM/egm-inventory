@@ -12,6 +12,13 @@ trait ModalVariables
     public $clientId     = null;
     public $idToDelete   = [];
 
+    public $item_id;
+    public $item_name;
+    public $price_perUnit;
+    public $price_perPieces;
+    public $supplier_id;
+    public $suppliers_name;
+
     public function updatedIsFormOpen()
     {
         $this->clearAndResetForm();
