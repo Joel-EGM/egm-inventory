@@ -21,7 +21,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public $unitName = [];
     public $suppliers;
 
-
     protected $rules = [
         'supplier_id' => 'bail|required',
         'item_id' => 'bail|required',
@@ -186,7 +185,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public function selectArrayItem($index, $formAction = null)
     {
         $this->Index = $index;
-        // dd($this->itemprices[$this->Index]);
+
         $this->supplier_id = $this->itemprices[$this->Index]['supplier_id'];
         $this->item_id = $this->itemprices[$this->Index]['item_id'];
         $this->price_perUnit = $this->itemprices[$this->Index]['price_perUnit'];

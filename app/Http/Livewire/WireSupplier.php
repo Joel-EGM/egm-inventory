@@ -87,14 +87,16 @@ class WireSupplier extends Component implements FieldValidationMessage
 
             ]);
 
-
             $this->suppliers[$this->Index]['suppliers_name'] = $this->supplierName;
+
             $this->suppliers[$this->Index]['suppliers_email'] = $this->supplierEmail;
+
             $this->suppliers[$this->Index]['suppliers_contact'] = $this->supplierContactNo;
 
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();
+
             $notificationMessage = 'Record successfully updated.';
 
             $this->dispatchBrowserEvent('show-message', [
@@ -131,7 +133,9 @@ class WireSupplier extends Component implements FieldValidationMessage
         $this->Index = $Index;
 
         $this->supplierName = $this->suppliers[$this->Index]['suppliers_name'];
+
         $this->supplierEmail = $this->suppliers[$this->Index]['suppliers_email'];
+
         $this->supplierContactNo = $this->suppliers[$this->Index]['suppliers_contact'];
 
         if (!$formAction) {
@@ -157,6 +161,7 @@ class WireSupplier extends Component implements FieldValidationMessage
         $filtered->all();
         $this->suppliers = $filtered;
         $this->modalToggle('Delete');
+
         $notificationMessage2 = 'Record successfully deleted.';
 
         $this->dispatchBrowserEvent('show-message', [

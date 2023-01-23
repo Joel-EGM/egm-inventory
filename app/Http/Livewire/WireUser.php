@@ -38,25 +38,6 @@ class WireUser extends Component implements FieldValidationMessage
         $this->users = User::all();
     }
 
-    // public function updated($propertyName)
-    // {
-    //     if (in_array($propertyName, ['password', 'password_confirmation'])) {
-    //         return;
-    //     }
-
-
-    //     $wire_models = [
-    //         'userName',
-    //     ];
-
-    //     if (in_array($propertyName, $wire_models)) {
-    //         $this->$propertyName = ucwords(strtolower($this->$propertyName));
-    //     }
-
-
-    //     $this->validateOnly($propertyName);
-    // }
-
     public function submit()
     {
         $validatedItem = $this->validate();
@@ -97,12 +78,15 @@ class WireUser extends Component implements FieldValidationMessage
 
 
             $this->users[$this->Index]['name'] = $this->userName;
+
             $this->users[$this->Index]['email'] = $this->userEmail;
+
             $this->users[$this->Index]['password'] = $this->password;
 
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();
+
             $notificationMessage = 'Record successfully updated.';
 
             $this->dispatchBrowserEvent('show-message', [
@@ -141,7 +125,9 @@ class WireUser extends Component implements FieldValidationMessage
         $this->Index = $Index;
 
         $this->userName = $this->users[$this->Index]['name'];
+
         $this->userEmail = $this->users[$this->Index]['email'];
+
         $this->password = $this->users[$this->Index]['password'];
 
         if (!$formAction) {
@@ -167,6 +153,7 @@ class WireUser extends Component implements FieldValidationMessage
         $filtered->all();
         $this->users = $filtered;
         $this->modalToggle('Delete');
+
         $notificationMessage2 = 'Record successfully deleted.';
 
         $this->dispatchBrowserEvent('show-message', [

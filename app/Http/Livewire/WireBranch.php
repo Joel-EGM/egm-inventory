@@ -18,7 +18,6 @@ class WireBranch extends Component implements FieldValidationMessage
     public $branchAddress;
     public $branchContactNo;
 
-
     protected $rules = [
         'branchName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
         'branchAddress' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
@@ -40,7 +39,6 @@ class WireBranch extends Component implements FieldValidationMessage
         if (in_array($propertyName, $wire_models)) {
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
-
 
         $this->validateOnly($propertyName);
     }
@@ -90,12 +88,15 @@ class WireBranch extends Component implements FieldValidationMessage
 
 
             $this->branches[$this->Index]['branch_name'] = $this->branchName;
+
             $this->branches[$this->Index]['branch_address'] = $this->branchAddress;
+
             $this->branches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
 
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();
+
             $notificationMessage = 'Record successfully updated.';
 
             $this->dispatchBrowserEvent('show-message', [
@@ -132,7 +133,9 @@ class WireBranch extends Component implements FieldValidationMessage
         $this->Index = $Index;
 
         $this->branchName = $this->branches[$this->Index]['branch_name'];
+
         $this->branchAddress = $this->branches[$this->Index]['branch_address'];
+
         $this->branchContactNo = $this->branches[$this->Index]['branch_contactNo'];
 
         if (!$formAction) {
@@ -158,6 +161,7 @@ class WireBranch extends Component implements FieldValidationMessage
         $filtered->all();
         $this->branches = $filtered;
         $this->modalToggle('Delete');
+
         $notificationMessage2 = 'Record successfully deleted.';
 
         $this->dispatchBrowserEvent('show-message', [
