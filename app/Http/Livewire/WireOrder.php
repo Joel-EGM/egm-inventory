@@ -13,6 +13,7 @@ use App\Models\Stock;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Carbon\Carbon;
+use DB;
 
 class WireOrder extends Component implements FieldValidationMessage
 {
@@ -341,7 +342,22 @@ class WireOrder extends Component implements FieldValidationMessage
 
     private function subsctractBranchOrder()
     {
-        dd('Method Recognized');
+        $orderItem = OrderDetail::whereIn('id', $this->selectedRecord)->get();
+
+        foreach ($orderItem as $oi) {
+            // $results = Stock::where('item_id', $oi->item_id)->where('quantity', '>', 0)->orderBy('created_at')->first();
+            // dd($results);
+            $results = Stock::where('item_id', $oi->item_id)->where('quantity', '>', 0)->orderBy('created_at');
+
+            foreach($results as $result) {
+                
+            }
+        }
+
+        // $test = DB::table('stocks')
+        //  ->select(DB::raw('update stocks set=CASE WHEN quantity > 0 THEN quantity - 1 ELSE 0 END'))->get();
+
+        // dd($test);
     }
 
 
