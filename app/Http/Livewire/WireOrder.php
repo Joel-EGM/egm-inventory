@@ -291,7 +291,16 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
-    public function saveCheckedItems()
+    public function saveMethod()
+    {
+        if ($this->branch_id > 1) {
+            $this->saveCheckedItems();
+        } else {
+            $this->subsctractBranchOrder();
+        };
+    }
+
+    private function saveCheckedItems()
     {
         $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get();
 
@@ -308,7 +317,7 @@ class WireOrder extends Component implements FieldValidationMessage
             'is_received' => 1
         ]);
 
-        $statusUpdate = $statusUpdate;
+        $statusUpdate = Order::where('id', $this->getOrderID);
 
         if ($this->completedOrder === true) {
             $statusUpdate->update([
@@ -328,6 +337,11 @@ class WireOrder extends Component implements FieldValidationMessage
             'notificationType' => 'success',
             'messagePrimary'   => $notificationMessage
         ]);
+    }
+
+    private function subsctractBranchOrder()
+    {
+        dd('Method Recognized');
     }
 
 
