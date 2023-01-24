@@ -342,37 +342,38 @@ class WireOrder extends Component implements FieldValidationMessage
 
     private function subsctractBranchOrder()
     {
-        $values = [2000, 3000];
-            $default = 4000;
+        //find selected Data in OrderDetail
+        $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
 
-            foreach($values as $value) {
-                if($value < $default) {
-                    $default = $default - $value;
+        //find the corresponding item_id of OrderDetail in Stocks table
+        foreach ($orderItems as $orderItem) {
+            (int)$itemQty = $orderItem->quantity;
+            // 34
+
+            $stockItems = Stock::where('item_id', $orderItem->item_id)->where('quantity', '>', 0)->orderBy('created_at')->get();
+
+            foreach ($stockItems as $stockItem) {
+                //set conditon to deduct order quantity(OQ) to stock quantity(SQ) if OQ is greater than SQ if not then deduct the remaining quantity to the next SQ
+
+                if ($itemQty > (int)$stockItem->quantity) {
+                    // qty 12
+                    //update db, set quantity to 0
+                    Stock::where('id', (int)$stockItem->id)->update([
+                         'quantity'=> 0
+                     ]);
+
+                    //deduct order itemQty to stockItem if stockItem not sufficient then check 
+                    $itemQty -= $stockItem->quantity;
                 } else {
-                    $default = $value - $default;
+                    //update db decrement quantity by #itemQty
+                    Stock::where('id', $stockItem->id)->decrement('quantity', $itemQty);
+                    // exit loop
+
+                    break;
                 }
             }
-
-            dd($default);
-
-        $orderItem = OrderDetail::whereIn('id', $this->selectedRecord)->get();
-
-        foreach($orderItem as $orderDx) {
-                
-        
-        foreach ($orderItem as $oi) {
-            // $results = Stock::where('item_id', $oi->item_id)->where('quantity', '>', 0)->orderBy('created_at')->first();
-            // dd($results);
-            $results = Stock::where('item_id', $oi->item_id)->where('quantity', '>', 0)->orderBy('created_at');
-
-           
         }
-    }
-
-        // $test = DB::table('stocks')
-        //  ->select(DB::raw('update stocks set=CASE WHEN quantity > 0 THEN quantity - 1 ELSE 0 END'))->get();
-
-        // dd($test);
+        $this->modalToggle();
     }
 
 
