@@ -55,16 +55,7 @@
                             <table class="min-w-full divide-y divide-gray-200 table-fixed">
                                 <thead>
                                     <tr>
-                                        @if ($viewMode === 1)
-                                            <th
-                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                Item Name
-                                            </th>
-                                            <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                Quantity
-                                            </th>
-                                        @else
+                                        @if ($viewMode != 1)
                                             <th
                                                 class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Item Name
@@ -81,6 +72,23 @@
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Price
                                             </th>
+                                        @else
+                                            <th
+                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Item Name
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Last Updated
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Quantity
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Total Price
+                                            </th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -95,18 +103,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @if ($viewMode === 1)
-                                        @foreach ($stocks as $stock)
-                                            <tr
-                                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                <td class="px-6 py-4 whitespace-no-wrap">
-                                                    {{ ucfirst(trans($stock->item_name)) }}
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
-
-                                            </tr>
-                                        @endforeach
-                                    @else
+                                    @if ($viewMode != 1)
                                         @foreach ($stocks as $stock)
                                             <tr
                                                 class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
@@ -120,6 +117,20 @@
                                                 <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock->price }}
                                                 </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        @foreach ($stocks as $stock)
+                                            <tr
+                                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ ucfirst(trans($stock->item_name)) }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->created_at }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->price }}</td>
                                             </tr>
                                         @endforeach
                                     @endif

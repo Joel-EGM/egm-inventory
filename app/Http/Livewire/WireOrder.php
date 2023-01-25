@@ -29,6 +29,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $order_id;
     public $unit_id;
     public $branch_id;
+    public $getBranchID;
     public $getOrderID;
 
     public $orders;
@@ -285,6 +286,7 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->details = OrderDetail::where('order_id', $id)->get();
         $this->getOrderID = Order::where('id', $id)->pluck('id');
+        $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
 
         if (!$formAction) {
             $this->formTitle = 'Order Details';
@@ -294,11 +296,12 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function saveMethod()
     {
-        if ($this->branch_id > 1) {
-            $this->saveCheckedItems();
-        } else {
+        // $getBranchName = Branch::where('id', $this->getBranchID)->get();
+        if ($this->getBranchID != 1) {
             $this->subsctractBranchOrder();
-        };
+        } else {
+            $this->saveCheckedItems();
+        }
     }
 
     private function saveCheckedItems()
@@ -362,7 +365,7 @@ class WireOrder extends Component implements FieldValidationMessage
                          'quantity'=> 0
                      ]);
 
-                    //deduct order itemQty to stockItem if stockItem not sufficient then check 
+                    //deduct order itemQty to stockItem if stockItem not sufficient then check
                     $itemQty -= $stockItem->quantity;
                 } else {
                     //update db decrement quantity by #itemQty

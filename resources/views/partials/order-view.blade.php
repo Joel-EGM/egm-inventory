@@ -54,7 +54,8 @@
                             <td class="px-6 py-4 whitespace-no-wrap">{{ ucfirst(trans($detail->items->item_name)) }}
                             </td>
 
-                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->items->unit_name }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap">{{ ucfirst(trans($detail->items->unit_name)) }}
+                            </td>
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
 
