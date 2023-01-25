@@ -46,6 +46,7 @@
                                 focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
 
                         </div>
+                        <p>{{ $viewMode }}</p>
                     </div>
                 </div>
 

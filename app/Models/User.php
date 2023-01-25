@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'branch_id',
     ];
 
     protected $hidden = [
@@ -38,4 +40,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function branches()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
 }

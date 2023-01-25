@@ -13,7 +13,7 @@ return new class () extends Migration {
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->foreignId('branch_id')->nullable();
         });
     }
 
@@ -24,8 +24,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

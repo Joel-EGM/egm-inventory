@@ -14,6 +14,7 @@ trait ModalVariables
 
     public $item_id;
     public $item_name;
+    public $branch_id;
     public $price_perUnit;
     public $price_perPieces;
     public $supplier_id;

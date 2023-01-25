@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
+use App\Models\Branch;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,7 @@ class WireUser extends Component implements FieldValidationMessage
     public $users =[];
     public $userName;
     public $userEmail;
+    public $userRole;
     public $password;
     public $password_confirmation;
 
@@ -29,6 +31,8 @@ class WireUser extends Component implements FieldValidationMessage
     protected $rules = [
         'userName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
         'userEmail' => 'bail|required|email',
+        'userRole' => 'bail|required',
+        'branch_id' => 'bail|required',
         'password' => 'bail|required|min:8|confirmed',
         'password_confirmation' => 'bail|required|min:8',
     ];
@@ -36,6 +40,7 @@ class WireUser extends Component implements FieldValidationMessage
     public function mount()
     {
         $this->users = User::all();
+        $this->branches = Branch::all();
     }
 
     public function submit()
@@ -48,6 +53,10 @@ class WireUser extends Component implements FieldValidationMessage
                 'name' => $this->userName,
 
                 'email' => $this->userEmail,
+
+                'branch_id' => $this->branch_id,
+
+                'role' => $this->userRole,
 
                 'password' => Hash::make($this->password),
 
@@ -72,6 +81,10 @@ class WireUser extends Component implements FieldValidationMessage
 
                 'email' => $this->userEmail,
 
+                'branch_id' => $this->branch_id,
+
+                'role' => $this->userRole,
+
                 'password' => Hash::make($this->password),
 
             ]);
@@ -80,6 +93,10 @@ class WireUser extends Component implements FieldValidationMessage
             $this->users[$this->Index]['name'] = $this->userName;
 
             $this->users[$this->Index]['email'] = $this->userEmail;
+
+            $this->users[$this->Index]['role'] = $this->userRole;
+
+            $this->users[$this->Index]['branch_id'] = $this->branch_id;
 
             $this->users[$this->Index]['password'] = $this->password;
 
@@ -128,7 +145,10 @@ class WireUser extends Component implements FieldValidationMessage
 
         $this->userEmail = $this->users[$this->Index]['email'];
 
-        $this->password = $this->users[$this->Index]['password'];
+        $this->userRole = $this->users[$this->Index]['role'];
+
+        $this->branch_id = $this->users[$this->Index]['branch_id'];
+
 
         if (!$formAction) {
             $this->formTitle = 'Edit User';

@@ -82,6 +82,14 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Branch
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            User Role
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Password
                                         </th>
                                         <th
@@ -108,6 +116,10 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $user->name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $user->email }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $user->branches->branch_name }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $user->role }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ Str::limit($user->password, 30) }}
