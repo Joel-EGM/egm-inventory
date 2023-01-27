@@ -48,6 +48,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public $unitPrice;
     public $unitType;
 
+    public $users;
+
     public $completedOrder = false;
 
 
@@ -70,13 +72,23 @@ class WireOrder extends Component implements FieldValidationMessage
 
         $this->branches = Branch::all();
 
-        $this->orders = Order::all();
+
 
         $this->order_details = OrderDetail::all();
 
         $this->stocks = Stock::all();
 
         $this->order_date = Carbon::now()->format('Y-m-d');
+
+        // $this->users = User::where('id')->get();
+
+        $user = Auth()->user()->branch_id;
+
+        if ($user != 1) {
+            $this->orders = Order::where('branch_id', $user)->get();
+        } else {
+            $this->orders = Order::all();
+        }
     }
 
     public function render()
@@ -306,16 +318,23 @@ class WireOrder extends Component implements FieldValidationMessage
 
     private function saveCheckedItems()
     {
-        $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get();
+        $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get()->toArray();
 
         foreach ($getid as $detail) {
             Stock::create([
+
                 'order_id' => $detail['order_id'],
+
                 'item_id' => $detail['item_id'],
+
                 'quantity' => $detail['quantity'],
+
                 'price' => $detail['price'],
+
             ]);
+            break;
         }
+
         OrderDetail::whereIn('id', $this->selectedRecord)->update([
             'order_status' => 'received',
             'is_received' => 1

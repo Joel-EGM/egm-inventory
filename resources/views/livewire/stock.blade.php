@@ -68,26 +68,22 @@
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Quantity
                                             </th>
-                                            <th
+                                            {{-- <th
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Price
-                                            </th>
+                                            </th> --}}
                                         @else
                                             <th
                                                 class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Item Name
                                             </th>
                                             <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Last Updated
                                             </th>
                                             <th
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Quantity
-                                            </th>
-                                            <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                Total Price
                                             </th>
                                         @endif
                                     </tr>
@@ -114,9 +110,9 @@
                                                     {{ $stock->created_at }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{-- <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock->price }}
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
                                     @else
@@ -130,7 +126,6 @@
                                                     {{ $stock->created_at }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->price }}</td>
                                             </tr>
                                         @endforeach
                                     @endif
