@@ -395,7 +395,21 @@ class WireOrder extends Component implements FieldValidationMessage
                 }
             }
         }
+        
+        $statusUpdate = Order::where('id', $this->getOrderID);
+
+        if ($this->completedOrder === true) {
+            $statusUpdate->update([
+                             'order_status' => 'received',
+                         ]);
+        } else {
+            $statusUpdate->update([
+                'order_status' => 'incomplete',
+            ]);
+        }
+
         $this->modalToggle();
+        $this->mount();
     }
 
 
