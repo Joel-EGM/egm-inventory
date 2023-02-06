@@ -15,9 +15,9 @@
                             class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
                             EXCEL</button>
 
-                        <button wire:click.prevent="#"
+                        <a href="{{ route('pdf') }}" target="_blank"
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            PDF</button>
+                            PDF</a>
                     </div>
 
                     <div class="flex flex-row mb-0 sm:mb-0">

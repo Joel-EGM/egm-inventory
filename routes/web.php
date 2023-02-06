@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PDFController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,5 @@ Route::middleware([
     //Orders
     Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
 });
+
+Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('pdf');
