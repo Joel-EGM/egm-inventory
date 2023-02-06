@@ -16,7 +16,7 @@ class PDFcontroller extends Controller
             'stocks' => $stocks
         ];
 
-        $pdf = PDF::loadView('myPDF', $data);
+        $pdf = PDF::loadView('pdfFormat', $data);
 
         return $pdf->download('stockreport_'.today()->toDateString().'.pdf');
     }
