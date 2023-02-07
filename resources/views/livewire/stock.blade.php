@@ -15,9 +15,13 @@
                             class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
                             EXCEL</button>
 
-                        <a href="{{ route('pdf') }}" target="_blank"
+                        {{-- <a href="{{ route('pdf') }}" target="_blank"
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            PDF</a>
+                            PDF</a> --}}
+
+                        <button wire:click="generatePDF" target="_blank"
+                            class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
+                            PDF</button>
                     </div>
 
                     <div class="flex flex-row mb-0 sm:mb-0">
@@ -95,7 +99,7 @@
                                         @endif
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                {{-- <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($stocks) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
@@ -117,9 +121,7 @@
                                                     {{ $stock->created_at }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
-                                                {{-- <td class="px-6 py-4 whitespace-no-wrap">
-                                                    {{ $stock->price }}
-                                                </td> --}}
+
                                             </tr>
                                         @endforeach
                                     @else
@@ -136,7 +138,7 @@
                                             </tr>
                                         @endforeach
                                     @endif
-                                </tbody>
+                                </tbody> --}}
                             </table>
 
                             <div

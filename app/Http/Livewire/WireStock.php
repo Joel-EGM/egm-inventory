@@ -7,6 +7,7 @@ use App\Models\Stock;
 use App\Models\ViewData;
 use App\Http\Traits\ModalVariables;
 use DB;
+use PDF;
 
 class WireStock extends Component
 {
@@ -34,5 +35,18 @@ class WireStock extends Component
     {
         $id = (int) $mode;
         $this->stocks= DB::select("CALL getData($id)");
+    }
+
+    public function generatePDF()
+    {
+        $stocks = DB::select("CALL getData(2)");
+
+        $data = [
+            'stocks' => $stocks
+        ];
+
+        $pdf = PDF::loadView('pdfFormat', $data)->output();
+
+        return response()->streamDownload(fn () => print($pdf), 'stockreport_'.today()->toDateString().'.pdf');
     }
 }
