@@ -99,7 +99,7 @@
                                         @endif
                                     </tr>
                                 </thead>
-                                {{-- <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($stocks) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
@@ -138,7 +138,7 @@
                                             </tr>
                                         @endforeach
                                     @endif
-                                </tbody> --}}
+                                </tbody>
                             </table>
 
                             <div

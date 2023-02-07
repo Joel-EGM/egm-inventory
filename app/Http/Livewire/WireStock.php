@@ -39,7 +39,7 @@ class WireStock extends Component
 
     public function generatePDF()
     {
-        $stocks = DB::select("CALL getData(2)");
+        $stocks = $this->loadData($this->viewMode);
 
         $data = [
             'stocks' => $stocks
