@@ -20,6 +20,8 @@ trait ModalVariables
     public $supplier_id;
     public $suppliers_name;
 
+    public $viewMode = 1;
+
     public function updatedIsFormOpen()
     {
         $this->clearAndResetForm();

@@ -5,12 +5,15 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Stock;
 use App\Models\ViewData;
+use App\Http\Traits\ModalVariables;
 use DB;
 
 class WireStock extends Component
 {
+    use ModalVariables;
+
     public $stocks;
-    public $viewMode = 1;
+
 
     public function mount()
     {
