@@ -15,13 +15,13 @@
                             class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
                             EXCEL</button>
 
-                        {{-- <a href="{{ route('pdf') }}" target="_blank"
+                        <a href="{{ route('generate-pdf' . $viewMode) }}" target="_blank"
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            PDF</a> --}}
+                            PDF</a>
 
-                        <button wire:click="generatePDF" target="_blank"
+                        {{-- <button wire:click="generatePDF" target="_blank"
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            PDF</button>
+                            PDF</button> --}}
                     </div>
 
                     <div class="flex flex-row mb-0 sm:mb-0">

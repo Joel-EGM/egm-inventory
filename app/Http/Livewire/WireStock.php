@@ -39,14 +39,24 @@ class WireStock extends Component
 
     public function generatePDF()
     {
-        $stocks = $this->loadData($this->viewMode);
+        $findData = DB::select("CALL getData($this->viewMode)");
 
         $data = [
-            'stocks' => $stocks
+            'stocks' => $findData
         ];
 
         $pdf = PDF::loadView('pdfFormat', $data)->output();
 
-        return response()->streamDownload(fn () => print($pdf), 'stockreport_'.today()->toDateString().'.pdf');
+        return response()->stream(
+            fn () => print($pdf),
+            'stockreport_'.today()->toDateString().'.pdf'
+        );
+
+
+        // return response()->streamDownload(function () {
+        //     $pdf = App::make('dompdf.wrapper');
+        //     $pdf->loadHTML('pdfFormat', $data)->output();
+        //     echo $pdf->stream();
+        // }, 'test.pdf');
     }
 }
