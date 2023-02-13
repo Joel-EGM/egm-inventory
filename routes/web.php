@@ -39,7 +39,8 @@ Route::middleware([
 
     //Orders
     Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
-});
 
-Route::get('generate-pdf/1', [PDFController::class, 'generatePDF'])->name('generate-pdf1');
-Route::get('generate-pdf/2', [PDFController::class, 'generatePDF'])->name('generate-pdf2');
+    //EXPORT TO PDF
+    Route::get('generate-pdf/1', [PDFController::class, 'generatePDF'])->name('generate-pdf1');
+    Route::get('generate-pdf/2', [PDFController::class, 'generatePDF'])->name('generate-pdf2');
+});
