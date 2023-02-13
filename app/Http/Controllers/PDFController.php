@@ -23,6 +23,6 @@ class PDFController extends Controller
 
         $pdf = PDF::loadView('pdfFormat', $data);
 
-        return $pdf->stream('stockreport_'.today()->toDateString().'.pdf');
+        return $pdf->stream('stocksreport_'.today()->toDateString().'.pdf');
     }
 }
