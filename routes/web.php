@@ -43,4 +43,6 @@ Route::middleware([
     //EXPORT TO PDF
     Route::get('generate-pdf/1', [PDFController::class, 'generatePDF'])->name('generate-pdf1');
     Route::get('generate-pdf/2', [PDFController::class, 'generatePDF'])->name('generate-pdf2');
+
+    // Route::get('generate/{id}', 'PDFController@generatePDF');
 });

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Stock;
 use PDF;
 use DB;
@@ -11,9 +10,9 @@ class PDFController extends Controller
 {
     public function generatePDF()
     {
-        $currentURL = url()->current();
-        $explodeURL = explode('/', $currentURL);
-        $getID = end($explodeURL);
+        // $currentURL = url()->current();
+        // $explodeURL = explode('/', $currentURL);
+        $getID = last(request()->segments());
 
         $stock = DB::select("CALL getData($getID)");
 
