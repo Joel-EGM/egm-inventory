@@ -10,8 +10,10 @@ class PDFController extends Controller
 {
     public function generatePDF()
     {
+        // dd(last(request()->path()));
         // $currentURL = url()->current();
         // $explodeURL = explode('/', $currentURL);
+
         $getID = last(request()->segments());
 
         $stock = DB::select("CALL getData($getID)");
