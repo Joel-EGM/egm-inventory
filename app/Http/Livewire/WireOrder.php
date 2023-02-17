@@ -294,12 +294,16 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
-    public function viewOrderDetails($id, $formAction = null)
+    private function getOrderInfo($id)
     {
         $this->details = OrderDetail::where('order_id', $id)->get();
         $this->getOrderID = Order::where('id', $id)->pluck('id');
         $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
+    }
 
+    public function viewOrderDetails($id, $formAction = null)
+    {
+        $this->getOrderInfo($id);
         if (!$formAction) {
             $this->formTitle = 'Order Details';
             $this->isFormOpen = true;
@@ -308,11 +312,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function viewDetails($id, $formAction = null)
     {
-        $this->details = OrderDetail::where('order_id', $id)->get();
-        // dd($this->details);
-        $this->getOrderID = Order::where('id', $id)->pluck('id');
-        $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
-
+        $this->getOrderInfo($id);
         if (!$formAction) {
             $this->formTitle = 'View Details';
             $this->isFormOpen = true;
