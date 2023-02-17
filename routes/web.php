@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PDFController;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +41,10 @@ Route::middleware([
     Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
 
     //EXPORT TO PDF
-    Route::get('generate-pdf/1', [PDFController::class, 'generatePDF'])->name('generate-pdf1');
-    Route::get('generate-pdf/2', [PDFController::class, 'generatePDF'])->name('generate-pdf2');
+    Route::get('generate-pdf/1', [ExportController::class, 'generatePDF'])->name('generate-pdf1');
+    Route::get('generate-pdf/2', [ExportController::class, 'generatePDF'])->name('generate-pdf2');
 
     // Route::get('generate/{id}', 'PDFController@generatePDF');
+
+    Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
 });

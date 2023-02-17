@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StocksExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Stock;
 use PDF;
 use DB;
 
-class PDFController extends Controller
+class ExportController extends Controller
 {
     public function generatePDF()
     {
@@ -25,5 +27,10 @@ class PDFController extends Controller
         $pdf = PDF::loadView('pdfFormat', $data);
 
         return $pdf->stream('stocksreport_'.today()->toDateString().'.pdf');
+    }
+
+    public function export()
+    {
+        return Excel::download(new StocksExport(), 'stocksreport.xlsx');
     }
 }

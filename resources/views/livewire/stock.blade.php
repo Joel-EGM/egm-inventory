@@ -11,9 +11,9 @@
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
                     <div class="flex flex-row mt-0 sm:mb-0">
 
-                        <button wire:click.prevent="#"
+                        <a href="{{ route('generate-export') }}" target="_blank"
                             class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            EXCEL</button>
+                            EXCEL</a>
 
                         <a href="{{ route('generate-pdf' . $viewMode) }}" target="_blank"
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
