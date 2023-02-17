@@ -87,6 +87,8 @@
 </div>
 @if ($formTitle === 'Order Details')
     <input type="checkbox" wire:model="completedOrder">Order Complete
-    <button wire:click.prevent="saveMethod"
-        class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">SAVE</button>
+    <div class="flex flex-row-reverse">
+        <x-jet-button class="ml-2" wire:click.prevent="saveMethod">
+            SAVE</x-jet-button>
+    </div>
 @endif

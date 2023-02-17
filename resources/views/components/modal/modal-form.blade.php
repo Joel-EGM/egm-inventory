@@ -23,16 +23,19 @@
     </div>
 
     <!--Footer-->
-    <div class="modal-content flex justify-end p-4 bg-gray-100">
-        <x-jet-secondary-button wire:click.prevent="$emitSelf('modalToggle')" wire:loading.attr="disabled">
-            Cancel
-        </x-jet-secondary-button>
+    @if ($formTitle === 'Order Details' || $formTitle === 'View Details')
+    @else
+        <div class="modal-content flex justify-end p-4 bg-gray-100">
+            <x-jet-secondary-button wire:click.prevent="$emitSelf('modalToggle')" wire:loading.attr="disabled">
+                Cancel
+            </x-jet-secondary-button>
 
-        <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">
-            Save
-        </x-jet-button>
-        <span wire:loading.delay wire:target="submit">
-            Loading...
-        </span>
-    </div>
+            <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">
+                Save
+            </x-jet-button>
+            <span wire:loading.delay wire:target="submit">
+                Loading...
+            </span>
+        </div>
+    @endif
 </x-jet-modal>
