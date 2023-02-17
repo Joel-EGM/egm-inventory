@@ -306,6 +306,19 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
+    public function viewDetails($id, $formAction = null)
+    {
+        $this->details = OrderDetail::where('order_id', $id)->get();
+        // dd($this->details);
+        $this->getOrderID = Order::where('id', $id)->pluck('id');
+        $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
+
+        if (!$formAction) {
+            $this->formTitle = 'View Details';
+            $this->isFormOpen = true;
+        }
+    }
+
     public function saveMethod()
     {
         // $getBranchName = Branch::where('id', $this->getBranchID)->get();
@@ -395,7 +408,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 }
             }
         }
-        
+
         $statusUpdate = Order::where('id', $this->getOrderID);
 
         if ($this->completedOrder === true) {

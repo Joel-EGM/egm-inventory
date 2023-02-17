@@ -27,24 +27,23 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    //Manage
+    //MANAGE
     Route::get('manage/branches', \App\Http\Livewire\WireBranch::class, 'render')->name('branches');
     Route::get('manage/suppliers', \App\Http\Livewire\WireSupplier::class, 'render')->name('suppliers');
     Route::get('manage/items', \App\Http\Livewire\WireItem::class, 'render')->name('items');
     Route::get('manage/price', \App\Http\Livewire\WireItemPrice::class, 'render')->name('prices');
     Route::get('manage/users', \App\Http\Livewire\WireUser::class, 'render')->name('users');
 
-    //Stocks
+    //STOCKS
     Route::get('stocks/current_stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
 
-    //Orders
+    //ORDERS
     Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
 
     //EXPORT TO PDF
     Route::get('generate-pdf/1', [ExportController::class, 'generatePDF'])->name('generate-pdf1');
     Route::get('generate-pdf/2', [ExportController::class, 'generatePDF'])->name('generate-pdf2');
 
-    // Route::get('generate/{id}', 'PDFController@generatePDF');
-
+    //EXPORT TO EXCEL
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
 });

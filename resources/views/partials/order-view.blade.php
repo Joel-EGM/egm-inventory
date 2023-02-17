@@ -38,11 +38,12 @@
                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Status
                         </th>
-
-                        <th
-                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                            Received
-                        </th>
+                        @if ($formTitle === 'Order Details')
+                            <th
+                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                Received
+                            </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -64,24 +65,28 @@
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
-
-                            <td class="px-6 py-4 whitespace-no-wrap">
-                                @if ($detail->order_status === 'pending')
-                                    <input type="checkbox" wire:model="selectedRecord" value="{{ $detail->id }}" />
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                @endif
-                            </td>
+                            @if ($formTitle === 'Order Details')
+                                <td class="px-6 py-4 whitespace-no-wrap">
+                                    @if ($detail->order_status === 'pending')
+                                        <input type="checkbox" wire:model="selectedRecord"
+                                            value="{{ $detail->id }}" />
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
             </table>
         </div>
     </div>
 </div>
-<input type="checkbox" wire:model="completedOrder">Order Complete
-<button wire:click.prevent="saveMethod"
-    class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">SAVE</button>
+@if ($formTitle === 'Order Details')
+    <input type="checkbox" wire:model="completedOrder">Order Complete
+    <button wire:click.prevent="saveMethod"
+        class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">SAVE</button>
+@endif

@@ -28,7 +28,7 @@
                                         @include('partials.order')
                                     @endif
 
-                                    @if ($formTitle === 'Order Details')
+                                    @if ($formTitle === 'Order Details' || $formTitle === 'View Details')
                                         @include('partials.order-view')
                                     @endif
                                 </x-modals.modal-form>
@@ -114,25 +114,28 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                            <td class="px-9 py-4 whitespace-no-wrap">
                                                 @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')
                                                     <a href="javascript:" title="Details"
                                                         wire:click="viewOrderDetails({{ $order->id }})"
                                                         class="no-underline hover:underline font-mono text-blue-500"
                                                         wire:poll.3s>{{ $order->order_status }}</a>
                                                 @else
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
+                                                    <a href="javascript:" title="View"
+                                                        wire:click="viewDetails({{ $order->id }})">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </a>
                                                 @endif
                                             </td>
 
 
                                             <td
-                                                class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                                                class="px-4 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                                 <div class="flex items-center">
                                                     <a href="javascript:" title="Edit"
                                                         wire:click="selectArrayItem({{ $loop->index }})"
@@ -146,8 +149,10 @@
                                                                 clip-rule="evenodd" />
                                                         </svg>
                                                     </a>
+
                                                     &nbsp;
                                                     &nbsp;
+
                                                     <a href="javascript:" title="Delete"
                                                         wire:click="selectArrayItem({{ $loop->index }}, 'Delete')"
                                                         class="text-gray-500 mt-1 ml-2">
@@ -158,6 +163,7 @@
                                                                 clip-rule="evenodd" />
                                                         </svg>
                                                     </a>
+
                                                 </div>
                                             </td>
                                         </tr>
