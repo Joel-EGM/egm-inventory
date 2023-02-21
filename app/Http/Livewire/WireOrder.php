@@ -13,6 +13,7 @@ use App\Models\Stock;
 use App\Http\Traits\ModalVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Carbon\Carbon;
+use PDF;
 use DB;
 
 class WireOrder extends Component implements FieldValidationMessage
@@ -530,5 +531,23 @@ class WireOrder extends Component implements FieldValidationMessage
     private function computeTotalAmount()
     {
         $this->total_amount = number_format($this->quantity * $this->unitPrice, 2, '.', '');
+    }
+
+    public function generatePDF($id)
+    {
+        $this->details = OrderDetail::where('order_id', $id)->get()->toArray();
+        dd($this->details);
+        $findData = $this->details;
+
+        $data = [
+            'details' => $findData
+        ];
+
+        $pdf = PDF::loadView('orderpdf', $data)->output();
+
+        return response()->stream(
+            fn () => print($pdf),
+            'PO_report_'.today()->toDateString().'.pdf'
+        );
     }
 }
