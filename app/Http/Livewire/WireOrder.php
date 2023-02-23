@@ -333,7 +333,7 @@ class WireOrder extends Component implements FieldValidationMessage
     private function saveCheckedItems()
     {
         $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get()->toArray();
-
+        // dd($getid);
         foreach ($getid as $detail) {
             Stock::create([
 
@@ -346,7 +346,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 'price' => $detail['price'],
 
             ]);
-            break;
+            // break;
         }
 
         OrderDetail::whereIn('id', $this->selectedRecord)->update([
@@ -533,21 +533,23 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->total_amount = number_format($this->quantity * $this->unitPrice, 2, '.', '');
     }
 
-    public function generatePDF($id)
-    {
-        $this->details = OrderDetail::where('order_id', $id)->get()->toArray();
-        dd($this->details);
-        $findData = $this->details;
+    // public function generatePDF($id)
+    // {
+    //     $findData = OrderDetail::where('order_id', $id)->get();
 
-        $data = [
-            'details' => $findData
-        ];
+    //     // dd($findData);
 
-        $pdf = PDF::loadView('orderpdf', $data)->output();
+    //     $data = [
+    //         'orderDetails' => $findData
+    //     ];
 
-        return response()->stream(
-            fn () => print($pdf),
-            'PO_report_'.today()->toDateString().'.pdf'
-        );
-    }
+    //     // $dop = $data->items->getAttributes();
+    //     // dd($data);
+    //     $pdf = PDF::loadView('orderpdf', $data)->output();
+
+    //     return response()->stream(
+    //         fn () => print($pdf),
+    //         'PO_report_'.today()->toDateString().'.pdf'
+    //     );
+    // }
 }

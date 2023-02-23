@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\StocksExport;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Stock;
+use Illuminate\Http\Request;
+use App\Models\OrderDetail;
 use PDF;
 use DB;
 
-class ExportController extends Controller
+class ExportDetailsController extends Controller
 {
-    public function __invoke(Stock $stock)
+    /**
+     * Handle the incoming request.
+     */
+    public function __invoke(OrderDetail $detail)
     {
     }
 
@@ -22,7 +24,7 @@ class ExportController extends Controller
 
         $getID = last(request()->segments());
 
-        $stock = DB::select("CALL getData($getID)");
+        $stock = DB::select("CALL getOrderDetails($getID)");
 
         $data = [
             'stocks' => $stock
@@ -31,14 +33,5 @@ class ExportController extends Controller
         $pdf = PDF::loadView('pdfFormat', $data);
 
         return $pdf->stream('stocksreport_'.today()->toDateString().'.pdf');
-    }
-
-    public function export()
-    {
-        return Excel::download(new StocksExport(), 'stocksreport.xlsx');
-    }
-
-    public function generatePO()
-    {
     }
 }

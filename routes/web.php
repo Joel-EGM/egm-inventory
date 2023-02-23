@@ -41,9 +41,10 @@ Route::middleware([
     Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
 
     //EXPORT TO PDF
-    Route::get('generate-pdf/1', [ExportController::class, 'generatePDF'])->name('generate-pdf1');
-    Route::get('generate-pdf/2', [ExportController::class, 'generatePDF'])->name('generate-pdf2');
+    Route::get('stocks/generate-pdf/{stock}', [ExportController::class, 'generatePDF'])->name('generate-pdf');
 
     //EXPORT TO EXCEL
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
+
+    // Route::get('oreders/generate-PO/', [ExportController::class])->name('generatePO');
 });
