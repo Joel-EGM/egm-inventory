@@ -19,13 +19,12 @@
         </tr>
         @foreach ($orderDetails as $detail)
             <tr>
-                <td>{{ $detail->supplier_id }}</td>
-                {{-- <td>{{ $detail->suppliers->suppliers_name }}</td>
-                <td>{{ $detail->items->item_name }}</td>
-                <td>{{ $detail->items->unit_name }}</td>
-                <td>{{ $detail->quantity }}</td>
+                <td>{{ $detail->supplier_name }}</td>
+                <td>{{ $detail->item_name }}</td>
+                <td>{{ $detail->unit_name }}</td>
+                <td>{{ $detail->qty }}</td>
                 <td>{{ $detail->price }}</td>
-                <td>{{ $detail->total_amount }}</td> --}}
+                <td>{{ $detail->tlamt }}</td>
 
             </tr>
         @endforeach

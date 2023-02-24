@@ -16,7 +16,7 @@ class ExportDetailsController extends Controller
     {
     }
 
-    public function generatePDF()
+    public function generatePO()
     {
         // dd(last(request()->path()));
         // $currentURL = url()->current();
@@ -24,14 +24,14 @@ class ExportDetailsController extends Controller
 
         $getID = last(request()->segments());
 
-        $stock = DB::select("CALL getOrderDetails($getID)");
-
+        $findData = DB::select("CALL getOrderDetails($getID)");
+        // dd($findData);
         $data = [
-            'stocks' => $stock
+            'orderDetails' => $findData
         ];
         // dd($data);
-        $pdf = PDF::loadView('pdfFormat', $data);
+        $pdf = PDF::loadView('orderpdf', $data);
 
-        return $pdf->stream('stocksreport_'.today()->toDateString().'.pdf');
+        return $pdf->stream('PO_report_'.today()->toDateString().'.pdf');
     }
 }

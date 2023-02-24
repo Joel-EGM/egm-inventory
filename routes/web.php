@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ExportDetailsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +47,5 @@ Route::middleware([
     //EXPORT TO EXCEL
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
 
-    // Route::get('oreders/generate-PO/', [ExportController::class])->name('generatePO');
+    Route::get('orders/generate-PO/{detail}', [ExportDetailsController::class, 'generatePO'])->name('generatePO');
 });
