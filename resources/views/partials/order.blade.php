@@ -19,14 +19,22 @@
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
-            <option value="None" class="text-center text-gray-400">--select branch--</option>
-            @foreach ($branches as $branch)
-                <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
+
+            @if (Auth()->user()->branch_id != 1)
+
+                <option value="{{ $branchFind->id }}" class="text-center">{{ $branchFind->branch_name }}
                 </option>
-            @endforeach
+            @else
+                <option value="None" class="text-center text-gray-400">--select branch--</option>
+                @foreach ($branches as $branch)
+                    <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
+                    </option>
+                @endforeach
+            @endif
         </select>
         <x-jet-input-error for="branch_id" class="mt-2" />
     </div>
+
 
     <div class="w-full px-3">
         <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />

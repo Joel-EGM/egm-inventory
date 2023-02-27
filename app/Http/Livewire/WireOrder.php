@@ -38,6 +38,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $branches;
 
     public $branch_name;
+    public $branchFind;
     public $order_details;
     public $order_date;
     public $order_status;
@@ -90,6 +91,10 @@ class WireOrder extends Component implements FieldValidationMessage
         } else {
             $this->orders = Order::all();
         }
+
+
+        $this->branchFind = Branch::where('id', $user)->first();
+        // dd($this->branchFind);
     }
 
     public function render()

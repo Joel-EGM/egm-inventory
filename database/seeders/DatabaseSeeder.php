@@ -60,36 +60,41 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Supplier::factory()->count(1)->create([
+            'suppliers_name' => 'Head Office',
+            'suppliers_email' => 'nation@l.com',
+            'suppliers_contact' => '098765432',
+        ]);
+        Supplier::factory()->count(1)->create([
             'suppliers_name' => 'National Bookstrore',
             'suppliers_email' => 'nation@l.com',
             'suppliers_contact' => '098765432',
         ]);
         Supplier::factory()->count(1)->create([
-            'suppliers_name' => 'Pacifi',
+            'suppliers_name' => 'Pacific',
             'suppliers_email' => 'pacifc@g.com',
             'suppliers_contact' => '0982374629',
         ]);
 
         ItemPrice::factory()->count(1)->create([
-            'supplier_id' => '1',
+            'supplier_id' => '2',
             'item_id' => '1',
             'price_perUnit' => '1000',
             'price_perPieces' => '10',
         ]);
         ItemPrice::factory()->count(1)->create([
-            'supplier_id' => '1',
+            'supplier_id' => '2',
             'item_id' => '2',
             'price_perUnit' => '300',
             'price_perPieces' => '5',
         ]);
         ItemPrice::factory()->count(1)->create([
-            'supplier_id' => '2',
+            'supplier_id' => '3',
             'item_id' => '1',
             'price_perUnit' => '1500',
             'price_perPieces' => '20',
         ]);
         ItemPrice::factory()->count(1)->create([
-            'supplier_id' => '2',
+            'supplier_id' => '3',
             'item_id' => '2',
             'price_perUnit' => '250',
             'price_perPieces' => '17',
