@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->string('item_name');
             $table->string('unit_name');
             $table->integer('pieces_perUnit');
+            $table->boolean('fixed_unit')->default(0);
             $table->timestamps();
         });
     }

@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
             'item_name' => 'bond paper',
             'unit_name' => 'rim',
             'pieces_perUnit' => '200',
+            'fixed_unit' => '1',
         ]);
         Item::factory()->count(1)->create([
             'item_name' => 'ballpen',

@@ -16,6 +16,7 @@ class Item extends Model
         'item_name',
         'unit_name',
         'pieces_perUnit',
+        'fixed_unit',
     ];
 
     public function stocks()
