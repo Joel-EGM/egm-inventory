@@ -494,6 +494,10 @@ class WireOrder extends Component implements FieldValidationMessage
     public function updatedItemId()
     {
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
+        // dd($this->unitName);
+        // if ($this->unitName->pluck('fixed_unit')->first() === 1) {
+        //     dd('gg');
+        // }
     }
 
     public function updatedUnitId()
@@ -512,7 +516,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
         $unitId = (int) $explodeResult[0];
         $unitString = $explodeResult[1];
-
+        // dd($unitId);
         $unitPrice = ItemPrice::where('item_id', (int) $unitId)->where('supplier_id', $this->supplier_id)->first();
 
         $this->unitPrice = $unitPrice->price_perPieces;
