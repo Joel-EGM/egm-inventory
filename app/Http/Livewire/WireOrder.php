@@ -53,7 +53,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $users;
 
     public $completedOrder = false;
-
+    // public $fixed_unit;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -333,12 +333,21 @@ class WireOrder extends Component implements FieldValidationMessage
         } else {
             $this->saveCheckedItems();
         }
+
+        $this->reset(['selectedRecord']);
     }
 
     private function saveCheckedItems()
     {
         $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get()->toArray();
-        // dd($getid);
+        // dd($getid->pluck('item_id'));
+        // dd($this->selectedRecord);
+        $getDataArray = collect($getid);
+        $getSelectedItem = $getDataArray->pluck('item_id')->first();
+        $getQuantity = $this->items->where('id', $getSelectedItem)->pluck('pieces_perUnit')->first();
+        // {
+        //     dd($detail['quantity'] * $getQuantity);
+        // }
         foreach ($getid as $detail) {
             Stock::create([
 
@@ -346,7 +355,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 'item_id' => $detail['item_id'],
 
-                'quantity' => $detail['quantity'],
+                'quantity' => $detail['quantity'] * $getQuantity,
 
                 'price' => $detail['price'],
 
@@ -495,9 +504,10 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
         // dd($this->unitName);
-        // if ($this->unitName->pluck('fixed_unit')->first() === 1) {
-        //     dd('gg');
-        // }
+        if ($this->unitName->pluck('fixed_unit')->first() === 1) {
+            $this->loadPrice();
+        }
+        // $fixed_unit = $this->unitName->pluck('fixed_unit')->first();
     }
 
     public function updatedUnitId()
@@ -518,7 +528,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $unitString = $explodeResult[1];
         // dd($unitId);
         $unitPrice = ItemPrice::where('item_id', (int) $unitId)->where('supplier_id', $this->supplier_id)->first();
-
+        // dd($unitId);
         $this->unitPrice = $unitPrice->price_perPieces;
 
 
@@ -530,6 +540,14 @@ class WireOrder extends Component implements FieldValidationMessage
         if ($this->quantity > 0) {
             $this->computeTotalAmount();
         }
+    }
+
+    public function loadPrice()
+    {
+        $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->where('supplier_id', $this->supplier_id)->first();
+        $this->unitPrice = $unitPrice->price_perUnit;
+        // dd($this->unitPrice);
+        // dd($unitPrice);
     }
 
     public function updatedQuantity()
