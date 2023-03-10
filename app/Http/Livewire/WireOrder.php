@@ -54,7 +54,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $users;
 
     public $completedOrder = false;
-    // public $fixed_unit;
+    public $unitString;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -141,7 +141,27 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 ]);
             }
-            dd($this->unitPriceID);
+
+
+            $price = $this->unitPriceID->price_perPieces;
+
+            if ($this->unitString === "Unit") {
+                $price = $this->unitPriceID->price_perUnit;
+
+                if ($this->unitPrice === $price) {
+                    dd('same');
+                } else {
+                    dd('not same');
+                }
+            } else {
+                if ($this->unitPrice === $price) {
+                    dd('pieces same');
+                } else {
+                    dd('pieces not same');
+                }
+            }
+
+            // dd($this->unitPriceID);
             $this->orders->push($orders);
             $this->clearForm();
             $this->modalToggle();
@@ -554,7 +574,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $explodeResult = explode(' ', $this->unit_id);
 
         $unitId = (int) $explodeResult[0];
-        $unitString = $explodeResult[1];
+        $this->unitString = $explodeResult[1];
         // dd($unitId);
         $this->unitPriceID = ItemPrice::where('item_id', (int) $unitId)->where('supplier_id', $this->supplier_id)->first();
         // dd($unitId);
@@ -562,7 +582,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
 
 
-        if ($unitString === "Unit") {
+        if ($this->unitString === "Unit") {
             $this->unitPrice = $this->unitPriceID->price_perUnit;
         }
 
