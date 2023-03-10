@@ -65,13 +65,19 @@
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
             <option value="None" class="text-center text-gray-400">--select item--</option>
-
-            @foreach ($itemList as $item)
-                <option value="{{ $item['item_id'] }}" class="text-center">{{ $item['items']['item_name'] }}
-                    {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
-                </option>
-            @endforeach
-
+            @if (Auth()->user()->branch_id != 1)
+                @foreach ($itemList as $item)
+                    <option value="{{ $item['id'] }}" class="text-center">{{ $item['item_name'] }}
+                        {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
+                    </option>
+                @endforeach
+            @else
+                @foreach ($itemList as $item)
+                    <option value="{{ $item['item_id'] }}" class="text-center">{{ $item['items']['item_name'] }}
+                        {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
+                    </option>
+                @endforeach
+            @endif
         </select>
         <x-jet-input-error for="item_id" class="mt-2" />
     </div>
@@ -83,7 +89,6 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-
             <option value="None" class="text-center text-gray-400">--select unit--</option>
             @foreach ($unitName as $unit)
                 <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
@@ -117,12 +122,12 @@
 <br />
 <div class="flex flex-row space-x-4">
 
-    <x-jet-input wire:model.debounce.250ms="quantity" x-ref="quantity" id="quantity" type="text" maxlength="50"
+    <x-jet-input wire:model.debounce.250ms="quantity" x-ref="quantity" id="quantity" type="number" maxlength="50"
         class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
     <x-jet-input-error for="quantity" class="mt-2" />
 
     <x-jet-input wire:model="unitPrice" x-ref="unitPrice" id="unitPrice" type="text" maxlength="50"
-        class="mt-1 block w-full text-center bg-gray-300" placeholder="Price" autocomplete="unitPrice" readonly />
+        class="mt-1 block w-full text-center" placeholder="Price" autocomplete="unitPrice" />
     <x-jet-input-error for="unitPrice" class="mt-2" />
 
     <x-jet-input wire:model="total_amount" x-ref="total_amount" id="total_amount" type="text" maxlength="50"
