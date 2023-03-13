@@ -56,6 +56,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $completedOrder = false;
     public $unitString;
 
+
     protected $rules = [
         'item_id' => 'bail|required',
         'order_date'  => 'bail|required|date',
@@ -84,6 +85,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->order_date = Carbon::now()->format('Y-m-d');
 
         // $this->users = User::where('id')->get();
+        // $this->unit_id = $this->item_id." Unit";
 
         $user = Auth()->user()->branch_id;
 
@@ -142,24 +144,6 @@ class WireOrder extends Component implements FieldValidationMessage
                 ]);
             }
 
-
-            $price = $this->unitPriceID->price_perPieces;
-
-            if ($this->unitString === "Unit") {
-                $price = $this->unitPriceID->price_perUnit;
-
-                if ($this->unitPrice === $price) {
-                    dd('same');
-                } else {
-                    dd('not same');
-                }
-            } else {
-                if ($this->unitPrice === $price) {
-                    dd('pieces same');
-                } else {
-                    dd('pieces not same');
-                }
-            }
 
             // dd($this->unitPriceID);
             $this->orders->push($orders);
@@ -257,6 +241,27 @@ class WireOrder extends Component implements FieldValidationMessage
         'price' => $this->unitPrice,
         'total_amount' => $this->total_amount,
         ]);
+
+
+        // $price = $this->unitPriceID->price_perPieces;
+        $id = $this->unitPriceID['id'];
+
+        $ipq = ItemPrice::whereId($id);
+
+
+        if ($this->unitString === "Unit") {
+            $price = $this->unitPriceID->price_perUnit;
+
+            if ($this->unitPrice != $price) {
+                $ipq->update(['price_perUnit' => $this->unitPrice,]);
+            }
+        } else {
+            $price = $this->unitPriceID->price_perPieces;
+
+            if ($this->unitPrice != $price) {
+                $ipq->update(['price_perPieces' => $this->unitPrice,]);
+            }
+        }
     }
 
     public function removeItem($index)
@@ -552,11 +557,14 @@ class WireOrder extends Component implements FieldValidationMessage
     public function updatedItemId()
     {
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
-        // dd($this->unitName);
+
         if ($this->unitName->pluck('fixed_unit')->first() === 1) {
+            $this->unitString = "Unit";
+            $this->unitType = $this->item_id;
+            $this->unit_id = $this->item_id;
+            $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();
             $this->loadPrice();
         }
-        // $fixed_unit = $this->unitName->pluck('fixed_unit')->first();
     }
 
     public function updatedUnitId()
@@ -593,11 +601,8 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function loadPrice()
     {
-        // dd($this->unitName);
         $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->where('supplier_id', $this->supplier_id)->first();
         $this->unitPrice = $unitPrice->price_perUnit;
-        // dd($this->unitPrice);
-        // dd($unitPrice);
     }
 
     public function updatedQuantity()

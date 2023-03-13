@@ -89,9 +89,14 @@
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
              leading-tight focus:outline-none focus:shadow-outline">
-            <option value="None" class="text-center text-gray-400">--select unit--</option>
+
             @foreach ($unitName as $unit)
-                <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                @if ($unit->fixed_unit != 1)
+                    <option value="None" class="text-center text-gray-400">--select unit--</option>
+                    <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                @else
+                    <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                @endif
             @endforeach
 
         </select>
@@ -111,7 +116,7 @@
                     <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
                     <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
                 @else
-                    <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
+                    <option class="w-full text-center" value="{{ $unit->id }} Unit" selected>Per Unit</option>
                 @endif
             @endforeach
         </select>
@@ -122,7 +127,7 @@
 <br />
 <div class="flex flex-row space-x-4">
 
-    <x-jet-input wire:model.debounce.250ms="quantity" x-ref="quantity" id="quantity" type="number" maxlength="50"
+    <x-jet-input wire:model="quantity" x-ref="quantity" id="quantity" type="number" maxlength="50"
         class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
     <x-jet-input-error for="quantity" class="mt-2" />
 
@@ -147,14 +152,14 @@
 {{-- <br />
 <div>
     <x-jet-label for="price_perUnit" value="{{ __('Price Per Unit') }}" />
-    <x-jet-input wire:model.debounce.1000ms="price_perUnit" x-ref="price_perUnit" id="price_perUnit" type="text"
+    <x-jet-input wire:model="price_perUnit" x-ref="price_perUnit" id="price_perUnit" type="text"
         maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perUnit" />
     <x-jet-input-error for="price_perUnit" class="mt-2" />
 </div>
 <br />
 <div>
     <x-jet-label for="price_perPieces" value="{{ __('Price Per Pieces') }}" />
-    <x-jet-input wire:model.debounce.1000ms="price_perPieces" x-ref="price_perPieces" id="price_perPieces"
+    <x-jet-input wire:model="price_perPieces" x-ref="price_perPieces" id="price_perPieces"
         type="text" maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perPieces" />
     <x-jet-input-error for="price_perPieces" class="mt-2" />
 </div>
