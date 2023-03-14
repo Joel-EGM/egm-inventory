@@ -19,6 +19,7 @@ class WireItem extends Component implements FieldValidationMessage
     public $unitName;
     public $suppliers;
     public $piecesPerUnit;
+    public $fixedUnit = false;
 
     protected $rules = [
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
@@ -57,16 +58,31 @@ class WireItem extends Component implements FieldValidationMessage
         $validatedItem = $this->validate();
 
         if (is_null($this->Index)) {
-            $item = Item::create([
+            if ($this->fixedUnit === false) {
+                $item = Item::create([
 
 
-                'item_name' => $this->itemName,
+                    'item_name' => $this->itemName,
 
-                'unit_name' => $this->unitName,
+                    'unit_name' => $this->unitName,
 
-                'pieces_perUnit' => $this->piecesPerUnit,
+                    'pieces_perUnit' => $this->piecesPerUnit,
 
-            ]);
+                    'fixed_unit' => 0,
+                ]);
+            } else {
+                $item = Item::create([
+
+
+                    'item_name' => $this->itemName,
+
+                    'unit_name' => $this->unitName,
+
+                    'pieces_perUnit' => $this->piecesPerUnit,
+
+                    'fixed_unit' => 1,
+                ]);
+            }
 
             $this->items->push($item);
 
@@ -90,11 +106,14 @@ class WireItem extends Component implements FieldValidationMessage
 
                 'pieces_perUnit' => $this->piecesPerUnit,
 
+                'fixed_unit' => $this->fixedUnit,
+
             ]);
 
             $this->items[$this->Index]['item_name'] = $this->itemName;
             $this->items[$this->Index]['unit_name'] = $this->unitName;
             $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+            $this->items[$this->Index]['fixed_unit'] = $this->fixedUnit;
 
             $this->items->push();
             $this->Index = null;
@@ -138,6 +157,7 @@ class WireItem extends Component implements FieldValidationMessage
         $this->itemName = $this->items[$this->Index]['item_name'];
         $this->unitName = $this->items[$this->Index]['unit_name'];
         $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];
+        $this->fixedUnit = $this->items[$this->Index]['fixed_unit'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';

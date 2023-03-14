@@ -22,4 +22,5 @@
             class="mt-1 block w-full" autocomplete="piecesPerUnit" />
         <x-jet-input-error for="piecesPerUnit" class="mt-2" />
     </div>
+    <input type="checkbox" wire:model="fixedUnit">Fix Unit
 </div>
