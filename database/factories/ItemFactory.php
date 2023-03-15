@@ -19,6 +19,7 @@ class ItemFactory extends Factory
             'unit_name' => $this->faker->cityPrefix(),
             'pieces_perUnit' => $this->faker->numberBetween(0, 100),
             'fixed_unit' => $this->faker->numberBetween(0, 1),
+            'reorder_level' => $this->faker->numberBetween(0, 20),
         ];
     }
 }

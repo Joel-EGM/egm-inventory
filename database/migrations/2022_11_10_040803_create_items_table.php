@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->string('unit_name');
             $table->integer('pieces_perUnit');
             $table->boolean('fixed_unit')->default(0);
+            $table->integer('reorder_level');
             $table->timestamps();
         });
     }

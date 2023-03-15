@@ -53,11 +53,13 @@ class DatabaseSeeder extends Seeder
             'unit_name' => 'rim',
             'pieces_perUnit' => '200',
             'fixed_unit' => '1',
+            'reorder_level' => '10',
         ]);
         Item::factory()->count(1)->create([
             'item_name' => 'ballpen',
             'unit_name' => 'box',
             'pieces_perUnit' => '100',
+            'reorder_level' => '5',
         ]);
 
         Supplier::factory()->count(1)->create([

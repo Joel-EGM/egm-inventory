@@ -17,6 +17,7 @@ class Item extends Model
         'unit_name',
         'pieces_perUnit',
         'fixed_unit',
+        'reorder_level',
     ];
 
     public function stocks()
