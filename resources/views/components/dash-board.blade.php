@@ -93,7 +93,10 @@
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Reorder level
                                             </th>
-
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -107,6 +110,9 @@
                                                     {{ $stock->totalqty }}</td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock->reorder_level }}</td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    <a href="#">PLACE ORDER</a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
