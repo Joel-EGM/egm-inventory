@@ -19,6 +19,7 @@ class WireItem extends Component implements FieldValidationMessage
     public $unitName;
     public $suppliers;
     public $piecesPerUnit;
+    public $reorder_level;
     public $fixedUnit = false;
 
     protected $rules = [
@@ -68,6 +69,8 @@ class WireItem extends Component implements FieldValidationMessage
 
                     'pieces_perUnit' => $this->piecesPerUnit,
 
+                    'reorder_level' => $this->reorder_level,
+
                     'fixed_unit' => 0,
                 ]);
             } else {
@@ -79,6 +82,8 @@ class WireItem extends Component implements FieldValidationMessage
                     'unit_name' => $this->unitName,
 
                     'pieces_perUnit' => $this->piecesPerUnit,
+
+                    'reorder_level' => $this->reorder_level,
 
                     'fixed_unit' => 1,
                 ]);
@@ -106,6 +111,8 @@ class WireItem extends Component implements FieldValidationMessage
 
                 'pieces_perUnit' => $this->piecesPerUnit,
 
+                'reorder_level' => $this->reorder_level,
+
                 'fixed_unit' => $this->fixedUnit,
 
             ]);
@@ -113,6 +120,7 @@ class WireItem extends Component implements FieldValidationMessage
             $this->items[$this->Index]['item_name'] = $this->itemName;
             $this->items[$this->Index]['unit_name'] = $this->unitName;
             $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+            $this->items[$this->Index]['reorder_level'] = $this->reorder_level;
             $this->items[$this->Index]['fixed_unit'] = $this->fixedUnit;
 
             $this->items->push();
@@ -157,6 +165,7 @@ class WireItem extends Component implements FieldValidationMessage
         $this->itemName = $this->items[$this->Index]['item_name'];
         $this->unitName = $this->items[$this->Index]['unit_name'];
         $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];
+        $this->reorder_level = $this->items[$this->Index]['reorder_level'];
         $this->fixedUnit = $this->items[$this->Index]['fixed_unit'];
 
         if (!$formAction) {

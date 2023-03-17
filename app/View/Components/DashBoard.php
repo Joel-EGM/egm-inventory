@@ -7,24 +7,30 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use App\Models\Branch;
 use App\Models\Order;
+use App\Models\Stock;
+use App\Models\Item;
+use DB;
 
 class DashBoard extends Component
 {
     public $branches;
     public $orders;
+    public $totalQuantity;
+    public $lowStocks;
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
         $this->branches = Branch::select('id')->get();
+
         $this->orders = Order::select('id')->where('order_status', 'pending')->get();
+
+        $this->lowStocks = DB::select("CALL getLowOnStocks");
+       
     }
 
-    // public function mount()
-    // {
-    //     $this->branches = Branch::all();
-    // }
+
 
     /**
      * Get the view / contents that represent the component.

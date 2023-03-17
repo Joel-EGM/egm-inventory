@@ -33,7 +33,7 @@
                             </div>
 
                             <div class="mx-5">
-                                <div class="text-gray-500 text-sm font-bold">Pending PO (Bracnh to HO)</div>
+                                <div class="text-gray-500 text-sm font-bold">Pending PO (Branch to HO)</div>
                                 <h4 class="text-2xl font-bold text-gray-700">215,542</h4>
                             </div>
                         </div>
@@ -66,9 +66,51 @@
                                 </svg>
                             </div>
 
-                            <div class="mx-5">
-                                <div class="text-gray-500 text-sm font-bold">Current Stocks</div>
-                                <h4 class="text-2xl font-bold text-gray-700">215,542</h4>
+                            {{-- <div class="mx-5">
+                                <div class="text-gray-500 text-sm font-bold">Low Stock Alert</div>
+                                <h4 class="text-2xl font-bold text-gray-700">{{ $reorder->count() }}</h4>
+                            </div> --}}
+
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full px-3 py-3 xl:w">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Item Name
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Quantity
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Reorder level
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($lowStocks as $stock)
+                                            <tr
+                                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->item_name }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->totalqty }}</td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->reorder_level }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -74,7 +74,7 @@
                                     <tr>
 
                                         <th
-                                            class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            class="w-1/4 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Item Name
                                         </th>
                                         <th
@@ -84,6 +84,10 @@
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             PiecesPerUnit
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Reorder Level
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -110,6 +114,7 @@
                                                 {{ ucfirst(trans($item->item_name)) }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->pieces_perUnit }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->reorder_level }}</td>
 
 
                                             <td
