@@ -6,8 +6,8 @@ use Livewire\Component;
 use App\Models\Stock;
 use App\Models\ViewData;
 use App\Http\Traits\ModalVariables;
-use DB;
-use PDF;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class WireStock extends Component
 {

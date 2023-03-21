@@ -203,7 +203,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($orderArrays) === 0)
+                        {{-- @if (count($orderArrays) === 0)
                             <tr>
                                 <td colspan="9"
                                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -213,7 +213,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endif
+                        @endif --}}
 
                         @foreach ($orderArrays as $order)
                             <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">

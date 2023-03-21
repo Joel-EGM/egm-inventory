@@ -6,7 +6,7 @@ namespace App\Exports;
 use App\Models\Stock;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class StocksExport implements FromView
 {

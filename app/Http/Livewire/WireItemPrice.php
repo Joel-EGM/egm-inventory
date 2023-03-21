@@ -58,7 +58,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public function submit()
     {
         $validatedItem = $this->validate();
-        // dd($this->priceArrays);
+
         if (is_null($this->Index)) {
             foreach ($this->priceArrays as $priceArray) {
                 $price = ItemPrice::create([

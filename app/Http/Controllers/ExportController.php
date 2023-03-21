@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Exports\StocksExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Stock;
-use PDF;
-use DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class ExportController extends Controller
 {
@@ -16,10 +16,6 @@ class ExportController extends Controller
 
     public function generatePDF()
     {
-        // dd(last(request()->path()));
-        // $currentURL = url()->current();
-        // $explodeURL = explode('/', $currentURL);
-
         $getID = last(request()->segments());
 
         $stock = DB::select("CALL getData($getID)");
@@ -27,7 +23,7 @@ class ExportController extends Controller
         $data = [
             'stocks' => $stock
         ];
-        // dd($data);
+
         $pdf = PDF::loadView('pdfFormat', $data);
 
         return $pdf->stream('stocksreport_'.today()->toDateString().'.pdf');

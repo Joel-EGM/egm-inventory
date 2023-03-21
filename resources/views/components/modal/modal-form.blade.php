@@ -26,7 +26,7 @@
     @if ($formTitle === 'Order Details' || $formTitle === 'View Details')
     @else
         <div class="modal-content flex justify-end p-4 bg-gray-100">
-            <x-jet-secondary-button wire:click.prevent="$emitSelf('modalToggle')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click.prevent="modalToggle" wire:loading.attr="disabled">
                 Cancel
             </x-jet-secondary-button>
 

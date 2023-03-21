@@ -161,7 +161,6 @@ class WireItem extends Component implements FieldValidationMessage
     public function selectArrayItem($index, $formAction = null)
     {
         $this->Index = $index;
-        // dd($this->items[$this->Index]);
         $this->itemName = $this->items[$this->Index]['item_name'];
         $this->unitName = $this->items[$this->Index]['unit_name'];
         $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];
