@@ -100,7 +100,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @if (count($users) === 0)
+                                    @if (count($allusers) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
@@ -110,7 +110,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @foreach ($users as $user)
+                                    @foreach ($allusers as $user)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $user->name }}

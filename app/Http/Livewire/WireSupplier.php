@@ -5,35 +5,31 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
 class WireSupplier extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+    use WireVariables;
 
     public $layoutTitle = 'New Supplier';
 
-    public $suppliers =[];
-    public $supplierName;
-    public $supplierEmail;
-    public $supplierContactNo;
-
-
     protected $rules = [
-        'supplierName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'supplierEmail' => 'bail|required|email',
-        'supplierContactNo' => 'bail|required|numeric',
+        'getsupplierName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
+        'getsupplierEmail' => 'bail|required|email',
+        'getsupplierContactNo' => 'bail|required|numeric',
     ];
 
     public function mount()
     {
-        $this->suppliers = Supplier::all();
+        $this->getsuppliers = Supplier::all();
     }
 
     public function updated($propertyName)
     {
         $wire_models = [
-            'supplierName',
+            'getsupplierName',
         ];
 
         if (in_array($propertyName, $wire_models)) {
@@ -56,15 +52,15 @@ class WireSupplier extends Component implements FieldValidationMessage
         if (is_null($this->Index)) {
             $supplier = Supplier::create([
 
-                'suppliers_name' => $this->supplierName,
+                'suppliers_name' => $this->getsupplierName,
 
-                'suppliers_email' => $this->supplierEmail,
+                'suppliers_email' => $this->getsupplierEmail,
 
-                'suppliers_contact' => $this->supplierContactNo,
+                'suppliers_contact' => $this->getsupplierContactNo,
 
             ]);
 
-            $this->suppliers->push($supplier);
+            $this->getsuppliers->push($supplier);
 
             $this->clearForm();
             $this->modalToggle();
@@ -76,22 +72,22 @@ class WireSupplier extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->suppliers[$this->Index]['id'];
+            $id = $this->getsuppliers[$this->Index]['id'];
             Supplier::whereId($id)->update([
 
-                'suppliers_name' => $this->supplierName,
+                'suppliers_name' => $this->getsupplierName,
 
-                'suppliers_email' => $this->supplierEmail,
+                'suppliers_email' => $this->getsupplierEmail,
 
-                'suppliers_contact' => $this->supplierContactNo,
+                'suppliers_contact' => $this->getsupplierContactNo,
 
             ]);
 
-            $this->suppliers[$this->Index]['suppliers_name'] = $this->supplierName;
+            $this->getsuppliers[$this->Index]['suppliers_name'] = $this->getsupplierName;
 
-            $this->suppliers[$this->Index]['suppliers_email'] = $this->supplierEmail;
+            $this->getsuppliers[$this->Index]['suppliers_email'] = $this->getsupplierEmail;
 
-            $this->suppliers[$this->Index]['suppliers_contact'] = $this->supplierContactNo;
+            $this->getsuppliers[$this->Index]['suppliers_contact'] = $this->getsupplierContactNo;
 
             $this->Index = null;
             $this->clearForm();
@@ -113,18 +109,18 @@ class WireSupplier extends Component implements FieldValidationMessage
             'isDeleteOpen',
             'Index',
             'formTitle',
-            'supplierName',
-            'supplierEmail',
-            'supplierContactNo',
+            'getsupplierName',
+            'getsupplierEmail',
+            'getsupplierContactNo',
         ]);
     }
 
     public function clearForm()
     {
         $this->reset([
-            'supplierName',
-            'supplierEmail',
-            'supplierContactNo',
+            'getsupplierName',
+            'getsupplierEmail',
+            'getsupplierContactNo',
         ]);
     }
 
@@ -132,11 +128,11 @@ class WireSupplier extends Component implements FieldValidationMessage
     {
         $this->Index = $Index;
 
-        $this->supplierName = $this->suppliers[$this->Index]['suppliers_name'];
+        $this->getsupplierName = $this->getsuppliers[$this->Index]['suppliers_name'];
 
-        $this->supplierEmail = $this->suppliers[$this->Index]['suppliers_email'];
+        $this->getsupplierEmail = $this->getsuppliers[$this->Index]['suppliers_email'];
 
-        $this->supplierContactNo = $this->suppliers[$this->Index]['suppliers_contact'];
+        $this->getsupplierContactNo = $this->getsuppliers[$this->Index]['suppliers_contact'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Supplier';
@@ -149,17 +145,17 @@ class WireSupplier extends Component implements FieldValidationMessage
 
     public function deleteArrayItem()
     {
-        $id = $this->suppliers[$this->Index]['id'];
+        $id = $this->getsuppliers[$this->Index]['id'];
         Supplier::find($id)->delete();
 
 
-        $filtered = $this->suppliers->reject(function ($value, $key) use ($id) {
+        $filtered = $this->getsuppliers->reject(function ($value, $key) use ($id) {
             return $value->id === $id;
         });
 
 
         $filtered->all();
-        $this->suppliers = $filtered;
+        $this->getsuppliers = $filtered;
         $this->modalToggle('Delete');
 
         $notificationMessage2 = 'Record successfully deleted.';

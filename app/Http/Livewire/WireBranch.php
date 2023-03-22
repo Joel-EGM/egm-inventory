@@ -5,18 +5,15 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Branch;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
 class WireBranch extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+    use WireVariables;
 
     public $layoutTitle = 'New Branch';
-
-    public $branches =[];
-    public $branchName;
-    public $branchAddress;
-    public $branchContactNo;
 
     protected $rules = [
         'branchName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
@@ -26,7 +23,7 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->branches = Branch::all();
+        $this->allbranches = Branch::all();
     }
 
     public function updated($propertyName)
@@ -63,7 +60,7 @@ class WireBranch extends Component implements FieldValidationMessage
 
             ]);
 
-            $this->branches->push($branch);
+            $this->allbranches->push($branch);
 
             $this->clearForm();
             $this->modalToggle();
@@ -75,7 +72,7 @@ class WireBranch extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->branches[$this->Index]['id'];
+            $id = $this->allbranches[$this->Index]['id'];
             Branch::whereId($id)->update([
 
                 'branch_name' => $this->branchName,
@@ -87,11 +84,11 @@ class WireBranch extends Component implements FieldValidationMessage
             ]);
 
 
-            $this->branches[$this->Index]['branch_name'] = $this->branchName;
+            $this->allbranches[$this->Index]['branch_name'] = $this->branchName;
 
-            $this->branches[$this->Index]['branch_address'] = $this->branchAddress;
+            $this->allbranches[$this->Index]['branch_address'] = $this->branchAddress;
 
-            $this->branches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
+            $this->allbranches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
 
             $this->Index = null;
             $this->clearForm();
@@ -132,11 +129,11 @@ class WireBranch extends Component implements FieldValidationMessage
     {
         $this->Index = $Index;
 
-        $this->branchName = $this->branches[$this->Index]['branch_name'];
+        $this->branchName = $this->allbranches[$this->Index]['branch_name'];
 
-        $this->branchAddress = $this->branches[$this->Index]['branch_address'];
+        $this->branchAddress = $this->allbranches[$this->Index]['branch_address'];
 
-        $this->branchContactNo = $this->branches[$this->Index]['branch_contactNo'];
+        $this->branchContactNo = $this->allbranches[$this->Index]['branch_contactNo'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Branch';
@@ -149,17 +146,17 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function deleteArrayItem()
     {
-        $id = $this->branches[$this->Index]['id'];
+        $id = $this->allbranches[$this->Index]['id'];
         Branch::find($id)->delete();
 
 
-        $filtered = $this->branches->reject(function ($value, $key) use ($id) {
+        $filtered = $this->allbranches->reject(function ($value, $key) use ($id) {
             return $value->id === $id;
         });
 
 
         $filtered->all();
-        $this->branches = $filtered;
+        $this->allbranches = $filtered;
         $this->modalToggle('Delete');
 
         $notificationMessage2 = 'Record successfully deleted.';

@@ -6,22 +6,16 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Branch;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Illuminate\Support\Facades\Hash;
 
 class WireUser extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+    use WireVariables;
 
     public $layoutTitle = 'New User';
-
-    public $users =[];
-    public $userName;
-    public $userEmail;
-    public $userRole;
-    public $password;
-    public $password_confirmation;
-
 
     public function render()
     {
@@ -39,7 +33,7 @@ class WireUser extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->users = User::all();
+        $this->allusers = User::all();
         $this->branches = Branch::all();
     }
 
@@ -62,7 +56,7 @@ class WireUser extends Component implements FieldValidationMessage
 
             ]);
 
-            $this->users->push($user);
+            $this->allusers->push($user);
 
             $this->clearForm();
             $this->modalToggle();
@@ -74,7 +68,7 @@ class WireUser extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->users[$this->Index]['id'];
+            $id = $this->allusers[$this->Index]['id'];
             User::whereId($id)->update([
 
                 'name' => $this->userName,
@@ -90,15 +84,15 @@ class WireUser extends Component implements FieldValidationMessage
             ]);
 
 
-            $this->users[$this->Index]['name'] = $this->userName;
+            $this->allusers[$this->Index]['name'] = $this->userName;
 
-            $this->users[$this->Index]['email'] = $this->userEmail;
+            $this->allusers[$this->Index]['email'] = $this->userEmail;
 
-            $this->users[$this->Index]['role'] = $this->userRole;
+            $this->allusers[$this->Index]['role'] = $this->userRole;
 
-            $this->users[$this->Index]['branch_id'] = $this->branch_id;
+            $this->allusers[$this->Index]['branch_id'] = $this->branch_id;
 
-            $this->users[$this->Index]['password'] = $this->password;
+            $this->allusers[$this->Index]['password'] = $this->password;
 
             $this->Index = null;
             $this->clearForm();
@@ -141,13 +135,13 @@ class WireUser extends Component implements FieldValidationMessage
     {
         $this->Index = $Index;
 
-        $this->userName = $this->users[$this->Index]['name'];
+        $this->userName = $this->allusers[$this->Index]['name'];
 
-        $this->userEmail = $this->users[$this->Index]['email'];
+        $this->userEmail = $this->allusers[$this->Index]['email'];
 
-        $this->userRole = $this->users[$this->Index]['role'];
+        $this->userRole = $this->allusers[$this->Index]['role'];
 
-        $this->branch_id = $this->users[$this->Index]['branch_id'];
+        $this->branch_id = $this->allusers[$this->Index]['branch_id'];
 
 
         if (!$formAction) {
@@ -161,17 +155,17 @@ class WireUser extends Component implements FieldValidationMessage
 
     public function deleteArrayItem()
     {
-        $id = $this->users[$this->Index]['id'];
+        $id = $this->allusers[$this->Index]['id'];
         User::find($id)->delete();
 
 
-        $filtered = $this->users->reject(function ($value, $key) use ($id) {
+        $filtered = $this->allusers->reject(function ($value, $key) use ($id) {
             return $value->id === $id;
         });
 
 
         $filtered->all();
-        $this->users = $filtered;
+        $this->allusers = $filtered;
         $this->modalToggle('Delete');
 
         $notificationMessage2 = 'Record successfully deleted.';

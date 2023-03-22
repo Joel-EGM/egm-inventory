@@ -11,6 +11,7 @@ use App\Models\ItemPrice;
 use App\Models\OrderDetail;
 use App\Models\Stock;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -19,43 +20,9 @@ use Illuminate\Support\Facades\DB;
 class WireOrder extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+    use WireVariables;
 
     public $layoutTitle = 'Create Order';
-
-    public $orderArrays = [];
-    public $itemList = [];
-    public $unitName = [];
-    public $selectedRecord = [];
-
-    public $order_id;
-    public $unit_id;
-
-    public $getBranchID;
-    public $getOrderID;
-
-    public $orders;
-    public $items;
-    public $branches;
-
-    public $branch_name;
-    public $branchFind;
-    public $order_details;
-    public $order_date;
-    public $order_status;
-    public $details;
-
-    public $quantity;
-    public $price;
-    public $total_amount;
-    public $unitPrice;
-    public $unitType;
-    public $unitPriceID;
-
-    public $users;
-
-    public $completedOrder = false;
-    public $unitString;
-
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -306,6 +273,8 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->unitPrice = $this->order_details[$this->Index]['price'];
 
         $this->total_amount = $this->order_details[$this->Index]['total_amount'];
+        // dd($this->total_amount);
+        // $this->total_amount = $this->order_details[$this->Index]['total_amount'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Order';

@@ -6,25 +6,21 @@ use Livewire\Component;
 use App\Models\Item;
 use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
 class WireItem extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+    use WireVariables;
+
 
     public $layoutTitle = 'New Item';
-
-    public $items = [];
-    public $itemName;
-    public $unitName;
-    public $suppliers;
-    public $piecesPerUnit;
-    public $reorder_level;
-    public $fixedUnit = false;
+   
 
     protected $rules = [
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'unitName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+        'unitIName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
         'piecesPerUnit' => 'bail|required|numeric',
     ];
 
@@ -43,7 +39,7 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $wire_models = [
             'itemName',
-            'unitName',
+            'unitIName',
         ];
 
         if (in_array($propertyName, $wire_models)) {
@@ -65,7 +61,7 @@ class WireItem extends Component implements FieldValidationMessage
 
                     'item_name' => $this->itemName,
 
-                    'unit_name' => $this->unitName,
+                    'unit_name' => $this->unitIName,
 
                     'pieces_perUnit' => $this->piecesPerUnit,
 
@@ -79,7 +75,7 @@ class WireItem extends Component implements FieldValidationMessage
 
                     'item_name' => $this->itemName,
 
-                    'unit_name' => $this->unitName,
+                    'unit_name' => $this->unitIName,
 
                     'pieces_perUnit' => $this->piecesPerUnit,
 
@@ -107,7 +103,7 @@ class WireItem extends Component implements FieldValidationMessage
 
                 'item_name' => $this->itemName,
 
-                'unit_name' => $this->unitName,
+                'unit_name' => $this->unitIName,
 
                 'pieces_perUnit' => $this->piecesPerUnit,
 
@@ -118,7 +114,7 @@ class WireItem extends Component implements FieldValidationMessage
             ]);
 
             $this->items[$this->Index]['item_name'] = $this->itemName;
-            $this->items[$this->Index]['unit_name'] = $this->unitName;
+            $this->items[$this->Index]['unit_name'] = $this->unitIName;
             $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
             $this->items[$this->Index]['reorder_level'] = $this->reorder_level;
             $this->items[$this->Index]['fixed_unit'] = $this->fixedUnit;
@@ -144,7 +140,7 @@ class WireItem extends Component implements FieldValidationMessage
             'Index',
             'formTitle',
             'itemName',
-            'unitName',
+            'unitIName',
             'piecesPerUnit',
         ]);
     }
@@ -153,7 +149,7 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $this->reset([
             'itemName',
-            'unitName',
+            'unitIName',
             'piecesPerUnit',
         ]);
     }
@@ -162,7 +158,7 @@ class WireItem extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
         $this->itemName = $this->items[$this->Index]['item_name'];
-        $this->unitName = $this->items[$this->Index]['unit_name'];
+        $this->unitIName = $this->items[$this->Index]['unit_name'];
         $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];
         $this->reorder_level = $this->items[$this->Index]['reorder_level'];
         $this->fixedUnit = $this->items[$this->Index]['fixed_unit'];

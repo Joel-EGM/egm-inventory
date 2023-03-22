@@ -7,19 +7,15 @@ use App\Models\ItemPrice;
 use App\Models\Item;
 use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 
 class WireItemPrice extends Component implements FieldValidationMessage
 {
     use ModalVariables;
+    use WireVariables;
 
     public $layoutTitle = 'Add Item Price';
-
-    public $items;
-    public $itemprices = [];
-    public $priceArrays = [];
-    public $unitName = [];
-    public $suppliers;
 
     protected $rules = [
         'supplier_id' => 'bail|required',
@@ -30,8 +26,8 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->items = Item::all();
-        $this->suppliers = Supplier::all();
+        $this->allitems = Item::all();
+        $this->allsuppliers = Supplier::all();
         $this->itemprices = ItemPrice::all();
     }
 
@@ -124,7 +120,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
         $this->validate();
 
         $supplierName = '';
-        foreach ($this->suppliers as $supplier) {
+        foreach ($this->allsuppliers as $supplier) {
             if ($supplier->id === (int) $this->supplier_id) {
                 $supplierName = $supplier->suppliers_name;
                 break;
@@ -133,7 +129,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
 
         $itemName = '';
-        foreach ($this->items as $item) {
+        foreach ($this->allitems as $item) {
             if ($item->id === (int) $this->item_id) {
                 $itemName = $item->item_name;
                 break;
@@ -225,7 +221,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
     public function updatedItemId()
     {
-        $this->unitName = Item::select()->where('id', $this->item_id)->get();
+        $this->unitAName = Item::select()->where('id', $this->item_id)->get();
     }
 
     public function modalToggle($formAction = null)
