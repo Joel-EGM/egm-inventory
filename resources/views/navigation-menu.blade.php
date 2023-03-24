@@ -117,9 +117,9 @@
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Settings Dropdown -->
-                <div wire:poll.750ms class="text-sm">
+                {{-- <div wire:poll.750ms class="text-sm">
                     Current Date & Time: {{ now()->format('m/d/y g:i:s a') }}
-                </div>
+                </div> --}}
                 <div class="ml-3 relative">
                     <x-jet-dropdown align="right" width="48" class="bg-gray-800">
                         <x-slot name="trigger">
