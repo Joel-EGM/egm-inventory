@@ -97,7 +97,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @if (count($items) === 0)
+                                    @if (count($allitems) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
@@ -107,7 +107,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @foreach ($items as $item)
+                                    @foreach ($allitems as $item)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">

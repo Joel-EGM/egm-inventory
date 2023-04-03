@@ -23,6 +23,7 @@ class WireOrder extends Component implements FieldValidationMessage
     use WireVariables;
 
     public $layoutTitle = 'Create Order';
+    public $oBranch;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -59,6 +60,10 @@ class WireOrder extends Component implements FieldValidationMessage
 
 
         $this->branchFind = Branch::where('id', $user)->first();
+
+        // dd($this->order_details[0]->branches);
+        // $OD = OrderDetail::find(1);
+        // dd($OD->branches);
     }
 
     public function render()
@@ -125,11 +130,32 @@ class WireOrder extends Component implements FieldValidationMessage
 
             ]);
 
-            $this->orders[$this->Index]['branch_name'] = $this->branch_id;
 
-            $this->orders[$this->Index]['supplier_name'] = $this->supplier_id;
+            foreach ($this->orderArrays as $orderArray) {
+                $orders->orderDetails()->update([
 
-            $this->orders[$this->Index]['item_name'] = $this->item_id;
+                    'order_id' => $orders->id,
+
+                    'supplier_id' => $orderArray['supplier_id'],
+
+                    'item_id' => $orderArray['item_id'],
+
+                    'unit_id' => $orderArray['unit_id'],
+
+                    'price' => $orderArray['price'],
+
+                    'quantity' => $orderArray['quantity'],
+
+                    'total_amount' => $orderArray['total_amount'],
+
+                    'order_status' => 'pending',
+
+                    'is_received'   => 0,
+
+                ]);
+            }
+
+            $this->orders->push($orders);
 
             $this->Index = null;
             $this->clearForm();
@@ -253,33 +279,49 @@ class WireOrder extends Component implements FieldValidationMessage
             'orderArrays',
         ]);
     }
+    public function edit($id, $formAction = null)
+    {
+        // dd($this->Index);
+        $this->order_date = $this->orders->where('id', $id)->pluck('order_date')->first();
+
+        $this->branch_id = $this->orders->where('id', $id)->pluck('branch_id')->first();
+        // dd($this->branch_id);
+        $this->orderArrays = OrderDetail::with('branches')->where('order_id', $id)->get();
+        $this->oBranch = Order::find($this->orderArrays->pluck('order_id')->first());
+        // dd($this->oBranch->branches);
+        if (!$formAction) {
+            $this->formTitle = 'Edit Order';
+            $this->isFormOpen = true;
+        }
+
+        // $this->clearForm();
+    }
 
     public function selectArrayItem($index, $formAction = null)
     {
         $this->Index = $index;
 
-        $this->order_date = $this->orders[$this->Index]['order_date'];
+        // $this->order_date = $this->orders[$this->Index]['order_date'];
 
-        $this->branch_id = $this->orders[$this->Index]['branch_id'];
+        // $this->branch_id = $this->orders[$this->Index]['branch_id'];
 
-        $this->supplier_id = $this->order_details[$this->Index]['supplier_id'];
+        // $this->supplier_id = $this->order_details[$this->Index]['supplier_id'];
 
-        $this->item_id = $this->order_details[$this->Index]['item_id'];
+        // $this->item_id = $this->order_details[$this->Index]['item_id'];
 
-        $this->unitType = $this->order_details[$this->Index]['unit_name'];
+        // $this->unitType = $this->order_details[$this->Index]['unit_name'];
 
-        $this->quantity = $this->order_details[$this->Index]['quantity'];
+        // $this->quantity = $this->order_details[$this->Index]['quantity'];
 
-        $this->unitPrice = $this->order_details[$this->Index]['price'];
+        // $this->unitPrice = $this->order_details[$this->Index]['price'];
 
-        $this->total_amount = $this->order_details[$this->Index]['total_amount'];
+        // $this->total_amount = $this->order_details[$this->Index]['total_amount'];
         // dd($this->total_amount);
         // $this->total_amount = $this->order_details[$this->Index]['total_amount'];
+        // $this->orderArrays = OrderDetail::where('id', $this->Index)->get();
 
-        if (!$formAction) {
-            $this->formTitle = 'Edit Order';
-            $this->isFormOpen = true;
-        } else {
+
+        if ($formAction) {
             $this->formTitle = 'Delete Order';
             $this->isDeleteOpen = true;
         }
@@ -450,6 +492,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function modalToggle($formAction = null)
     {
+        $this->clearForm();
         if (!$formAction) {
             if ($this->Index === null) {
                 $this->formTitle = 'Create Order';

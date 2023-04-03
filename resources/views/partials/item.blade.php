@@ -9,10 +9,10 @@
     </div>
 
     <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
-        <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
-        <x-jet-input wire:model="unitName" x-ref="unitIName" id="unitName" type="text" maxlength="50"
-            class="mt-1 block w-full" autocomplete="unitName" />
-        <x-jet-input-error for="unitName" class="mt-2" />
+        <x-jet-label for="unitIName" value="{{ __('Unit Name') }}" />
+        <x-jet-input wire:model="unitIName" x-ref="unitIName" id="unitIName" type="text" maxlength="50"
+            class="mt-1 block w-full" autocomplete="unitIName" />
+        <x-jet-input-error for="unitIName" class="mt-2" />
     </div>
 
 

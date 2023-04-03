@@ -16,7 +16,7 @@ class WireItem extends Component implements FieldValidationMessage
 
 
     public $layoutTitle = 'New Item';
-   
+
 
     protected $rules = [
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
@@ -26,8 +26,7 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->items = Item::all();
-        $this->suppliers = Supplier::all();
+        $this->allitems = Item::all();
     }
 
     public function render()
@@ -85,7 +84,7 @@ class WireItem extends Component implements FieldValidationMessage
                 ]);
             }
 
-            $this->items->push($item);
+            $this->allitems->push($item);
 
             $this->clearForm();
             $this->modalToggle();
@@ -97,7 +96,7 @@ class WireItem extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->items[$this->Index]['id'];
+            $id = $this->allitems[$this->Index]['id'];
             Item::whereId($id)->update([
 
 
@@ -113,13 +112,13 @@ class WireItem extends Component implements FieldValidationMessage
 
             ]);
 
-            $this->items[$this->Index]['item_name'] = $this->itemName;
-            $this->items[$this->Index]['unit_name'] = $this->unitIName;
-            $this->items[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
-            $this->items[$this->Index]['reorder_level'] = $this->reorder_level;
-            $this->items[$this->Index]['fixed_unit'] = $this->fixedUnit;
+            $this->allitems[$this->Index]['item_name'] = $this->itemName;
+            $this->allitems[$this->Index]['unit_name'] = $this->unitIName;
+            $this->allitems[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+            $this->allitems[$this->Index]['reorder_level'] = $this->reorder_level;
+            $this->allitems[$this->Index]['fixed_unit'] = $this->fixedUnit;
 
-            $this->items->push();
+            $this->allitems->push();
             $this->Index = null;
             $this->clearForm();
             $this->modalToggle();
@@ -157,11 +156,11 @@ class WireItem extends Component implements FieldValidationMessage
     public function selectArrayItem($index, $formAction = null)
     {
         $this->Index = $index;
-        $this->itemName = $this->items[$this->Index]['item_name'];
-        $this->unitIName = $this->items[$this->Index]['unit_name'];
-        $this->piecesPerUnit = $this->items[$this->Index]['pieces_perUnit'];
-        $this->reorder_level = $this->items[$this->Index]['reorder_level'];
-        $this->fixedUnit = $this->items[$this->Index]['fixed_unit'];
+        $this->itemName = $this->allitems[$this->Index]['item_name'];
+        $this->unitIName = $this->allitems[$this->Index]['unit_name'];
+        $this->piecesPerUnit = $this->allitems[$this->Index]['pieces_perUnit'];
+        $this->reorder_level = $this->allitems[$this->Index]['reorder_level'];
+        $this->fixedUnit = $this->allitems[$this->Index]['fixed_unit'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
@@ -174,17 +173,17 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function deleteArrayItem()
     {
-        $id = $this->items[$this->Index]['id'];
+        $id = $this->allitems[$this->Index]['id'];
         Item::find($id)->delete();
 
 
-        $filtered = $this->items->reject(function ($value, $key) use ($id) {
+        $filtered = $this->allitems->reject(function ($value, $key) use ($id) {
             return $value->id === $id;
         });
 
 
         $filtered->all();
-        $this->items = $filtered;
+        $this->allitems = $filtered;
         $this->modalToggle('Delete');
         $notificationMessage2 = 'Record successfully deleted.';
 

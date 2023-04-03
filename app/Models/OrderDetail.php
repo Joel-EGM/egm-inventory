@@ -47,4 +47,9 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(ItemPrice::class, 'unit_id', 'id');
     }
+
+    public function branches()
+    {
+        return $this->hasManyThrough(Branch::class, Order::class, 'id', 'id');
+    }
 }

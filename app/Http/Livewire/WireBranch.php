@@ -24,6 +24,8 @@ class WireBranch extends Component implements FieldValidationMessage
     public function mount()
     {
         $this->allbranches = Branch::all();
+
+        // dd($this->allbranches->orderdet);
     }
 
     public function updated($propertyName)

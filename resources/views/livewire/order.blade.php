@@ -151,7 +151,7 @@
                                                     &nbsp;
 
                                                     <a href="javascript:" title="Edit"
-                                                        wire:click="selectArrayItem({{ $loop->index }})"
+                                                        wire:click="edit({{ $order->id }})"
                                                         class="text-gray-500 mt-1 ml-2">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 20 20" fill="LimeGreen">
