@@ -10,10 +10,16 @@
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
                     <div class="flex flex-row mt-0 sm:mb-0">
+                        @if ($viewMode != 1)
+                            <a href="javascript:function() { return false; }"
+                                class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">NOT
+                                AVAILABLE</a>
+                        @else
+                            <a href="{{ route('generate-export') }}" target="_blank"
+                                class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
+                                EXCEL</a>
+                        @endif
 
-                        <a href="{{ route('generate-export') }}" target="_blank"
-                            class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            EXCEL</a>
 
                         <a href="{{ route('generate-pdf', $viewMode) }}" target="_blank"
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
@@ -72,12 +78,12 @@
                                                 Item Name
                                             </th>
                                             <th
-                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                Date Received
-                                            </th>
-                                            <th
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Quantity
+                                            </th>
+                                            <th
+                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Date Received
                                             </th>
                                             {{-- <th
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -85,16 +91,24 @@
                                             </th> --}}
                                         @else
                                             <th
-                                                class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                class="w-1/4 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Item Name
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Unit Name
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                WHOLE
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                PIECES
                                             </th>
                                             <th
                                                 class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Last Updated
-                                            </th>
-                                            <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                Quantity
                                             </th>
                                         @endif
                                     </tr>
@@ -118,9 +132,10 @@
                                                     {{ ucfirst(trans($stock->item_name)) }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->totalqty }}</td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock->created_at }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
 
                                             </tr>
                                         @endforeach
@@ -132,9 +147,16 @@
                                                     {{ ucfirst(trans($stock->item_name)) }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ ucfirst(trans($stock->unit_name)) }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ intval($stock->totalqtyWHOLE) }}</td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->totalqtyREMAINDER }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock->created_at }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">{{ $stock->totalqty }}</td>
                                             </tr>
                                         @endforeach
                                     @endif
