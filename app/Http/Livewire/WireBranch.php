@@ -52,7 +52,7 @@ class WireBranch extends Component implements FieldValidationMessage
         $validatedItem = $this->validate();
 
         if (is_null($this->Index)) {
-            $branch = Branch::create([
+            $branch = Branch::updateOrCreate([
 
                 'branch_name' => $this->branchName,
 

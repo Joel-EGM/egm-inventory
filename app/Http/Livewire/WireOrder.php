@@ -12,6 +12,7 @@ use App\Models\OrderDetail;
 use App\Models\Stock;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
+use App\Http\Traits\TrackDirtyProperties;
 use App\Http\Interfaces\FieldValidationMessage;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -21,9 +22,11 @@ class WireOrder extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
+    use TrackDirtyProperties;
 
     public $layoutTitle = 'Create Order';
     public $oBranch;
+    public $updateID;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -75,7 +78,10 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $validatedItem = $this->validate();
 
+        logger($this->Index);
         if (is_null($this->Index)) {
+            logger("true part");
+
             $orders = Order::create([
 
                 'branch_id' => $this->branch_id,
@@ -85,7 +91,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 'order_status' => 'pending'
 
             ]);
-
+            // dd($orders->id);
             foreach ($this->orderArrays as $orderArray) {
                 $orders->orderDetails()->create([
 
@@ -120,55 +126,62 @@ class WireOrder extends Component implements FieldValidationMessage
                 'notificationType' => 'success',
                 'messagePrimary'   => $notificationMessage
             ]);
-        } else {
-            $id = $this->orders[$this->Index]['id'];
-            Order::whereId($id)->update([
+        }
+    }
 
-                'branch_name' => $this->branch_id,
-                'supplier_name' => $this->supplier_id,
-                'item_name' => $this->item_id,
+    public function orderUpdate()
+    {
+        // dd($this->updateID);
+        logger("false part");
+        // $id = $this->orders->where('id', $this->Index)->first();
+        // dd($id);
+        // dd($this->Index);
+        $orders = Order::where('id', $this->updateID)->update([
 
-            ]);
+            'branch_id' => $this->branch_id,
+        ]);
 
+        // dd($this->orderArrays);
+        $index = $this->updateID;
+        // dd($index);
+        foreach ($this->orderArrays as $orderArray) {
+            OrderDetail::where('order_id', $this->updateID)->updateOrCreate([
+                'order_id' => $this->updateID,
 
-            foreach ($this->orderArrays as $orderArray) {
-                $orders->orderDetails()->update([
+                'supplier_id' => $orderArray['supplier_id'],
 
-                    'order_id' => $orders->id,
+                'item_id' => $orderArray['item_id'],
 
-                    'supplier_id' => $orderArray['supplier_id'],
+                'unit_id' => $orderArray['unit_id'],
 
-                    'item_id' => $orderArray['item_id'],
+                'price' => $orderArray['price'],
 
-                    'unit_id' => $orderArray['unit_id'],
+                'quantity' => $orderArray['quantity'],
 
-                    'price' => $orderArray['price'],
+                'total_amount' => $orderArray['total_amount'],
 
-                    'quantity' => $orderArray['quantity'],
+                'order_status' => 'pending',
 
-                    'total_amount' => $orderArray['total_amount'],
+                'is_received'   => 0,
 
-                    'order_status' => 'pending',
-
-                    'is_received'   => 0,
-
-                ]);
-            }
-
-            $this->orders->push($orders);
-
-            $this->Index = null;
-            $this->clearForm();
-
-            $this->modalToggle();
-
-            $notificationMessage = 'Record successfully updated.';
-
-            $this->dispatchBrowserEvent('show-message', [
-                'notificationType' => 'success',
-                'messagePrimary'   => $notificationMessage
             ]);
         }
+
+
+        $this->orders->push();
+
+        // $this->Index = null;
+        $this->clearForm();
+
+        $this->modalToggle();
+
+        $notificationMessage = 'Record successfully updated.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
+
     }
 
     public function addOrderArray()
@@ -207,7 +220,10 @@ class WireOrder extends Component implements FieldValidationMessage
             }
         }
 
+
         array_push($this->orderArrays, [
+        'id' => 0,
+        'order_id' => 0,
         'order_date' => $this->order_date,
 
         'branch_id'  => $this->branch_id,
@@ -225,8 +241,10 @@ class WireOrder extends Component implements FieldValidationMessage
         'quantity' => $this->quantity,
         'price' => $this->unitPrice,
         'total_amount' => $this->total_amount,
-        ]);
 
+
+        ]);
+        // dd($this->orderArrays);
         $id = $this->unitPriceID['id'];
 
         $ipq = ItemPrice::whereId($id);
@@ -249,7 +267,17 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function removeItem($index)
     {
+        // dd($this->orderArrays[$index]['order_id']);
         unset($this->orderArrays[$index]);
+
+    }
+
+    public function deleteItem($id)
+    {
+        // OrderDetail::destroy($index);
+        OrderDetail::find($id)->delete();
+
+
     }
 
     public function clearFormVariables()
@@ -282,13 +310,37 @@ class WireOrder extends Component implements FieldValidationMessage
     public function edit($id, $formAction = null)
     {
         // dd($this->Index);
+        $this->updateID = $id;
+        // dd($this->updateID);
         $this->order_date = $this->orders->where('id', $id)->pluck('order_date')->first();
 
         $this->branch_id = $this->orders->where('id', $id)->pluck('branch_id')->first();
         // dd($this->branch_id);
-        $this->orderArrays = OrderDetail::with('branches')->where('order_id', $id)->get();
-        $this->oBranch = Order::find($this->orderArrays->pluck('order_id')->first());
-        // dd($this->oBranch->branches);
+        $this->orderArrays = OrderDetail::with('branches', 'items', 'orders', 'suppliers')
+        ->select(
+            'order_details.id',
+            'order_id',
+            'branch_id',
+            'branch_name',
+            'order_date',
+            'supplier_id',
+            'suppliers_name',
+            'item_id',
+            'item_name',
+            'unit_id',
+            'unit_name',
+            'quantity',
+            'price',
+            'total_amount'
+        )
+        ->where('order_id', $id)
+        ->join('orders', 'orders.id', '=', 'order_details.order_id')
+        ->join('branches', 'branches.id', '=', 'orders.branch_id')
+        ->join('suppliers', 'suppliers.id', '=', 'order_details.supplier_id')
+        ->join('items', 'items.id', '=', 'order_details.item_id')
+        ->get()
+        ->toArray();
+
         if (!$formAction) {
             $this->formTitle = 'Edit Order';
             $this->isFormOpen = true;
@@ -301,21 +353,21 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
 
-        // $this->order_date = $this->orders[$this->Index]['order_date'];
+        $this->order_date = $this->orders[$this->Index]['order_date'];
 
-        // $this->branch_id = $this->orders[$this->Index]['branch_id'];
+        $this->branch_id = $this->orders[$this->Index]['branch_id'];
 
-        // $this->supplier_id = $this->order_details[$this->Index]['supplier_id'];
+        $this->supplier_id = $this->order_details[$this->Index]['supplier_id'];
 
-        // $this->item_id = $this->order_details[$this->Index]['item_id'];
+        $this->item_id = $this->order_details[$this->Index]['item_id'];
 
-        // $this->unitType = $this->order_details[$this->Index]['unit_name'];
+        $this->unitType = $this->order_details[$this->Index]['unit_name'];
 
-        // $this->quantity = $this->order_details[$this->Index]['quantity'];
+        $this->quantity = $this->order_details[$this->Index]['quantity'];
 
-        // $this->unitPrice = $this->order_details[$this->Index]['price'];
+        $this->unitPrice = $this->order_details[$this->Index]['price'];
 
-        // $this->total_amount = $this->order_details[$this->Index]['total_amount'];
+        $this->total_amount = $this->order_details[$this->Index]['total_amount'];
         // dd($this->total_amount);
         // $this->total_amount = $this->order_details[$this->Index]['total_amount'];
         // $this->orderArrays = OrderDetail::where('id', $this->Index)->get();
@@ -473,14 +525,20 @@ class WireOrder extends Component implements FieldValidationMessage
     public function deleteArrayItem()
     {
         $id = $this->orders[$this->Index]['id'];
-        Order::find($id)->delete();
+        // $odID = $this->updateID;
+        $data =Order::leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
+                    ->where('orders.id', $id);
+        OrderDetail::where('order_id', $id)->delete();
+        // Order::find($id)->delete();
+        $data->delete();
 
-        $filtered = $this->orders->reject(function ($value, $key) use ($id) {
-            return $value->id === $id;
-        });
 
-        $filtered->all();
-        $this->orders = $filtered;
+        // $filtered = $this->orders->reject(function ($value, $key) use ($id) {
+        //     return $value->id === $id;
+        // });
+
+        // $filtered->all();
+        // $this->orders = $filtered;
         $this->modalToggle('Delete');
         $notificationMessage2 = 'Record successfully deleted.';
 

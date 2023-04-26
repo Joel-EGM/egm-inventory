@@ -50,6 +50,6 @@ class OrderDetail extends Model
 
     public function branches()
     {
-        return $this->hasManyThrough(Branch::class, Order::class, 'id', 'id');
+        return $this->hasManyThrough(Branch::class, Order::class, 'branch_id', 'id');
     }
 }

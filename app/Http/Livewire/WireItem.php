@@ -52,8 +52,10 @@ class WireItem extends Component implements FieldValidationMessage
     public function submit()
     {
         $validatedItem = $this->validate();
-
+        logger($this->Index);
         if (is_null($this->Index)) {
+
+            logger("true part");
             if ($this->fixedUnit === false) {
                 $item = Item::create([
 
@@ -96,6 +98,8 @@ class WireItem extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
+            logger("false part");
+
             $id = $this->allitems[$this->Index]['id'];
             Item::whereId($id)->update([
 

@@ -190,4 +190,28 @@ class WireUser extends Component implements FieldValidationMessage
             $this->clearAndResetDelete();
         }
     }
+
+    public function changeRole(User $user, $role)
+    {
+        $user->update(['role' => $role]);
+
+        $notificationMessage2 = 'Role has been updated successfully.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage2
+        ]);
+    }
+
+    public function changeBranch(User $user, $branch_id)
+    {
+        $user->update(['branch_id' => $branch_id]);
+
+        $notificationMessage2 = 'Branch has been updated successfully.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage2
+        ]);
+    }
 }

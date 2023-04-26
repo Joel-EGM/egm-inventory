@@ -117,9 +117,28 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $user->email }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $user->branches->branch_name }}
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+
+                                                <select class="mt-1 block w-full"
+                                                    wire:change="changeBranch({{ $user }},$event.target.value)">
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}"
+                                                            {{ $user->branch_id === $branch->id ? 'selected' : '' }}
+                                                            class="text-center">
+                                                            {{ $branch->branch_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $user->role }}
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                <select class="mt-1 block w-full"
+                                                    wire:change="changeRole({{ $user }},$event.target.value)">
+
+                                                    <option class="w-full text-center" value="admin"
+                                                        {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
+                                                    <option class="w-full text-center" value="user"
+                                                        {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
+                                                </select>
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ Str::limit($user->password, 30) }}

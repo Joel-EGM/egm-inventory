@@ -29,10 +29,14 @@
             <x-jet-secondary-button wire:click.prevent="modalToggle" wire:loading.attr="disabled">
                 Cancel
             </x-jet-secondary-button>
-
-            <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">
-                Save
-            </x-jet-button>
+            @if ($formTitle === 'Edit Order')
+                <x-jet-button class="ml-2" wire:click.prevent="orderUpdate">
+                    Save</x-jet-button>
+            @else
+                <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">
+                    Save
+                </x-jet-button>
+            @endif
             <span wire:loading.delay wire:target="submit">
                 Loading...
             </span>

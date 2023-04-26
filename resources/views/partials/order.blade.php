@@ -138,7 +138,6 @@
     <x-jet-input wire:model="total_amount" x-ref="total_amount" id="total_amount" type="text" maxlength="50"
         class="mt-1 block w-full text-center bg-gray-300" placeholder="Total Amount" autocomplete="total_amount"
         readonly />
-    <x-jet-input-error for="total_amount" class="mt-2" />
 
 </div>
 
@@ -258,19 +257,19 @@
                                     </td>
                                 @else
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $oBranch->branches['branch_name'] }}</td>
+                                        {{ $order['branch_name'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order->orders['order_date'] }}</td>
+                                        {{ $order['order_date'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order->suppliers['suppliers_name'] }}</td>
+                                        {{ $order['suppliers_name'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order->items['item_name'] }}</td>
+                                        {{ $order['item_name'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order->items['unit_name'] }}</td>
+                                        {{ $order['unit_name'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['quantity'] }}</td>
@@ -283,7 +282,7 @@
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         <a href="javascript:" title="DeleteArray"
-                                            wire:click="removeItem({{ $loop->index }})"
+                                            wire:click="deleteItem({{ $order['id'] }})"
                                             class="text-gray-500 mt-1 ml-2 inline-flex">
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20" fill="currentColor">
