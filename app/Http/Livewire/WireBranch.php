@@ -7,11 +7,13 @@ use App\Models\Branch;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
+use App\Http\Traits\TrackDirtyProperties;
 
 class WireBranch extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
+    use TrackDirtyProperties;
 
     public $layoutTitle = 'New Branch';
 
@@ -39,7 +41,14 @@ class WireBranch extends Component implements FieldValidationMessage
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
 
-        $this->validateOnly($propertyName);
+        try {
+            $this->validateOnly($propertyName);
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            $this->updatedDirtyProperties($propertyName, $this->$propertyName);
+
+        }
     }
 
     public function render()
@@ -74,34 +83,42 @@ class WireBranch extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->allbranches[$this->Index]['id'];
-            Branch::whereId($id)->update([
+            
+            if($this->isDirty) {
+                $id = $this->allbranches[$this->Index]['id'];
+                Branch::whereId($id)->update([
 
-                'branch_name' => $this->branchName,
+                    'branch_name' => $this->branchName,
 
-                'branch_address' => $this->branchAddress,
+                    'branch_address' => $this->branchAddress,
 
-                'branch_contactNo' => $this->branchContactNo,
+                    'branch_contactNo' => $this->branchContactNo,
 
-            ]);
+                ]);
 
 
-            $this->allbranches[$this->Index]['branch_name'] = $this->branchName;
+                $this->allbranches[$this->Index]['branch_name'] = $this->branchName;
 
-            $this->allbranches[$this->Index]['branch_address'] = $this->branchAddress;
+                $this->allbranches[$this->Index]['branch_address'] = $this->branchAddress;
 
-            $this->allbranches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
+                $this->allbranches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
 
-            $this->Index = null;
-            $this->clearForm();
+                $this->Index = null;
+                $this->clearForm();
+                $notificationMessage = 'Record successfully updated.';
+            } else {
+
+                $notificationMessage = 'No changes were detected';
+            }
+
             $this->modalToggle();
-
-            $notificationMessage = 'Record successfully updated.';
 
             $this->dispatchBrowserEvent('show-message', [
                 'notificationType' => 'success',
                 'messagePrimary'   => $notificationMessage
             ]);
+
+
         }
     }
 
@@ -136,6 +153,12 @@ class WireBranch extends Component implements FieldValidationMessage
         $this->branchAddress = $this->allbranches[$this->Index]['branch_address'];
 
         $this->branchContactNo = $this->allbranches[$this->Index]['branch_contactNo'];
+
+
+        if (isset($this->allbranches[$this->Index]['dirty_fields'])) {
+            $this->dirtyProperties = $this->allbranches[$this->Index]['dirty_fields'];
+        }
+
 
         if (!$formAction) {
             $this->formTitle = 'Edit Branch';

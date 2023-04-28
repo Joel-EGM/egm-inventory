@@ -7,13 +7,16 @@ use App\Models\Item;
 use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
+use App\Http\Traits\TrackDirtyProperties;
+
+
 use App\Http\Interfaces\FieldValidationMessage;
 
 class WireItem extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
-
+    use TrackDirtyProperties;
 
     public $layoutTitle = 'New Item';
 
@@ -46,7 +49,14 @@ class WireItem extends Component implements FieldValidationMessage
         }
 
 
-        $this->validateOnly($propertyName);
+        try {
+            $this->validateOnly($propertyName);
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            $this->updatedDirtyProperties($propertyName, $this->$propertyName);
+
+        }
     }
 
     public function submit()
@@ -98,35 +108,42 @@ class WireItem extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            logger("false part");
+            if($this->isDirty) {
+                logger("false part");
 
-            $id = $this->allitems[$this->Index]['id'];
-            Item::whereId($id)->update([
+                $id = $this->allitems[$this->Index]['id'];
+                Item::whereId($id)->update([
 
 
-                'item_name' => $this->itemName,
+                    'item_name' => $this->itemName,
 
-                'unit_name' => $this->unitIName,
+                    'unit_name' => $this->unitIName,
 
-                'pieces_perUnit' => $this->piecesPerUnit,
+                    'pieces_perUnit' => $this->piecesPerUnit,
 
-                'reorder_level' => $this->reorder_level,
+                    'reorder_level' => $this->reorder_level,
 
-                'fixed_unit' => $this->fixedUnit,
+                    'fixed_unit' => $this->fixedUnit,
 
-            ]);
+                ]);
 
-            $this->allitems[$this->Index]['item_name'] = $this->itemName;
-            $this->allitems[$this->Index]['unit_name'] = $this->unitIName;
-            $this->allitems[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
-            $this->allitems[$this->Index]['reorder_level'] = $this->reorder_level;
-            $this->allitems[$this->Index]['fixed_unit'] = $this->fixedUnit;
+                $this->allitems[$this->Index]['item_name'] = $this->itemName;
+                $this->allitems[$this->Index]['unit_name'] = $this->unitIName;
+                $this->allitems[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
+                $this->allitems[$this->Index]['reorder_level'] = $this->reorder_level;
+                $this->allitems[$this->Index]['fixed_unit'] = $this->fixedUnit;
 
-            $this->allitems->push();
-            $this->Index = null;
-            $this->clearForm();
+                $this->allitems->push();
+                $this->Index = null;
+                $this->clearForm();
+
+                $notificationMessage = 'Record successfully updated.';
+            } else {
+
+                $notificationMessage = 'No changes were detected';
+            }
+
             $this->modalToggle();
-            $notificationMessage = 'Record successfully updated.';
 
             $this->dispatchBrowserEvent('show-message', [
                 'notificationType' => 'success',
@@ -165,6 +182,12 @@ class WireItem extends Component implements FieldValidationMessage
         $this->piecesPerUnit = $this->allitems[$this->Index]['pieces_perUnit'];
         $this->reorder_level = $this->allitems[$this->Index]['reorder_level'];
         $this->fixedUnit = $this->allitems[$this->Index]['fixed_unit'];
+
+
+
+        if (isset($this->allitems[$this->Index]['dirty_fields'])) {
+            $this->dirtyProperties = $this->allitems[$this->Index]['dirty_fields'];
+        }
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';

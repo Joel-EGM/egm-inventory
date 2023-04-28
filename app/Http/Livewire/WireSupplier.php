@@ -7,11 +7,13 @@ use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
+use App\Http\Traits\TrackDirtyProperties;
 
 class WireSupplier extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
+    use TrackDirtyProperties;
 
     public $layoutTitle = 'New Supplier';
 
@@ -36,8 +38,14 @@ class WireSupplier extends Component implements FieldValidationMessage
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
 
+        try {
+            $this->validateOnly($propertyName);
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            $this->updatedDirtyProperties($propertyName, $this->$propertyName);
 
-        $this->validateOnly($propertyName);
+        }
     }
 
     public function render()
@@ -72,29 +80,34 @@ class WireSupplier extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->getsuppliers[$this->Index]['id'];
-            Supplier::whereId($id)->update([
+            if($this->isDirty) {
+                $id = $this->getsuppliers[$this->Index]['id'];
+                Supplier::whereId($id)->update([
 
-                'suppliers_name' => $this->getsupplierName,
+                    'suppliers_name' => $this->getsupplierName,
 
-                'suppliers_email' => $this->getsupplierEmail,
+                    'suppliers_email' => $this->getsupplierEmail,
 
-                'suppliers_contact' => $this->getsupplierContactNo,
+                    'suppliers_contact' => $this->getsupplierContactNo,
 
-            ]);
+                ]);
 
-            $this->getsuppliers[$this->Index]['suppliers_name'] = $this->getsupplierName;
+                $this->getsuppliers[$this->Index]['suppliers_name'] = $this->getsupplierName;
 
-            $this->getsuppliers[$this->Index]['suppliers_email'] = $this->getsupplierEmail;
+                $this->getsuppliers[$this->Index]['suppliers_email'] = $this->getsupplierEmail;
 
-            $this->getsuppliers[$this->Index]['suppliers_contact'] = $this->getsupplierContactNo;
+                $this->getsuppliers[$this->Index]['suppliers_contact'] = $this->getsupplierContactNo;
 
-            $this->Index = null;
-            $this->clearForm();
+                $this->Index = null;
+                $this->clearForm();
+
+
+                $notificationMessage = 'Record successfully updated.';
+            } else {
+
+                $notificationMessage = 'No changes were detected';
+            }
             $this->modalToggle();
-
-            $notificationMessage = 'Record successfully updated.';
-
             $this->dispatchBrowserEvent('show-message', [
                 'notificationType' => 'success',
                 'messagePrimary'   => $notificationMessage
@@ -133,6 +146,10 @@ class WireSupplier extends Component implements FieldValidationMessage
         $this->getsupplierEmail = $this->getsuppliers[$this->Index]['suppliers_email'];
 
         $this->getsupplierContactNo = $this->getsuppliers[$this->Index]['suppliers_contact'];
+
+        if (isset($this->getsuppliers[$this->Index]['dirty_fields'])) {
+            $this->dirtyProperties = $this->getsuppliers[$this->Index]['dirty_fields'];
+        }
 
         if (!$formAction) {
             $this->formTitle = 'Edit Supplier';

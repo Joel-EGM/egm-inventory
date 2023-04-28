@@ -9,11 +9,13 @@ use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
+use App\Http\Traits\TrackDirtyProperties;
 
 class WireItemPrice extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
+    use TrackDirtyProperties;
 
     public $layoutTitle = 'Add Item Price';
 
@@ -47,8 +49,14 @@ class WireItemPrice extends Component implements FieldValidationMessage
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
 
+        try {
+            $this->validateOnly($propertyName);
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            $this->updatedDirtyProperties($propertyName, $this->$propertyName);
 
-        $this->validateOnly($propertyName);
+        }
     }
 
     public function submit()
@@ -84,29 +92,35 @@ class WireItemPrice extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            $id = $this->itemprices[$this->Index]['id'];
-            ItemPrice::whereId($id)->update([
+            if($this->isDirty) {
 
-                'supplier_id' => $this->supplier_id,
+                $id = $this->itemprices[$this->Index]['id'];
+                ItemPrice::whereId($id)->update([
 
-                'item_id' => $this->item_id,
+                    'supplier_id' => $this->supplier_id,
 
-                'price_perUnit' => $this->price_perUnit,
+                    'item_id' => $this->item_id,
 
-                'price_perPieces' => $this->price_perPieces,
+                    'price_perUnit' => $this->price_perUnit,
 
-            ]);
+                    'price_perPieces' => $this->price_perPieces,
 
-            $this->itemprices[$this->Index]['supplier_id'] = $this->supplier_id;
-            $this->itemprices[$this->Index]['item_id'] = $this->item_id;
-            $this->itemprices[$this->Index]['price_perUnit'] = $this->price_perUnit;
-            $this->itemprices[$this->Index]['price_perPieces'] = $this->price_perPieces;
+                ]);
 
-            $this->itemprices->push();
-            $this->Index = null;
-            $this->clearForm();
+                $this->itemprices[$this->Index]['supplier_id'] = $this->supplier_id;
+                $this->itemprices[$this->Index]['item_id'] = $this->item_id;
+                $this->itemprices[$this->Index]['price_perUnit'] = $this->price_perUnit;
+                $this->itemprices[$this->Index]['price_perPieces'] = $this->price_perPieces;
+
+                $this->itemprices->push();
+                $this->Index = null;
+                $this->clearForm();
+                $notificationMessage = 'Record successfully updated.';
+            } else {
+
+                $notificationMessage = 'No changes were detected';
+            }
             $this->modalToggle();
-            $notificationMessage = 'Record successfully updated.';
 
             $this->dispatchBrowserEvent('show-message', [
                 'notificationType' => 'success',
@@ -186,6 +200,10 @@ class WireItemPrice extends Component implements FieldValidationMessage
         $this->item_id = $this->itemprices[$this->Index]['item_id'];
         $this->price_perUnit = $this->itemprices[$this->Index]['price_perUnit'];
         $this->price_perPieces = $this->itemprices[$this->Index]['price_perPieces'];
+
+        if (isset($this->itemprices[$this->Index]['dirty_fields'])) {
+            $this->dirtyProperties = $this->itemprices[$this->Index]['dirty_fields'];
+        }
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';

@@ -114,12 +114,11 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
-                                            <td class="px-9 py-4 whitespace-no-wrap">
+                                            <td class="px-6 py-4 whitespace-no-wrap">
                                                 @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')
                                                     <a href="javascript:" title="Details"
                                                         wire:click="viewOrderDetails({{ $order->id }})"
-                                                        class="no-underline hover:underline font-mono text-blue-500"
-                                                        wire:poll.3s>{{ $order->order_status }}</a>
+                                                        class="no-underline hover:underline font-mono text-blue-500">{{ $order->order_status }}</a>
                                                 @else
                                                     <a href="javascript:" title="View"
                                                         wire:click="viewDetails({{ $order->id }})">

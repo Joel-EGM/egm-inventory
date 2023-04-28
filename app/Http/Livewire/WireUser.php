@@ -9,11 +9,13 @@ use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Traits\TrackDirtyProperties;
 
 class WireUser extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
+    use TrackDirtyProperties;
 
     public $layoutTitle = 'New User';
 
@@ -35,6 +37,27 @@ class WireUser extends Component implements FieldValidationMessage
     {
         $this->allusers = User::all();
         $this->branches = Branch::all();
+    }
+
+    public function updated($propertyName)
+    {
+        $wire_models = [
+            'userName',
+            'usereMail',
+        ];
+
+        if (in_array($propertyName, $wire_models)) {
+            $this->$propertyName = ucwords(strtolower($this->$propertyName));
+        }
+
+        try {
+            $this->validateOnly($propertyName);
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            $this->updatedDirtyProperties($propertyName, $this->$propertyName);
+
+        }
     }
 
     public function submit()
@@ -143,6 +166,9 @@ class WireUser extends Component implements FieldValidationMessage
 
         $this->branch_id = $this->allusers[$this->Index]['branch_id'];
 
+        if (isset($this->allusers[$this->Index]['dirty_fields'])) {
+            $this->dirtyProperties = $this->allusers[$this->Index]['dirty_fields'];
+        }
 
         if (!$formAction) {
             $this->formTitle = 'Edit User';

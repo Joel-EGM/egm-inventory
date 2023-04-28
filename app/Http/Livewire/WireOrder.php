@@ -63,10 +63,6 @@ class WireOrder extends Component implements FieldValidationMessage
 
 
         $this->branchFind = Branch::where('id', $user)->first();
-
-        // dd($this->order_details[0]->branches);
-        // $OD = OrderDetail::find(1);
-        // dd($OD->branches);
     }
 
     public function render()
@@ -78,9 +74,9 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $validatedItem = $this->validate();
 
-        logger($this->Index);
+        // logger($this->Index);
         if (is_null($this->Index)) {
-            logger("true part");
+            // logger("true part");
 
             $orders = Order::create([
 
@@ -132,7 +128,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public function orderUpdate()
     {
         // dd($this->updateID);
-        logger("false part");
+        // logger("false part");
         // $id = $this->orders->where('id', $this->Index)->first();
         // dd($id);
         // dd($this->Index);
@@ -272,11 +268,12 @@ class WireOrder extends Component implements FieldValidationMessage
 
     }
 
-    public function deleteItem($id)
+    public function deleteItem($index)
     {
         // OrderDetail::destroy($index);
+        $id = $this->orderArrays[$index]['id'];
         OrderDetail::find($id)->delete();
-
+        unset($this->orderArrays[$index]);
 
     }
 

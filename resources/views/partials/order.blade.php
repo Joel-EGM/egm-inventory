@@ -282,7 +282,7 @@
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         <a href="javascript:" title="DeleteArray"
-                                            wire:click="deleteItem({{ $order['id'] }})"
+                                            wire:click="deleteItem({{ $loop->index }})"
                                             class="text-gray-500 mt-1 ml-2 inline-flex">
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20" fill="currentColor">
