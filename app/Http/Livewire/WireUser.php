@@ -10,6 +10,8 @@ use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\TrackDirtyProperties;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class WireUser extends Component implements FieldValidationMessage
 {
@@ -18,37 +20,68 @@ class WireUser extends Component implements FieldValidationMessage
     use TrackDirtyProperties;
 
     public $layoutTitle = 'New User';
+    public $userID;
+    public $name;
+    public $email;
 
     public function render()
     {
         return view('livewire.user');
     }
 
-    protected $rules = [
-        'userName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'userEmail' => 'bail|required|email',
-        'userRole' => 'bail|required',
-        'branch_id' => 'bail|required',
-        'password' => 'bail|required|min:8|confirmed',
-        'password_confirmation' => 'bail|required|min:8',
-    ];
+    protected function rules()
+    {
+        return [
+            'name' => ['bail','required','regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i','min:2','max:50',
+            Rule::unique('users')
+
+            ->where(function ($query) {
+                return $query
+                ->where('name', $this->name)
+                ->where('email', $this->email);
+
+            })->ignore($this->userID)],
+
+
+
+            'email' => ['bail','required','email',
+
+            Rule::unique('users')
+            ->where(function ($query) {
+                return $query
+
+                ->where('email', $this->email)
+                ->where('name', $this->name);
+
+            })->ignore($this->userID)],
+
+
+            'userRole' => 'bail|required',
+            'branch_id' => 'bail|required',
+            // 'password' => 'bail|required|min:8|confirmed',
+            // 'password_confirmation' => 'bail|required|min:8',
+
+        ];
+    }
 
     public function mount()
     {
         $this->allusers = User::all();
         $this->branches = Branch::all();
+
+
     }
 
     public function updated($propertyName)
     {
         $wire_models = [
-            'userName',
-            'usereMail',
+            'name',
         ];
 
         if (in_array($propertyName, $wire_models)) {
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
+
 
         try {
             $this->validateOnly($propertyName);
@@ -56,20 +89,39 @@ class WireUser extends Component implements FieldValidationMessage
             //throw $th;
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
-
         }
+
+
     }
 
     public function submit()
     {
-        $validatedItem = $this->validate();
+        // dd($this->name;
+
+
+        try {
+
+            $validate = $this->validate();
+            // $this->validate();
+
+
+        } catch (ValidationException $exception) {
+            // dd('gg');
+
+            // $messages = $exception->validator->errors();
+            // dd($messages);
+            throw $exception;
+
+        }
+
+        logger($validate);
 
         if (is_null($this->Index)) {
             $user = User::create([
 
-                'name' => $this->userName,
+                'name' => $this->name,
 
-                'email' => $this->userEmail,
+                'email' => $this->email,
 
                 'branch_id' => $this->branch_id,
 
@@ -94,9 +146,9 @@ class WireUser extends Component implements FieldValidationMessage
             $id = $this->allusers[$this->Index]['id'];
             User::whereId($id)->update([
 
-                'name' => $this->userName,
+                'name' => $this->name,
 
-                'email' => $this->userEmail,
+                'email' => $this->email,
 
                 'branch_id' => $this->branch_id,
 
@@ -107,9 +159,9 @@ class WireUser extends Component implements FieldValidationMessage
             ]);
 
 
-            $this->allusers[$this->Index]['name'] = $this->userName;
+            $this->allusers[$this->Index]['name'] = $this->name;
 
-            $this->allusers[$this->Index]['email'] = $this->userEmail;
+            $this->allusers[$this->Index]['email'] = $this->email;
 
             $this->allusers[$this->Index]['role'] = $this->userRole;
 
@@ -128,6 +180,7 @@ class WireUser extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         }
+
     }
 
     public function clearFormVariables()
@@ -137,8 +190,8 @@ class WireUser extends Component implements FieldValidationMessage
             'isDeleteOpen',
             'Index',
             'formTitle',
-            'userName',
-            'userEmail',
+            'name',
+            'email',
             'password',
             'password_confirmation',
         ]);
@@ -147,8 +200,8 @@ class WireUser extends Component implements FieldValidationMessage
     public function clearForm()
     {
         $this->reset([
-            'userName',
-            'userEmail',
+            'name',
+            'email',
             'password',
             'password_confirmation',
         ]);
@@ -156,11 +209,15 @@ class WireUser extends Component implements FieldValidationMessage
 
     public function selectArrayItem($Index, $formAction = null)
     {
+
         $this->Index = $Index;
 
-        $this->userName = $this->allusers[$this->Index]['name'];
+        $this->userID = $this->allusers[$this->Index]['id'];
 
-        $this->userEmail = $this->allusers[$this->Index]['email'];
+        // dd($this->userID);
+        $this->name = $this->allusers[$this->Index]['name'];
+
+        $this->email = $this->allusers[$this->Index]['email'];
 
         $this->userRole = $this->allusers[$this->Index]['role'];
 

@@ -7,8 +7,9 @@ use App\Models\Stock;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class StocksExport implements FromView
+class StocksExport implements FromView, ShouldAutoSize
 {
     public function view(): View
     {

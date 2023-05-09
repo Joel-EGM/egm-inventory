@@ -22,7 +22,7 @@ class ExportDetailsController extends Controller
         $data = [
             'orderDetails' => $findData
         ];
-
+        // dd();
         $pdf = PDF::loadView('orderpdf', $data);
 
         return $pdf->stream('PO_report_'.today()->toDateString().'.pdf');

@@ -27,6 +27,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public $layoutTitle = 'Create Order';
     public $oBranch;
     public $updateID;
+    public $itemPrice;
+    public $userBranch;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -48,6 +50,8 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->branches = Branch::all();
 
         $this->order_details = OrderDetail::all();
+
+        $this->itemPrice = ItemPrice::all();
 
         $this->stocks = Stock::all();
 
@@ -575,9 +579,10 @@ class WireOrder extends Component implements FieldValidationMessage
             return;
         }
 
-        $user = Auth()->user()->branch_id;
-        if ($user != 1) {
-            $this->itemList = $this->items->toArray();
+        $this->userBranch = Auth()->user()->branch_id;
+        if ($this->userBranch != 1) {
+            $this->itemList = $this->items;
+        // dd($this->itemList);
         } else {
             $collection = ItemPrice::where('supplier_id', (int) $this->supplier_id)
             ->get();
@@ -594,13 +599,27 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
 
-        if ($this->unitName->pluck('fixed_unit')->first() === 1) {
-            $this->unitString = "Unit";
-            $this->unitType = $this->item_id;
-            $this->unit_id = $this->item_id;
-            $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();
-            $this->loadPrice();
+        if($this->userBranch != 1) {
+            // dd($this->itemList->pluck('id'));
+            if ($this->unitName->pluck('fixed_unit')->first() === 1) {
+                $this->unitString = "Unit";
+                $this->unitType = $this->item_id;
+                $this->unit_id = $this->item_id;
+                $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->get();
+
+                $this->loadPrice();
+            }
+        } else {
+
+            if ($this->unitName->pluck('fixed_unit')->first() === 1) {
+                $this->unitString = "Unit";
+                $this->unitType = $this->item_id;
+                $this->unit_id = $this->item_id;
+                $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();
+                $this->loadPrice();
+            }
         }
+
     }
 
     public function updatedUnitId()
@@ -620,9 +639,19 @@ class WireOrder extends Component implements FieldValidationMessage
         $unitId = (int) $explodeResult[0];
         $this->unitString = $explodeResult[1];
 
-        $this->unitPriceID = ItemPrice::where('item_id', (int) $unitId)->where('supplier_id', $this->supplier_id)->first();
+        //recognize the access if it is a user or an admin
+        if($this->userBranch != 1) {
 
-        $this->unitPrice = $this->unitPriceID->price_perPieces;
+            //search for the price for non-fixed unit
+            $this->unitPriceID = ItemPrice::select('price_perUnit', 'price_perPieces')->where('item_id', (int) $unitId)->orderby('created_at', 'ASC')->first();
+            $this->unitPrice = $this->unitPriceID->price_perPieces;
+
+        // dd($this->unitPriceID);
+        } else {
+            $this->unitPriceID = ItemPrice::where('item_id', (int) $unitId)->where('supplier_id', $this->supplier_id)->first();
+
+            $this->unitPrice = $this->unitPriceID->price_perPieces;
+        }
 
         if ($this->unitString === "Unit") {
             $this->unitPrice = $this->unitPriceID->price_perUnit;
@@ -635,8 +664,18 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function loadPrice()
     {
-        $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->where('supplier_id', $this->supplier_id)->first();
-        $this->unitPrice = $unitPrice->price_perUnit;
+        if($this->userBranch != 1) {
+            $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->min('price_perUnit');
+            // dd($unitPrice);
+
+            $this->unitPrice = $unitPrice;
+        // dd($this->unitPrice);
+
+        } else {
+            $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->where('supplier_id', $this->supplier_id)->first();
+            $this->unitPrice = $unitPrice->price_perUnit;
+        }
+
     }
 
     public function updatedQuantity()

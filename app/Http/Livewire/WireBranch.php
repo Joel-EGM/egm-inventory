@@ -8,6 +8,8 @@ use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use App\Http\Traits\TrackDirtyProperties;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class WireBranch extends Component implements FieldValidationMessage
 {
@@ -16,12 +18,52 @@ class WireBranch extends Component implements FieldValidationMessage
     use TrackDirtyProperties;
 
     public $layoutTitle = 'New Branch';
+    public $branchID;
+    public $branch_name;
+    public $branch_address;
 
-    protected $rules = [
-        'branchName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-        'branchAddress' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+
+    // protected $rules = [
+    //     'branch_name' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
+    //     'branch_address' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
+    //     'branchContactNo' => 'bail|required|numeric',
+    // ];
+
+    protected function rules()
+    {
+        return [
+            'branch_name' => ['bail','required','regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i','min:2','max:50',
+            Rule::unique('branches')
+
+            ->where(function ($query) {
+                return $query
+                ->where('branch_name', $this->branch_name)
+                ->where('branch_address', $this->branch_address);
+
+            })->ignore($this->branchID)],
+
+
+
+            'branch_address' => ['bail','required','regex:/^[\pL\s\-\,\.]+$/u','min:2','max:25',
+
+            Rule::unique('branches')
+            ->where(function ($query) {
+                return $query
+
+                ->where('branch_address', $this->branch_address)
+                ->where('branch_name', $this->branch_name);
+
+            })->ignore($this->branchID)],
+
+
+
+
         'branchContactNo' => 'bail|required|numeric',
-    ];
+            // 'password' => 'bail|required|min:8|confirmed',
+            // 'password_confirmation' => 'bail|required|min:8',
+
+        ];
+    }
 
     public function mount()
     {
@@ -33,8 +75,8 @@ class WireBranch extends Component implements FieldValidationMessage
     public function updated($propertyName)
     {
         $wire_models = [
-            'branchName',
-            'branchAddress',
+            'branch_name',
+            'branch_address',
         ];
 
         if (in_array($propertyName, $wire_models)) {
@@ -58,14 +100,34 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function submit()
     {
-        $validatedItem = $this->validate();
+        // $validatedItem = $this->validate();
+        try {
 
+            $this->validate();
+            // $this->validate();
+
+
+        } catch (ValidationException $exception) {
+            // dd('gg');
+
+            $messages = $exception->validator->errors();
+            if($messages->first('branch_name') === 'The branch name has already been taken.') {
+                $this->dispatchBrowserEvent('show-message', [
+                    'notificationType' => 'error',
+                    'messagePrimary'   => $messages
+                ]);
+                return;
+            };
+            throw $exception;
+
+        }
+    // logger($validate);
         if (is_null($this->Index)) {
             $branch = Branch::updateOrCreate([
 
-                'branch_name' => $this->branchName,
+                'branch_name' => $this->branch_name,
 
-                'branch_address' => $this->branchAddress,
+                'branch_address' => $this->branch_address,
 
                 'branch_contactNo' => $this->branchContactNo,
 
@@ -83,23 +145,23 @@ class WireBranch extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         } else {
-            
+
             if($this->isDirty) {
                 $id = $this->allbranches[$this->Index]['id'];
                 Branch::whereId($id)->update([
 
-                    'branch_name' => $this->branchName,
+                    'branch_name' => $this->branch_name,
 
-                    'branch_address' => $this->branchAddress,
+                    'branch_address' => $this->branch_address,
 
                     'branch_contactNo' => $this->branchContactNo,
 
                 ]);
 
 
-                $this->allbranches[$this->Index]['branch_name'] = $this->branchName;
+                $this->allbranches[$this->Index]['branch_name'] = $this->branch_name;
 
-                $this->allbranches[$this->Index]['branch_address'] = $this->branchAddress;
+                $this->allbranches[$this->Index]['branch_address'] = $this->branch_address;
 
                 $this->allbranches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
 
@@ -129,8 +191,8 @@ class WireBranch extends Component implements FieldValidationMessage
             'isDeleteOpen',
             'Index',
             'formTitle',
-            'branchName',
-            'branchAddress',
+            'branch_name',
+            'branch_address',
             'branchContactNo',
         ]);
     }
@@ -138,8 +200,8 @@ class WireBranch extends Component implements FieldValidationMessage
     public function clearForm()
     {
         $this->reset([
-            'branchName',
-            'branchAddress',
+            'branch_name',
+            'branch_address',
             'branchContactNo',
         ]);
     }
@@ -148,9 +210,11 @@ class WireBranch extends Component implements FieldValidationMessage
     {
         $this->Index = $Index;
 
-        $this->branchName = $this->allbranches[$this->Index]['branch_name'];
+        $this->branchID = $this->allbranches[$this->Index]['id'];
 
-        $this->branchAddress = $this->allbranches[$this->Index]['branch_address'];
+        $this->branch_name = $this->allbranches[$this->Index]['branch_name'];
+
+        $this->branch_address = $this->allbranches[$this->Index]['branch_address'];
 
         $this->branchContactNo = $this->allbranches[$this->Index]['branch_contactNo'];
 

@@ -46,9 +46,13 @@
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
             <option value="None" class="text-center text-gray-400">--select supplier--</option>
-            @foreach ($suppliers as $supplier)
-                <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
-            @endforeach
+            @if (Auth::user()->branch_id != 1)
+                <option value="1" class="text-center" selected>Head Office</option>
+            @else
+                @foreach ($suppliers as $supplier)
+                    <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
+                @endforeach
+            @endif
         </select>
         <x-jet-input-error for="supplier_id" class="mt-2" />
     </div>

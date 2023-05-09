@@ -42,8 +42,7 @@ trait WireVariables
     //Users Variables
     // ----------------------------------------------------------------
     public $allusers =[];
-    public $userName;
-    public $userEmail;
+    
     public $userRole;
     public $password;
     public $password_confirmation;
