@@ -24,6 +24,7 @@ class WireUser extends Component implements FieldValidationMessage
     public $name;
     public $email;
 
+
     public function render()
     {
         return view('livewire.user');
@@ -37,8 +38,8 @@ class WireUser extends Component implements FieldValidationMessage
 
             ->where(function ($query) {
                 return $query
-                ->where('name', $this->name)
-                ->where('email', $this->email);
+                ->where('name', $this->name);
+
 
             })->ignore($this->userID)],
 
@@ -50,16 +51,14 @@ class WireUser extends Component implements FieldValidationMessage
             ->where(function ($query) {
                 return $query
 
-                ->where('email', $this->email)
-                ->where('name', $this->name);
+                ->where('email', $this->email);
+                ;
 
             })->ignore($this->userID)],
 
 
             'userRole' => 'bail|required',
             'branch_id' => 'bail|required',
-            // 'password' => 'bail|required|min:8|confirmed',
-            // 'password_confirmation' => 'bail|required|min:8',
 
         ];
     }
@@ -68,8 +67,6 @@ class WireUser extends Component implements FieldValidationMessage
     {
         $this->allusers = User::all();
         $this->branches = Branch::all();
-
-
     }
 
     public function updated($propertyName)
@@ -86,7 +83,6 @@ class WireUser extends Component implements FieldValidationMessage
         try {
             $this->validateOnly($propertyName);
         } catch (\Throwable $th) {
-            //throw $th;
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
         }
@@ -96,20 +92,12 @@ class WireUser extends Component implements FieldValidationMessage
 
     public function submit()
     {
-        // dd($this->name;
-
 
         try {
 
             $validate = $this->validate();
-            // $this->validate();
-
 
         } catch (ValidationException $exception) {
-            // dd('gg');
-
-            // $messages = $exception->validator->errors();
-            // dd($messages);
             throw $exception;
 
         }

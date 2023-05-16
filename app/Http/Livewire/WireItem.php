@@ -8,7 +8,7 @@ use App\Models\Supplier;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Traits\TrackDirtyProperties;
-
+use Livewire\WithPagination;
 
 use App\Http\Interfaces\FieldValidationMessage;
 
@@ -17,9 +17,11 @@ class WireItem extends Component implements FieldValidationMessage
     use ModalVariables;
     use WireVariables;
     use TrackDirtyProperties;
+    use WithPagination;
+
 
     public $layoutTitle = 'New Item';
-
+    public $search = '';
 
     protected $rules = [
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
@@ -34,7 +36,10 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function render()
     {
-        return view('livewire.item');
+        return view('livewire.item', [
+            'listItems' =>
+            Item::where('item_name', 'like', '%'.$this->search.'%')->paginate(10),
+        ]);
     }
 
     public function updated($propertyName)
@@ -52,7 +57,6 @@ class WireItem extends Component implements FieldValidationMessage
         try {
             $this->validateOnly($propertyName);
         } catch (\Throwable $th) {
-            //throw $th;
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
 

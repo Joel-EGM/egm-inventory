@@ -98,7 +98,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @if (count($orders) === 0)
+                                    @if (count($allorders) === 0)
                                         <tr>
                                             <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
@@ -108,7 +108,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    @foreach ($orders as $order)
+                                    @foreach ($allorders as $order)
                                         <tr
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
@@ -148,19 +148,33 @@
                                                         </svg>
                                                     </a>
                                                     &nbsp;
+                                                    @if ($order->order_status != 'pending' || $order->order_status === 'incomplete')
+                                                        <a href="javascript:" title="Order already Received"
+                                                            class="text-gray-500 mt-1 ml-2">
+                                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 20 20" fill="Gray">
+                                                                <path
+                                                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </a>
+                                                    @else
+                                                        <a href="javascript:" title="Edit"
+                                                            wire:click="edit({{ $order->id }})"
+                                                            class="text-gray-500 mt-1 ml-2">
+                                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 20 20" fill="LimeGreen">
+                                                                <path
+                                                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                                                <path fill-rule="evenodd"
+                                                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </a>
+                                                    @endif
 
-                                                    <a href="javascript:" title="Edit"
-                                                        wire:click="edit({{ $order->id }})"
-                                                        class="text-gray-500 mt-1 ml-2">
-                                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20" fill="LimeGreen">
-                                                            <path
-                                                                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                                            <path fill-rule="evenodd"
-                                                                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
-                                                    </a>
 
                                                     &nbsp;
 
@@ -192,51 +206,7 @@
                                         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500">Next</a>
                                 </div>
                                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                                    <div>
-                                        <p class="text-sm text-gray-700">Showing <span class="font-medium"> 1
-                                            </span> to <span class="font-medium"> 5 </span> of <span
-                                                class="font-medium"> 90
-                                            </span>results</p>
-                                    </div>
-                                    <div>
-                                        <nav class="relative z-0 inline-flex shadow-sm -space-x-px"
-                                            aria-label="Pagination">
-                                            <a href="#"
-                                                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                                <span class="sr-only">Previous</span>
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                    <path fill-rule="evenodd"
-                                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </a>
-                                            <a href="#"
-                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">1</a>
-                                            <a href="#"
-                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">2</a>
-                                            <a href="#"
-                                                class="hidden md:inline-flex relative items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">3</a>
-                                            <span
-                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
-                                            <a href="#"
-                                                class="hidden md:inline-flex relative items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">8</a>
-                                            <a href="#"
-                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">9</a>
-                                            <a href="#"
-                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">10</a>
-                                            <a href="#"
-                                                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                                <span class="sr-only">Next</span>
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                    <path fill-rule="evenodd"
-                                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                            </a>
-                                        </nav>
-                                    </div>
+                                    {{ $allorders->links('pagination::tailwind') }}
                                 </div>
                             </div>
                         </div>

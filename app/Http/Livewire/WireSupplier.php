@@ -8,14 +8,18 @@ use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use App\Http\Traits\TrackDirtyProperties;
+use Livewire\WithPagination;
 
 class WireSupplier extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
     use TrackDirtyProperties;
+    use WithPagination;
+
 
     public $layoutTitle = 'New Supplier';
+    public $supplierID;
 
     protected $rules = [
         'getsupplierName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
@@ -41,7 +45,6 @@ class WireSupplier extends Component implements FieldValidationMessage
         try {
             $this->validateOnly($propertyName);
         } catch (\Throwable $th) {
-            //throw $th;
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
 
@@ -50,7 +53,10 @@ class WireSupplier extends Component implements FieldValidationMessage
 
     public function render()
     {
-        return view('livewire.supplier');
+        return view('livewire.supplier', [
+            'activesuppliers' =>
+            Supplier::paginate(10),
+        ]);
     }
 
     public function submit()
@@ -140,6 +146,8 @@ class WireSupplier extends Component implements FieldValidationMessage
     public function selectArrayItem($Index, $formAction = null)
     {
         $this->Index = $Index;
+
+        $this->supplierID = $this->getsuppliers[$this->Index]['id'];
 
         $this->getsupplierName = $this->getsuppliers[$this->Index]['suppliers_name'];
 

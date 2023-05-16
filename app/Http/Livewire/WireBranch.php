@@ -10,24 +10,21 @@ use App\Http\Interfaces\FieldValidationMessage;
 use App\Http\Traits\TrackDirtyProperties;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Livewire\WithPagination;
 
 class WireBranch extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
     use TrackDirtyProperties;
+    use WithPagination;
 
     public $layoutTitle = 'New Branch';
     public $branchID;
     public $branch_name;
     public $branch_address;
+    public $search = '';
 
-
-    // protected $rules = [
-    //     'branch_name' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
-    //     'branch_address' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
-    //     'branchContactNo' => 'bail|required|numeric',
-    // ];
 
     protected function rules()
     {
@@ -42,8 +39,6 @@ class WireBranch extends Component implements FieldValidationMessage
 
             })->ignore($this->branchID)],
 
-
-
             'branch_address' => ['bail','required','regex:/^[\pL\s\-\,\.]+$/u','min:2','max:25',
 
             Rule::unique('branches')
@@ -55,12 +50,7 @@ class WireBranch extends Component implements FieldValidationMessage
 
             })->ignore($this->branchID)],
 
-
-
-
         'branchContactNo' => 'bail|required|numeric',
-            // 'password' => 'bail|required|min:8|confirmed',
-            // 'password_confirmation' => 'bail|required|min:8',
 
         ];
     }
@@ -68,8 +58,8 @@ class WireBranch extends Component implements FieldValidationMessage
     public function mount()
     {
         $this->allbranches = Branch::all();
+        // dd($this->allbranches);
 
-        // dd($this->allbranches->orderdet);
     }
 
     public function updated($propertyName)
@@ -86,7 +76,7 @@ class WireBranch extends Component implements FieldValidationMessage
         try {
             $this->validateOnly($propertyName);
         } catch (\Throwable $th) {
-            //throw $th;
+
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
 
@@ -95,20 +85,20 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function render()
     {
-        return view('livewire.branch');
+        return view('livewire.branch', [
+            'activebranches' =>
+            Branch::where('branch_name', 'like', '%'.$this->search.'%')->paginate(10),
+        ]);
+
     }
 
     public function submit()
     {
-        // $validatedItem = $this->validate();
         try {
 
             $this->validate();
-            // $this->validate();
-
 
         } catch (ValidationException $exception) {
-            // dd('gg');
 
             $messages = $exception->validator->errors();
             if($messages->first('branch_name') === 'The branch name has already been taken.') {
@@ -121,7 +111,6 @@ class WireBranch extends Component implements FieldValidationMessage
             throw $exception;
 
         }
-    // logger($validate);
         if (is_null($this->Index)) {
             $branch = Branch::updateOrCreate([
 
@@ -179,7 +168,6 @@ class WireBranch extends Component implements FieldValidationMessage
                 'notificationType' => 'success',
                 'messagePrimary'   => $notificationMessage
             ]);
-
 
         }
     }

@@ -10,14 +10,19 @@ use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Interfaces\FieldValidationMessage;
 use App\Http\Traits\TrackDirtyProperties;
+use Livewire\WithPagination;
 
 class WireItemPrice extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
     use TrackDirtyProperties;
+    use WithPagination;
+
 
     public $layoutTitle = 'Add Item Price';
+    public $search = '';
+
 
     protected $rules = [
         'supplier_id' => 'bail|required',
@@ -28,14 +33,19 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->allitems = Item::all();
-        $this->allsuppliers = Supplier::all();
-        $this->itemprices = ItemPrice::all();
+        $this->allitems = Item::select('id', 'item_name')->get();
+        $this->allsuppliers = Supplier::select('id', 'suppliers_name')->get();
+        $this->itemprices = ItemPrice::with('items', 'suppliers')->get();
     }
 
     public function render()
     {
-        return view('livewire.item-price');
+        return view('livewire.item-price', [
+            'listItemPrices' =>
+            ItemPrice::whereHas('items', function ($query) {
+                $query->where('item_name', 'like', '%'.$this->search.'%');
+            })->paginate(10),
+        ]);
     }
 
     public function updated($propertyName)
@@ -52,7 +62,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
         try {
             $this->validateOnly($propertyName);
         } catch (\Throwable $th) {
-            //throw $th;
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
 
