@@ -13,10 +13,13 @@
                                 </svg>
                             </div>
 
+
+
+
                             <div class="mx-5">
                                 <div class="text-gray-500 text-sm font-bold">Active Branch</div>
 
-                                <h4 class="text-2xl font-bold text-gray-700">{{ $branches->count() }}</h4>
+                                <h4 class="text-2xl font-bold text-gray-700">{{ $branches }}</h4>
 
                             </div>
                         </div>
@@ -79,7 +82,6 @@
                 <div class="flex flex-wrap">
                     <div class="w-full px-3 py-3 xl:w">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-
                             <table class="min-w-full divide-y divide-gray-200 table-fixed">
                                 <thead>
                                     <tr>
@@ -131,8 +133,121 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex flex-wrap">
+                    <div class="w-full px-3 py-3 xl:w">
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-default">
+                                            <div class="col-lg-20">
+                                                <canvas id="orderChart" class="rounded shadow"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
-</div>
+
+{{-- <div class="py-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mt-4 grid grid-cols-1">
+            <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
+                <div class="bg-white px-4 py-3">
+                    <div class="flex flex-row mt-0 sm:mb-0">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="col-lg-20">
+                                            <canvas id="orderChart" class="rounded shadow"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<!-- CHARTS -->
+<script>
+    var ctx = document.getElementById('orderChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: {!! json_encode($chart->labels) !!},
+            datasets: [{
+                label: 'ITEM COUNT',
+                backgroundColor: {!! json_encode($chart->colours) !!},
+                data: {!! json_encode($chart->dataset) !!},
+            }, ]
+        },
+        // Configuration options go here
+        options: {
+            responsive: true,
+            interaction: {
+                intersect: false,
+                axis: 'x'
+            },
+            plugins: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value) {
+                                if (value % 1 === 0) {
+                                    return value;
+                                }
+                            }
+                        },
+                        scaleLabel: {
+                            display: false
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        fontColor: '#122C4B',
+                        fontFamily: "'Muli', sans-serif",
+                        padding: 25,
+                        boxWidth: 25,
+                        fontSize: 12,
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 0,
+                        bottom: 10
+                    }
+                },
+
+                title: {
+                    display: true,
+                    text: "MOST ORDERED ITEM",
+                    fontFamily: "'Muli', sans-serif",
+                    fontSize: 17,
+                    fontColor: '#122C4B'
+                }
+            }
+        }
+    });
+</script>

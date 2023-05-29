@@ -53,9 +53,11 @@ class WireSupplier extends Component implements FieldValidationMessage
 
     public function render()
     {
+        $page = (int)$this->paginatePage;
+
         return view('livewire.supplier', [
             'activesuppliers' =>
-            Supplier::paginate(10),
+            Supplier::paginate($page),
         ]);
     }
 

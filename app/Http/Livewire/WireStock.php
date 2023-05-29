@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Stock;
 use App\Models\ViewData;
 use App\Http\Traits\ModalVariables;
+use App\Http\Traits\WireVariables;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\WithPagination;
@@ -14,6 +15,9 @@ class WireStock extends Component
 {
     use ModalVariables;
     use WithPagination;
+    use WireVariables;
+    public $search = '';
+
 
     public $stocks;
 
@@ -24,7 +28,16 @@ class WireStock extends Component
 
     public function render()
     {
-        return view('livewire.stock')->with('stockitems', $this->stocks->paginateArray(10));
+        $page = (int)$this->paginatePage;
+
+        $name = $this->search;
+        $filtered = $this->stocks->filter(function ($item) use ($name) {
+            return str_contains($item['item_name'], $name);
+        });
+
+        $gg = $filtered->all();
+        // dd($gg);
+        return view('livewire.stock', ['stockitems' => collect($gg)->paginateArray($page)]);
     }
 
     public function updatedViewMode()
@@ -39,22 +52,38 @@ class WireStock extends Component
         ->map(function ($items) {
             if($this->viewMode != 1) {
                 return[
-                    'item_id' =>$items->item_id,
-                    'created_at' =>$items->created_at,
-                    'item_name' =>$items->item_name,
-                    'totalqty' =>$items->totalqty
+                    'item_id' => $items->item_id,
+                    'created_at' => $items->created_at,
+                    'item_name' => $items->item_name,
+                    'totalqty' => $items->totalqty
                 ];
             } else {
                 return[
-                    'item_id' =>$items->item_id,
-                    'created_at' =>$items->created_at,
-                    'item_name' =>$items->item_name,
-                    'unit_name' =>$items->unit_name,
-                    'totalqtyWHOLE' =>$items->totalqtyWHOLE,
-                    'totalqtyREMAINDER' =>$items->totalqtyREMAINDER
+                    'item_id' => $items->item_id,
+                    'created_at' => $items->created_at,
+                    'item_name' => $items->item_name,
+                    'unit_name' => $items->unit_name,
+                    'totalqtyWHOLE' => $items->totalqtyWHOLE,
+                    'totalqtyREMAINDER' => $items->totalqtyREMAINDER
                 ];
             }
         });
+        // dd($filtered);
+    }
 
+    public function itemsearch()
+    {
+        // $gg = $this->stocks;
+        // $ey = $gg->where('item_name', 'like', '%'.$this->search.'%');
+
+        // dd($gg);
+        // $filtered = $gg->filter(function ($value, $key) {
+        //     return data_get($value, 'item_name') === $this->search;
+        // });
+        // $filtered->all();
+
+        // dd($ey);
+
+        // dd($filter);
     }
 }

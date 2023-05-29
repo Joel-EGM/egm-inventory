@@ -5,5 +5,4 @@
         </h2>
     </x-slot>
     <x-dash-board></x-dash-board>
-
 </x-app-layout>

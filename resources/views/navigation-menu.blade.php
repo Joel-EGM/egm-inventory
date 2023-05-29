@@ -38,7 +38,7 @@
                                     <x-jet-dropdown-link href="{{ route('stocks') }}">
                                         {{ __('Current Stock') }}
                                     </x-jet-dropdown-link>
-                                    <x-jet-dropdown-link href="#">
+                                    <x-jet-dropdown-link href="{{ route('charts') }}">
                                         {{ __('Track Usage') }}
                                     </x-jet-dropdown-link>
 
@@ -104,7 +104,7 @@
                                     <x-jet-dropdown-link href="{{ route('orders') }}">
                                         {{ __('Create Order') }}
                                     </x-jet-dropdown-link>
-                                    <x-jet-dropdown-link href="#">
+                                    <x-jet-dropdown-link href="{{ route('history') }}">
                                         {{ __('Order History') }}
                                     </x-jet-dropdown-link>
                                 </x-slot>

@@ -25,7 +25,6 @@ class WireBranch extends Component implements FieldValidationMessage
     public $branch_address;
     public $search = '';
 
-
     protected function rules()
     {
         return [
@@ -83,12 +82,31 @@ class WireBranch extends Component implements FieldValidationMessage
         }
     }
 
+    // public function updatedSortList()
+    // {
+    //     // dd($this->sortList);
+    // }
+
     public function render()
     {
-        return view('livewire.branch', [
-            'activebranches' =>
-            Branch::where('branch_name', 'like', '%'.$this->search.'%')->paginate(10),
-        ]);
+        // dd($this->sortList);
+        $page = (int)$this->paginatePage;
+        $filtered = $this->allbranches->filter(function ($value) {
+            return $value->status === (int)$this->sortList;
+        });
+        // dd($filtered);
+        $gg = $filtered->all();
+        // dd($gg);
+
+
+        // ->where('branch_name', 'like', '%'.$this->search.'%')
+
+        if($this->sortList === 'all') {
+            return view('livewire.branch', ['activebranches' => Branch::where('branch_name', 'like', '%'.$this->search.'%')->paginate($page),]);
+        } else {
+            return view('livewire.branch', ['activebranches' => collect($gg)->paginateArray($page)]);
+        }
+
 
     }
 
@@ -257,5 +275,17 @@ class WireBranch extends Component implements FieldValidationMessage
             $this->isDeleteOpen = !$this->isDeleteOpen;
             $this->clearAndResetDelete();
         }
+    }
+
+    public function changeStatus(Branch $branch, $status)
+    {
+        $branch->update(['status' => $status]);
+
+        $notificationMessage2 = 'Status has been updated successfully.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage2
+        ]);
     }
 }

@@ -18,7 +18,10 @@ class ItemPriceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'supplier_id' => $this->faker->numberBetween(1, 202),
+            'item_id' => $this->faker->numberBetween(1, 202),
+            'price_perUnit' => $this->faker->numberBetween(50, 100),
+            'price_perPieces' => $this->faker->numberBetween(5, 100),
         ];
     }
 }

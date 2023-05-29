@@ -23,6 +23,7 @@ class WireItem extends Component implements FieldValidationMessage
     public $layoutTitle = 'New Item';
     public $search = '';
 
+
     protected $rules = [
         'itemName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
         'unitIName' => 'bail|required|regex:/^[\pL\s\-\,\.]+$/u|min:2|max:25',
@@ -36,9 +37,11 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function render()
     {
+        $page = (int)$this->paginatePage;
+
         return view('livewire.item', [
             'listItems' =>
-            Item::where('item_name', 'like', '%'.$this->search.'%')->paginate(10),
+            Item::where('item_name', 'like', '%'.$this->search.'%')->paginate($page),
         ]);
     }
 

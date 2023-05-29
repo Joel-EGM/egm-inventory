@@ -32,11 +32,11 @@
 
                     <div class="flex flex-row mb-0 sm:mb-0">
                         <div class="relative">
-                            <select
+                            <select wire:model="paginatePage"
                                 class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                <option>5</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option value=5>5</option>
+                                <option value=10>10</option>
+                                <option value=20>20</option>
                             </select>
                         </div>
 
@@ -61,7 +61,7 @@
                                 class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 
                                 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white 
                                 focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
-
+                            {{-- <button type="button" wire:click="itemsearch()">search</button> --}}
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($stockitems) === 0)
                                         <tr>
-                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
+                                            <td colspan="5" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
                                                         NO DATA AVAILABLE</div>
