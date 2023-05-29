@@ -18,6 +18,7 @@ class BranchFactory extends Factory
             'branch_name' => $this->faker->firstNameMale(),
             'branch_address' => $this->faker->streetName(),
             'branch_contactNo' => $this->faker->randomNumber(5, true),
+            'status' => $this->faker->numberBetween(0, 1)
         ];
     }
 }

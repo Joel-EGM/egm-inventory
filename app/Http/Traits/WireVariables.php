@@ -42,7 +42,7 @@ trait WireVariables
     //Users Variables
     // ----------------------------------------------------------------
     public $allusers =[];
-    
+
     public $userRole;
     public $password;
     public $password_confirmation;
@@ -83,5 +83,15 @@ trait WireVariables
 
     public $completedOrder = false;
     public $unitString;
+
+
+
+    public $paginatePage = 10;
+    public $search = '';
+    public $sortList = 'all';
+    public $filteredBranches;
+
+
+
     // ----------------------------------------------------------------
 }

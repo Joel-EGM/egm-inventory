@@ -31,15 +31,15 @@
 <br />
 <div>
     <x-jet-label for="price_perUnit" value="{{ __('Price Per Unit') }}" />
-    <x-jet-input wire:model.debounce.1000ms="price_perUnit" x-ref="price_perUnit" id="price_perUnit" type="text"
-        maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perUnit" />
+    <x-jet-input wire:model.defer="price_perUnit" x-ref="price_perUnit" id="price_perUnit" type="text" maxlength="50"
+        class="mt-1 block w-full text-center" autocomplete="price_perUnit" />
     <x-jet-input-error for="price_perUnit" class="mt-2" />
 </div>
 <br />
 <div>
     <x-jet-label for="price_perPieces" value="{{ __('Price Per Pieces') }}" />
-    <x-jet-input wire:model.debounce.1000ms="price_perPieces" x-ref="price_perPieces" id="price_perPieces"
-        type="text" maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perPieces" />
+    <x-jet-input wire:model.defer="price_perPieces" x-ref="price_perPieces" id="price_perPieces" type="text"
+        maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perPieces" />
     <x-jet-input-error for="price_perPieces" class="mt-2" />
 </div>
 

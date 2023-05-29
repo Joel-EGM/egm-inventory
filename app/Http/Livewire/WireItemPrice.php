@@ -40,11 +40,13 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
     public function render()
     {
+        $page = (int)$this->paginatePage;
+
         return view('livewire.item-price', [
             'listItemPrices' =>
-            ItemPrice::whereHas('items', function ($query) {
-                $query->where('item_name', 'like', '%'.$this->search.'%');
-            })->paginate(10),
+            ItemPrice::whereHas('suppliers', function ($query) {
+                $query->where('suppliers_name', 'like', '%'.$this->search.'%');
+            })->paginate($page),
         ]);
     }
 

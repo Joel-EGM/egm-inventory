@@ -8,6 +8,8 @@ use App\Models\Branch;
 use App\Models\Item;
 use App\Models\ItemPrice;
 use App\Models\Supplier;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\User;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +21,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'egm',
@@ -30,12 +31,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'joel',
-            'email' => 'j@g.com',
+            'name' => 'gapan',
+            'email' => 'g@g.com',
             'password' => '$2y$10$hg3Pn45ZiQlaD./r8RfEQeQvFrhAmmkL0exf7DWpk32g9t0.RGeKu',
             'role' => 'user',
             'branch_id' => '2',
         ]);
+
 
         Branch::factory()->count(1)->create([
             'branch_name' => 'HO',
@@ -47,6 +49,9 @@ class DatabaseSeeder extends Seeder
             'branch_address' => 'San Nicolas',
             'branch_contactNo' => '12345678',
         ]);
+
+        // Branch::factory()->count(200)->create();
+
 
         Item::factory()->count(1)->create([
             'item_name' => 'bond paper',
@@ -61,6 +66,10 @@ class DatabaseSeeder extends Seeder
             'pieces_perUnit' => '100',
             'reorder_level' => '5',
         ]);
+
+        // Item::factory()->count(200)->create();
+
+
 
         Supplier::factory()->count(1)->create([
               'suppliers_name' => 'Head Office',
@@ -77,6 +86,8 @@ class DatabaseSeeder extends Seeder
             'suppliers_email' => 'pacifc@g.com',
             'suppliers_contact' => '0982374629',
         ]);
+        // Supplier::factory()->count(200)->create();
+
 
         ItemPrice::factory()->count(1)->create([
             'supplier_id' => '2',
@@ -102,5 +113,12 @@ class DatabaseSeeder extends Seeder
             'price_perUnit' => '250',
             'price_perPieces' => '17',
         ]);
+
+        // ItemPrice::factory()->count(500)->create();
+
+        // Order::factory()->count(200)->create();
+        // OrderDetail::factory()->count(20)->create();
+
+
     }
 }

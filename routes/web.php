@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ExportDetailsController;
+use App\Http\Controllers\ChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +38,14 @@ Route::middleware([
 
     //STOCKS
     Route::get('stocks/current_stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
+    // Route::get('stocks/charts', [ChartController::class, 'index'])->name('charts');
+    Route::get('stocks/track_usage', \App\Http\Livewire\WireChart::class, 'render')->name('charts');
+
+
 
     //ORDERS
     Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
+    Route::get('orders/order_history', \App\Http\Livewire\WireHistory::class, 'render')->name('history');
 
     //EXPORT TO PDF
     Route::get('stocks/generate-pdf/{stock}', [ExportController::class, 'generatePDF'])->name('generate-pdf');
@@ -48,4 +54,7 @@ Route::middleware([
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
 
     Route::get('orders/generate-PO/{detail}', [ExportDetailsController::class, 'generatePO'])->name('generatePO');
+
+
+
 });

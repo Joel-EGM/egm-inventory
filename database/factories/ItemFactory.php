@@ -17,7 +17,7 @@ class ItemFactory extends Factory
         return [
             'item_name' => $this->faker->lastName(),
             'unit_name' => $this->faker->cityPrefix(),
-            'pieces_perUnit' => $this->faker->numberBetween(0, 100),
+            'pieces_perUnit' => $this->faker->numberBetween(0, 500),
             'fixed_unit' => $this->faker->numberBetween(0, 1),
             'reorder_level' => $this->faker->numberBetween(0, 20),
         ];

@@ -36,20 +36,20 @@
 
                     <div class="flex flex-row mb-0 sm:mb-0">
                         <div class="relative">
-                            <select
+                            <select wire:model="paginatePage"
                                 class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                <option>5</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option value=5>5</option>
+                                <option value=10>10</option>
+                                <option value=20>20</option>
                             </select>
                         </div>
 
                         <div class="relative">
-                            <select
+                            <select wire:model="sortList"
                                 class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300">
-                                <option>All</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
+                                <option value="all">All</option>
+                                <option value=1>Active</option>
+                                <option value=0>Inactive</option>
                             </select>
                         </div>
 
@@ -88,13 +88,16 @@
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             STATUS
                                         </th>
-
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($activebranches) === 0)
                                         <tr>
-                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
+                                            <td colspan="5" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
                                                         NO DATA AVAILABLE</div>
@@ -109,6 +112,19 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_address }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_contactNo }}
                                             </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{-- {{ $branch->status != 1 ? 'Inactive' : 'Active' }} --}}
+                                                <select class="mt-1 block"
+                                                    wire:change="changeStatus({{ $branch }},$event.target.value)">
+
+                                                    <option class="w-full text-center" value="1"
+                                                        {{ $branch->status === 1 ? 'selected' : '' }}>Active</option>
+                                                    <option class="w-full text-center" value="0"
+                                                        {{ $branch->status === 0 ? 'selected' : '' }}>Inactive</option>
+                                                </select>
+                                            </td>
+
+
 
 
                                             <td
@@ -154,7 +170,7 @@
                                         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500">Next</a>
                                 </div>
                                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                                    {{ $activebranches->links('pagination::tailwind') }}
+                                    {{ $activebranches->links() }}
                                 </div>
                             </div>
                         </div>

@@ -36,11 +36,11 @@
 
                     <div class="flex flex-row mb-0 sm:mb-0">
                         <div class="relative">
-                            <select
+                            <select wire:model="paginatePage"
                                 class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                <option>5</option>
-                                <option>10</option>
-                                <option>20</option>
+                                <option value=5>5</option>
+                                <option value=10>10</option>
+                                <option value=20>20</option>
                             </select>
                         </div>
 
@@ -160,7 +160,7 @@
                                         class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500">Next</a>
                                 </div>
                                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                                    {{ $listItemPrices->links('pagination::tailwind') }}
+                                    {{ $listItemPrices->links() }}
                                 </div>
                             </div>
                         </div>

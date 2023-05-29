@@ -25,9 +25,20 @@ class WireUser extends Component implements FieldValidationMessage
     public $email;
 
 
+    public function mount()
+    {
+        $this->allusers = User::all();
+        $this->branches = Branch::all();
+    }
+
     public function render()
     {
-        return view('livewire.user');
+        $page = (int)$this->paginatePage;
+
+        return view('livewire.user', [
+            'listUsers' =>
+            User::where('name', 'like', '%'.$this->search.'%')->paginate($page),
+        ]);
     }
 
     protected function rules()
@@ -63,11 +74,6 @@ class WireUser extends Component implements FieldValidationMessage
         ];
     }
 
-    public function mount()
-    {
-        $this->allusers = User::all();
-        $this->branches = Branch::all();
-    }
 
     public function updated($propertyName)
     {

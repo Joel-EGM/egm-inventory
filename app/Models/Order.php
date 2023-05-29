@@ -16,6 +16,7 @@ class Order extends Model
         'branch_id',
         'order_date',
         'order_status',
+        'created_by',
     ];
 
     public function branches()

@@ -14,10 +14,10 @@ use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use App\Http\Traits\TrackDirtyProperties;
 use App\Http\Interfaces\FieldValidationMessage;
-use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Carbon\Carbon;
 
 class WireOrder extends Component implements FieldValidationMessage
 {
@@ -31,6 +31,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public $updateID;
     public $itemPrice;
     public $userBranch;
+    public $search = '';
+    public $filteredSuppliers;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -65,19 +67,43 @@ class WireOrder extends Component implements FieldValidationMessage
 
         $this->branchFind = Branch::select('id', 'branch_name')->where('id', $user)->first();
 
+        $sup_id = $this->itemPrice->pluck('supplier_id');
+
+        $this->filteredSuppliers = $this->suppliers->whereIn('id', $sup_id);
+
+        $listBranches = $this->branches->pluck('id');
+        $this->filteredBranches = $this->orders->whereIn('branch_id', $listBranches)->unique('branch_id');
+
+        $this->filteredBranches->values()->all();
+
     }
 
     public function render()
     {
+        $page = (int)$this->paginatePage;
+        $filtered = $this->orders->filter(function ($value) {
+            return $value->branch_id === (int)$this->sortList;
+        });
+        $gg = $filtered->all();
         if(Auth()->user()->branch_id != 1) {
             return view('livewire.order', [
                 'allorders' =>
-                Order::with('branches')->where('branch_id', Auth()->user()->branch_id)->latest()->paginate(10),
+                Order::whereHas('branches', function ($query) {
+                    $query->where('order_date', 'like', '%'.$this->search.'%');
+                })->where('order_status', '!=', 'received')->where('branch_id', Auth()->user()->branch_id)->paginate($page),
             ]);
+        } elseif($this->sortList === 'all') {
+            return view('livewire.order', [
+                'allorders' =>
+                Order::whereHas('branches', function ($query) {
+                    $query->where('branch_name', 'like', '%'.$this->search.'%');
+                })->where('order_status', '!=', 'received')->paginate($page),
+            ]);
+
         } else {
             return view('livewire.order', [
                 'allorders' =>
-                Order::with('branches')->paginate(10),
+                collect($gg)->where('order_status', '!=', 'received')->paginateArray($page),
             ]);
         }
     }
@@ -94,7 +120,9 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 'order_date' => $this->order_date,
 
-                'order_status' => 'pending'
+                'order_status' => 'pending',
+
+                'created_by' => Auth()->user()->name
 
             ]);
 
@@ -124,6 +152,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
             $this->orders->push($orders);
             $this->clearForm();
+            // $this->clearFormVariables();
             $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
@@ -298,9 +327,11 @@ class WireOrder extends Component implements FieldValidationMessage
             'item_id',
             'supplier_id',
             'unitType',
+            'unitName',
             'unit_id',
             'quantity',
             'unitPrice',
+            'itemList',
             'total_amount',
             'orderArrays',
         ]);
@@ -553,22 +584,54 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
+    public function updatedBranchId()
+    {
+        $this->reset([
+            'item_id',
+            'supplier_id',
+            'unitType',
+            'unitName',
+            'unit_id',
+            'quantity',
+            'unitPrice',
+            'itemList',
+            'total_amount',
+        ]);
+    }
+
+    public function resetForm()
+    {
+        $this->reset([
+            'item_id',
+            'unitType',
+            'unitName',
+            'unit_id',
+            'quantity',
+            'unitPrice',
+            'itemList',
+            'total_amount',
+        ]);
+    }
+
     public function updatedSupplierId()
     {
+        $this->resetForm();
         if ($this->supplier_id === "None") {
             $this->reset([
                 'item_id',
                 'unitType',
+                'unitName',
+                'unit_id',
                 'quantity',
                 'unitPrice',
+                'itemList',
                 'total_amount',
             ]);
 
             return;
         }
 
-        $this->userBranch = Auth()->user()->branch_id;
-        if ($this->userBranch != 1) {
+        if ($this->branch_id != 1) {
             $this->itemList = $this->items;
         } else {
             $collection = ItemPrice::where('supplier_id', (int) $this->supplier_id)
@@ -591,7 +654,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 $this->unitString = "Unit";
                 $this->unitType = $this->item_id;
                 $this->unit_id = $this->item_id;
-                $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->get();
+                $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->first();
 
                 $this->loadPrice();
             }

@@ -46,10 +46,10 @@
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
             <option value="None" class="text-center text-gray-400">--select supplier--</option>
-            @if (Auth::user()->branch_id != 1)
+            @if ($branch_id != 1)
                 <option value="1" class="text-center" selected>Head Office</option>
             @else
-                @foreach ($suppliers as $supplier)
+                @foreach ($filteredSuppliers as $supplier)
                     <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
                 @endforeach
             @endif
@@ -69,7 +69,7 @@
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
             <option value="None" class="text-center text-gray-400">--select item--</option>
-            @if (Auth()->user()->branch_id != 1)
+            @if ($branch_id != 1)
                 @foreach ($itemList as $item)
                     <option value="{{ $item['id'] }}" class="text-center">{{ $item['item_name'] }}
                         {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
@@ -145,29 +145,6 @@
 
 </div>
 
-{{-- <br />
-<div>
-    <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
-    @foreach ($unitName as $unit)
-        <input type="text" maxlength="50" class="w-full text-center" value="{{ $unit->unit_name }}"readonly />
-    @endforeach
-</div> --}}
-{{-- <br />
-<div>
-    <x-jet-label for="price_perUnit" value="{{ __('Price Per Unit') }}" />
-    <x-jet-input wire:model="price_perUnit" x-ref="price_perUnit" id="price_perUnit" type="text"
-        maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perUnit" />
-    <x-jet-input-error for="price_perUnit" class="mt-2" />
-</div>
-<br />
-<div>
-    <x-jet-label for="price_perPieces" value="{{ __('Price Per Pieces') }}" />
-    <x-jet-input wire:model="price_perPieces" x-ref="price_perPieces" id="price_perPieces"
-        type="text" maxlength="50" class="mt-1 block w-full text-center" autocomplete="price_perPieces" />
-    <x-jet-input-error for="price_perPieces" class="mt-2" />
-</div>
-
-<br /> --}}
 <br />
 <div class="flex flex-col">
     <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
@@ -206,18 +183,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @if (count($orderArrays) === 0)
-                            <tr>
-                                <td colspan="9"
-                                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center place-content-center">
-                                        <div class="text-lg leading-5 font-medium text-gray-500 font-bold">
-                                            NO DATA AVAILABLE</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endif --}}
-
                         @foreach ($orderArrays as $order)
                             <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                 @if ($formTitle === 'Create Order')
