@@ -14,7 +14,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
-                                        <div class="col-lg-20">
+                                        <div class="chart-container"
+                                            style="position: relative; height:60vh; width:58vw; margin: auto;">
                                             <canvas id="orderChart" class="rounded shadow"></canvas>
                                             {{-- <canvas id="myChart"></canvas> --}}
                                         </div>
@@ -29,6 +30,7 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script> --}}
 
 <!-- CHARTS -->
@@ -97,23 +99,39 @@
         type: 'line',
         data: {
             labels: {!! json_encode($charts->labels) !!},
-
             datasets: [{
                 label: 'ORDER COUNT',
                 backgroundColor: {!! json_encode($charts->colours) !!},
                 data: {!! json_encode($charts->dataset) !!},
-            }]
+                borderWidth: 3,
+                borderColor: {!! json_encode($charts->colours) !!},
+            }, ]
         },
         options: {
             responsive: true,
-            scales: {
-                x: [{
-                    type: 'time',
-                    time: {
-                        unit: 'month'
+            interaction: {
+                intersect: false,
+                axis: 'x'
+            },
+            animations: {
+                tension: {
+                    duration: 2000,
+                    easing: 'easeOutSine',
+                    from: 1,
+                    to: 0,
+                    loop: false
+                }
+            },
+            hide: {
+                animations: {
+                    x: {
+                        to: 0
+                    },
+                    y: {
+                        to: 0
                     }
-                }]
-            }
+                }
+            },
         }
     });
 </script>

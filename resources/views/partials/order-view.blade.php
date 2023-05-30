@@ -86,9 +86,12 @@
     </div>
 </div>
 @if ($formTitle === 'Order Details')
-    <input type="checkbox" wire:model="completedOrder">Order Complete
+    <input name="completedOrder" type="checkbox" wire:model="completedOrder">Order Complete
+
     <div class="flex flex-row-reverse">
         <x-jet-button class="ml-2" wire:click.prevent="saveMethod">
             SAVE</x-jet-button>
+        <x-jet-input-error for="selectedRecord" class="mt-2 text-lg" />
+
     </div>
 @endif

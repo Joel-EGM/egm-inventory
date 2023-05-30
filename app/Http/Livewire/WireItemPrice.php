@@ -22,6 +22,9 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
     public $layoutTitle = 'Add Item Price';
     public $search = '';
+    public $filteredSuppliers;
+    public $filteredSupp;
+    public $listSuppliers;
 
 
     protected $rules = [
@@ -36,18 +39,46 @@ class WireItemPrice extends Component implements FieldValidationMessage
         $this->allitems = Item::select('id', 'item_name')->get();
         $this->allsuppliers = Supplier::select('id', 'suppliers_name')->get();
         $this->itemprices = ItemPrice::with('items', 'suppliers')->get();
+
+        $sup_id = $this->itemprices->pluck('supplier_id');
+
+        $this->filteredSupp = $this->allsuppliers->whereIn('id', $sup_id);
+
+        $this->listSuppliers = $this->allsuppliers->pluck('id');
+        // dd($this->listSuppliers);
+
+        $this->filteredSuppliers = $this->itemprices->whereIn('supplier_id', $this->listSuppliers)->unique('supplier_id');
+
+        $this->filteredSuppliers->values()->all();
+
+        // dd($this->filteredSuppliers);
     }
 
     public function render()
     {
         $page = (int)$this->paginatePage;
-
-        return view('livewire.item-price', [
-            'listItemPrices' =>
-            ItemPrice::whereHas('suppliers', function ($query) {
-                $query->where('suppliers_name', 'like', '%'.$this->search.'%');
-            })->paginate($page),
-        ]);
+        $filtered = $this->itemprices->filter(function ($value) {
+            return $value->supplier_id === (int)$this->sortList;
+        });
+        $gg = $filtered->all();
+        // dump($gg);
+        // return view('livewire.item-price', [
+        //     'listItemPrices' =>
+        //     ItemPrice::whereHas('suppliers', function ($query) {
+        //         $query->where('suppliers_name', 'like', '%'.$this->search.'%');
+        //     })->paginate($page),
+        // ]);
+        if($this->sortList === 'all') {
+            return view('livewire.item-price', [     'listItemPrices' =>
+            ItemPrice::whereHas('items', function ($query) {
+                $query->where('item_name', 'like', '%'.$this->search.'%');
+            })->paginate($page),]);
+        } else {
+            return view('livewire.item-price', [
+                'listItemPrices' =>
+                collect($gg)->paginateArray($page),
+            ]);
+        }
     }
 
     public function updated($propertyName)

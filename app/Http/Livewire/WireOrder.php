@@ -43,7 +43,15 @@ class WireOrder extends Component implements FieldValidationMessage
         'quantity'  => 'required|numeric| max: 999',
         'unitPrice'  => 'bail|required|numeric',
         'total_amount'  => 'bail|required|numeric',
+        // 'selectedRecord' => 'required',
     ];
+
+    public function messages()
+    {
+        return[
+            'selectedRecord.required' => 'Choose at least one item'
+        ];
+    }
 
     public function mount()
     {
@@ -51,7 +59,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
         $this->suppliers = Supplier::all();
 
-        $this->branches = Branch::all();
+        $this->branches = Branch::where('status', '=', '1')->get();
 
         $this->order_details = OrderDetail::all();
 
@@ -303,8 +311,6 @@ class WireOrder extends Component implements FieldValidationMessage
         $id = $this->orderArrays[$index]['id'];
         OrderDetail::find($id)->delete();
         unset($this->orderArrays[$index]);
-
-
     }
 
     public function clearFormVariables()
@@ -430,6 +436,11 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function saveMethod()
     {
+
+        $validatedData = $this->validate([
+         'selectedRecord' => 'required',
+        ]);
+
         if ($this->getBranchID != 1) {
             $this->subsctractBranchOrder();
         } else {
@@ -441,6 +452,10 @@ class WireOrder extends Component implements FieldValidationMessage
 
     private function saveCheckedItems()
     {
+        $validatedData = $this->validate([
+         'selectedRecord' => 'required',
+        ]);
+
         $getid = OrderDetail::whereIn('id', $this->selectedRecord)->get()->toArray();
         $getDataArray = collect($getid);
         $getSelectedItem = $getDataArray->pluck('item_id')->first();
@@ -506,6 +521,10 @@ class WireOrder extends Component implements FieldValidationMessage
 
     private function subsctractBranchOrder()
     {
+        $validatedData = $this->validate([
+         'selectedRecord' => 'required',
+        ]);
+
         $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
 
         foreach ($orderItems as $orderItem) {
@@ -527,6 +546,11 @@ class WireOrder extends Component implements FieldValidationMessage
                 }
             }
         }
+
+        OrderDetail::whereIn('id', $this->selectedRecord)->update([
+            'order_status' => 'received',
+            'is_received' => 1
+        ]);
 
         $statusUpdate = Order::where('id', $this->getOrderID);
 
@@ -647,6 +671,10 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedItemId()
     {
+        $this->reset([
+                'quantity',
+                'total_amount',
+        ]);
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
 
         if($this->userBranch != 1) {

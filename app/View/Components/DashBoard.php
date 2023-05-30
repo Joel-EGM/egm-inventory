@@ -57,7 +57,7 @@ class DashBoard extends Component
     }
 
     public function charts()
-    {
+    {   
 
     }
 }
