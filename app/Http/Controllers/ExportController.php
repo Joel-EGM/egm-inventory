@@ -19,7 +19,6 @@ class ExportController extends Controller
     public function generatePDF()
     {
         $getID = last(request()->segments());
-        // dd($getID);
         $stock = DB::select("CALL getData($getID)");
 
         $data = [

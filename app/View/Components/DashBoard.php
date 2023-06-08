@@ -39,9 +39,10 @@ class DashBoard extends Component
             'item_name',
         )
         ->selectRaw('count(*) as total')
+        ->selectRaw('substring(item_name,1,15) as shortName')
         ->join('items', 'items.id', '=', 'order_details.item_id')
         ->groupBy('item_name')
-        ->pluck('total', 'item_name')
+        ->pluck('total', 'shortName')
         ->all();
 
         for ($i=0; $i<=count($groups); $i++) {
@@ -57,7 +58,7 @@ class DashBoard extends Component
     }
 
     public function charts()
-    {   
+    {
 
     }
 }

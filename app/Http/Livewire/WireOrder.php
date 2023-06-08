@@ -33,6 +33,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $userBranch;
     public $search = '';
     public $filteredSuppliers;
+    public $inStocks;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -43,10 +44,9 @@ class WireOrder extends Component implements FieldValidationMessage
         'quantity'  => 'required|numeric| max: 999',
         'unitPrice'  => 'bail|required|numeric',
         'total_amount'  => 'bail|required|numeric',
-        // 'selectedRecord' => 'required',
     ];
 
-    public function messages()
+    protected function messages()
     {
         return[
             'selectedRecord.required' => 'Choose at least one item'
@@ -130,6 +130,8 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 'order_status' => 'pending',
 
+                'or_number' => 0,
+
                 'created_by' => Auth()->user()->name
 
             ]);
@@ -160,7 +162,6 @@ class WireOrder extends Component implements FieldValidationMessage
 
             $this->orders->push($orders);
             $this->clearForm();
-            // $this->clearFormVariables();
             $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
@@ -299,6 +300,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 $ipq->update(['price_perPieces' => $this->unitPrice,]);
             }
         }
+        // dd($this->orderArrays);
     }
 
     public function removeItem($index)
@@ -384,7 +386,7 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->Index = $index;
 
-        $this->order_details = $this->orders[$this->Index]['id'];
+        $this->orders = $this->orders[$this->Index]['id'];
 
         $this->order_date = $this->orders[$this->Index]['order_date'];
 
@@ -402,11 +404,6 @@ class WireOrder extends Component implements FieldValidationMessage
 
         $this->total_amount = $this->order_details[$this->Index]['total_amount'];
 
-
-        if ($formAction) {
-            $this->formTitle = 'Delete Order';
-            $this->isDeleteOpen = true;
-        }
     }
 
     private function getOrderInfo($id)
@@ -436,7 +433,6 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function saveMethod()
     {
-
         $validatedData = $this->validate([
          'selectedRecord' => 'required',
         ]);
@@ -447,6 +443,14 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->saveCheckedItems();
         }
 
+        $converted = $this->getOrderID->first();
+        $OR = $this->orders->where('id', $converted)->pluck('or_number')->first();
+        if($OR === 0) {
+            Order::where('id', $converted)->update([
+                'or_number' => rand(),
+                'or_date' => Carbon::now()->format('Y-m-d')
+            ]);
+        }
         $this->reset(['selectedRecord']);
     }
 
@@ -568,14 +572,24 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->mount();
     }
 
+    public function modalDelete($id, $formAction = null)
+    {
+        $this->deleteID = $this->orders->where('id', $id)->pluck('id');
+
+        if ($formAction) {
+            $this->formTitle = 'Delete Order';
+            $this->isDeleteOpen = true;
+        }
+    }
 
     public function deleteArrayItem()
     {
-        $id = $this->orders[$this->Index]['id'];
+
+        $index = $this->deleteID;
 
         $data =Order::leftJoin('order_details', 'orders.id', '=', 'order_details.order_id')
-                    ->where('orders.id', $id);
-        OrderDetail::where('order_id', $id)->delete();
+                    ->where('orders.id', $index);
+        OrderDetail::where('order_id', $index)->delete();
 
         $data->delete();
 
@@ -656,7 +670,13 @@ class WireOrder extends Component implements FieldValidationMessage
         }
 
         if ($this->branch_id != 1) {
+            $items = Item::with('itemprices')->get();
+            $this->items = $items->filter(function ($value) {
+                return $value->itemprices->count() > 0;
+            });
+
             $this->itemList = $this->items;
+
         } else {
             $collection = ItemPrice::where('supplier_id', (int) $this->supplier_id)
             ->get();
@@ -674,8 +694,10 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->reset([
                 'quantity',
                 'total_amount',
+                'inStocks',
         ]);
         $this->unitName = Item::where('id', (int) $this->item_id)->get();
+        $this->inStocks = $this->stocks->where('item_id', $this->item_id)->sum('quantity');
 
         if($this->userBranch != 1) {
             if ($this->unitName->pluck('fixed_unit')->first() === 1) {
@@ -683,7 +705,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 $this->unitType = $this->item_id;
                 $this->unit_id = $this->item_id;
                 $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->first();
-
+                $this->inStocks = $this->stocks->where('item_id', $this->item_id)->pluck('quantity');
                 $this->loadPrice();
             }
         } else {
@@ -692,6 +714,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 $this->unitString = "Unit";
                 $this->unitType = $this->item_id;
                 $this->unit_id = $this->item_id;
+                $this->inStocks = $this->stocks->where('item_id', $this->item_id)->pluck('quantity');
                 $this->unitPriceID = ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();
                 $this->loadPrice();
             }
@@ -740,7 +763,6 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         if($this->userBranch != 1) {
             $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->min('price_perUnit');
-
             $this->unitPrice = $unitPrice;
 
         } else {

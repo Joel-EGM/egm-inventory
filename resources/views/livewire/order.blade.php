@@ -23,7 +23,7 @@
                                     Create Order
                                 </a>
 
-                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
+                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="7xl">
                                     @if ($formTitle === 'Create Order' || $formTitle === 'Edit Order')
                                         @include('partials.order')
                                     @endif
@@ -182,9 +182,8 @@
 
                                                     &nbsp;
 
-
                                                     <a href="javascript:" title="Delete"
-                                                        wire:click="selectArrayItem({{ $loop->index }}, 'Delete')"
+                                                        wire:click="modalDelete({{ $order->id }}, 'Delete')"
                                                         class="text-gray-500 mt-1 ml-2">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 20 20" fill="crimson">

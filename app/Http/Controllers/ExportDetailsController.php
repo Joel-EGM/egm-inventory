@@ -15,6 +15,7 @@ class ExportDetailsController extends Controller
 
     public function generatePO()
     {
+
         $getID = last(request()->segments());
 
         $findData = DB::select("CALL getOrderDetails($getID)");
@@ -22,9 +23,12 @@ class ExportDetailsController extends Controller
         $data = [
             'orderDetails' => $findData
         ];
-        // dd();
-        $pdf = PDF::loadView('orderpdf', $data);
+        // dd($data);
 
-        return $pdf->stream('PO_report_'.today()->toDateString().'.pdf');
+        $pdf = PDF::loadView('egmOrderpdf', $data);
+        $customPaper = array(0,0,450,500);
+        $pdf->set_paper($customPaper);
+        // $pdf->set_paper('letter', 'landscape');
+        return $pdf->stream('order_report_'.today()->toDateString().'.pdf');
     }
 }

@@ -90,6 +90,7 @@ trait WireVariables
     public $search = '';
     public $sortList = 'all';
     public $filteredBranches;
+    public $deleteID;
 
 
 

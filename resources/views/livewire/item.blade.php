@@ -73,11 +73,11 @@
                                             Unit Name
                                         </th>
                                         <th
-                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             PiecesPerUnit
                                         </th>
                                         <th
-                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Reorder Level
                                         </th>
                                         <th
@@ -104,15 +104,17 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ ucfirst(trans($item->item_name)) }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->pieces_perUnit }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->reorder_level }}</td>
+                                            <td class="text-right px-6 py-4 whitespace-no-wrap">
+                                                {{ $item->pieces_perUnit }}</td>
+                                            <td class="text-right px-6 py-4 whitespace-no-wrap">
+                                                {{ $item->reorder_level }}</td>
 
 
                                             <td
                                                 class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                                 <div class="flex items-center">
                                                     <a href="javascript:" title="Edit"
-                                                        wire:click="selectArrayItem({{ $loop->index }})"
+                                                        wire:click="modalEdit({{ $item->id }}, 'Edit')"
                                                         class="text-gray-500 mt-1 ml-2">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 20 20" fill="LimeGreen">
@@ -126,7 +128,7 @@
                                                     &nbsp;
                                                     &nbsp;
                                                     <a href="javascript:" title="Delete"
-                                                        wire:click="selectArrayItem({{ $loop->index }}, 'Delete')"
+                                                        wire:click="modalDelete({{ $item->id }}, 'Delete')"
                                                         class="text-gray-500 mt-1 ml-2">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 20 20" fill="crimson">

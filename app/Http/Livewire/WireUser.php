@@ -208,7 +208,6 @@ class WireUser extends Component implements FieldValidationMessage
 
         $this->userID = $this->allusers[$this->Index]['id'];
 
-        // dd($this->userID);
         $this->name = $this->allusers[$this->Index]['name'];
 
         $this->email = $this->allusers[$this->Index]['email'];

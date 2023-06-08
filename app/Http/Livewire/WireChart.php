@@ -68,12 +68,7 @@ class WireChart extends Component
         $charts->colours = $colours;
 
         return view('livewire.chart', compact('charts'));
-        //     return view('livewire.chart', [
-        //         'lastyearKey'=>$lastyearKey,
-        //         'lastyearValue'=>$lastyearValue,
-        //         'thisyearKey'=>$thisyearKey,
-        //         'thisyearValue'=>$thisyearValue,
-        // ]);
+
     }
 
 }

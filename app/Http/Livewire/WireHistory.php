@@ -16,6 +16,9 @@ class WireHistory extends Component
     use WireVariables;
     use WithPagination;
 
+    public $month = 0;
+    public $year = 0;
+
 
     public function mount()
     {
@@ -33,23 +36,36 @@ class WireHistory extends Component
 
     public function render()
     {
+        $user = Auth()->user()->branch_id;
         $page = (int)$this->paginatePage;
         $filtered = $this->orders->filter(function ($value) {
-            return $value->branch_id === (int)$this->sortList;
+            if(Auth()->user()->branch_id != 1) {
+                return $value->branch_id === Auth()->user()->branch_id;
+
+            } else {
+                return $value->branch_id === (int)$this->sortList;
+            }
         });
         $gg = $filtered->all();
-        if($this->sortList === 'all') {
-            return view('livewire.history', [
-                'orderHistory' =>
-                Order::whereHas('branches', function ($query) {
-                    $query->where('branch_name', 'like', '%'.$this->search.'%');
-                })->where('order_status', '=', 'received')->paginate($page),
-            ]);
-        } else {
+        if($user != 1) {
             return view('livewire.history', [
                 'orderHistory' =>
                 collect($gg)->where('order_status', '=', 'received')->paginateArray($page),
             ]);
+        } else {
+            if($this->sortList === 'all') {
+                return view('livewire.history', [
+                    'orderHistory' =>
+                    Order::whereHas('branches', function ($query) {
+                        $query->where('branch_name', 'like', '%'.$this->search.'%');
+                    })->where('order_status', '=', 'received')->paginate($page),
+                ]);
+            } else {
+                return view('livewire.history', [
+                    'orderHistory' =>
+                    collect($gg)->where('order_status', '=', 'received')->paginateArray($page),
+                ]);
+            }
         }
     }
 

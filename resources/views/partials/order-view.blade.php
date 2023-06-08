@@ -20,17 +20,17 @@
                         </th>
 
                         <th
-                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Quantity
                         </th>
 
                         <th
-                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Price
                         </th>
 
                         <th
-                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Total Amount
                         </th>
 
@@ -58,11 +58,11 @@
                             <td class="px-6 py-4 whitespace-no-wrap">{{ ucfirst(trans($detail->items->unit_name)) }}
                             </td>
 
-                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
+                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
 
-                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->price }}</td>
+                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->price }}</td>
 
-                            <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
+                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
                             @if ($formTitle === 'Order Details')

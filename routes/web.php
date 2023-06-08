@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ExportDetailsController;
+use App\Http\Controllers\ExportUserController;
 use App\Http\Controllers\ChartController;
+use App\Models\OrderDetail;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,18 +39,34 @@ Route::middleware([
     Route::get('manage/users', \App\Http\Livewire\WireUser::class, 'render')->name('users');
 
     //STOCKS
-    Route::get('stocks/current_stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
+    Route::get('stocks/current-stocks', \App\Http\Livewire\WireStock::class, 'render')->name('stocks');
     // Route::get('stocks/charts', [ChartController::class, 'index'])->name('charts');
-    Route::get('stocks/track_usage', \App\Http\Livewire\WireChart::class, 'render')->name('charts');
+    Route::get('stocks/track-usage', \App\Http\Livewire\WireChart::class, 'render')->name('charts');
 
 
 
     //ORDERS
-    Route::get('orders/create_order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
-    Route::get('orders/order_history', \App\Http\Livewire\WireHistory::class, 'render')->name('history');
+    Route::get('orders/create-order', \App\Http\Livewire\WireOrder::class, 'render')->name('orders');
+    Route::get('orders/order-history', \App\Http\Livewire\WireHistory::class, 'render')->name('history');
 
     //EXPORT TO PDF
     Route::get('stocks/generate-pdf/{stock}', [ExportController::class, 'generatePDF'])->name('generate-pdf');
+    Route::get('user/generate-user/{user}', [ExportUserController::class, 'generateUser'])->name('generate-user');
+    Route::get('history/generate-report/{yr}/{mos}', function ($yr, $mos) {
+
+        $findData = DB::select("CALL getMonthlyReport($yr,$mos)");
+
+        $data = [
+            'monthlyreport' => $findData
+        ];
+
+        $pdf = PDF::loadView('monthlyReport', $data);
+
+        return $pdf->stream('monthly_report_'.today()->toDateString().'.pdf');
+    })->name('generateMonthly');
+
+
+
 
     //EXPORT TO EXCEL
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');

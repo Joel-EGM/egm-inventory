@@ -25,6 +25,8 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public $filteredSuppliers;
     public $filteredSupp;
     public $listSuppliers;
+    public $editID;
+    public $updateID;
 
 
     protected $rules = [
@@ -45,13 +47,11 @@ class WireItemPrice extends Component implements FieldValidationMessage
         $this->filteredSupp = $this->allsuppliers->whereIn('id', $sup_id);
 
         $this->listSuppliers = $this->allsuppliers->pluck('id');
-        // dd($this->listSuppliers);
 
         $this->filteredSuppliers = $this->itemprices->whereIn('supplier_id', $this->listSuppliers)->unique('supplier_id');
 
         $this->filteredSuppliers->values()->all();
 
-        // dd($this->filteredSuppliers);
     }
 
     public function render()
@@ -61,13 +61,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
             return $value->supplier_id === (int)$this->sortList;
         });
         $gg = $filtered->all();
-        // dump($gg);
-        // return view('livewire.item-price', [
-        //     'listItemPrices' =>
-        //     ItemPrice::whereHas('suppliers', function ($query) {
-        //         $query->where('suppliers_name', 'like', '%'.$this->search.'%');
-        //     })->paginate($page),
-        // ]);
+
         if($this->sortList === 'all') {
             return view('livewire.item-price', [     'listItemPrices' =>
             ItemPrice::whereHas('items', function ($query) {
@@ -128,41 +122,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
             $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
-
-            $this->dispatchBrowserEvent('show-message', [
-                'notificationType' => 'success',
-                'messagePrimary'   => $notificationMessage
-            ]);
-        } else {
-            if($this->isDirty) {
-
-                $id = $this->itemprices[$this->Index]['id'];
-                ItemPrice::whereId($id)->update([
-
-                    'supplier_id' => $this->supplier_id,
-
-                    'item_id' => $this->item_id,
-
-                    'price_perUnit' => $this->price_perUnit,
-
-                    'price_perPieces' => $this->price_perPieces,
-
-                ]);
-
-                $this->itemprices[$this->Index]['supplier_id'] = $this->supplier_id;
-                $this->itemprices[$this->Index]['item_id'] = $this->item_id;
-                $this->itemprices[$this->Index]['price_perUnit'] = $this->price_perUnit;
-                $this->itemprices[$this->Index]['price_perPieces'] = $this->price_perPieces;
-
-                $this->itemprices->push();
-                $this->Index = null;
-                $this->clearForm();
-                $notificationMessage = 'Record successfully updated.';
-            } else {
-
-                $notificationMessage = 'No changes were detected';
-            }
-            $this->modalToggle();
 
             $this->dispatchBrowserEvent('show-message', [
                 'notificationType' => 'success',
@@ -256,11 +215,21 @@ class WireItemPrice extends Component implements FieldValidationMessage
         }
     }
 
+    public function modalDelete($id, $formAction = null)
+    {
+        $this->deleteID = $this->itemprices->where('id', $id)->pluck('id');
+
+        if ($formAction) {
+            $this->formTitle = 'Delete Item Price';
+            $this->isDeleteOpen = true;
+        }
+    }
+
     public function deleteArrayItem()
     {
-        $id = $this->itemprices[$this->Index]['id'];
+        $id = $this->deleteID;
 
-        ItemPrice::find($id)->delete();
+        ItemPrice::where('id', $id)->delete();
 
 
         $filtered = $this->itemprices->reject(function ($value, $key) use ($id) {
@@ -297,5 +266,53 @@ class WireItemPrice extends Component implements FieldValidationMessage
             $this->isDeleteOpen = !$this->isDeleteOpen;
             $this->clearAndResetDelete();
         }
+    }
+
+
+    public function modalEdit($id, $formAction = null)
+    {
+        $this->updateID = $id;
+        $this->supplier_id = $this->itemprices->where('id', $this->updateID)->pluck('supplier_id')->first();
+        $this->item_id = $this->itemprices->where('id', $this->updateID)->pluck('item_id')->first();
+        $this->price_perUnit = $this->itemprices->where('id', $this->updateID)->pluck('price_perUnit')->first();
+        $this->price_perPieces = $this->itemprices->where('id', $this->updateID)->pluck('price_perPieces')->first();
+
+        if ($formAction) {
+            $this->formTitle = 'Edit Price';
+            $this->isFormOpen = true;
+        }
+    }
+
+    public function itemUpdate()
+    {
+        if($this->isDirty) {
+
+            $id = $this->updateID;
+            $price = ItemPrice::where('id', $id)->update([
+
+                'supplier_id' => $this->supplier_id,
+
+                'item_id' => $this->item_id,
+
+                'price_perUnit' => $this->price_perUnit,
+
+                'price_perPieces' => $this->price_perPieces,
+
+            ]);
+
+            $this->itemprices->push();
+            $this->Index = null;
+            $this->clearForm();
+            $notificationMessage = 'Record successfully updated.';
+        } else {
+
+            $notificationMessage = 'No changes were detected';
+        }
+        $this->modalToggle();
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
     }
 }

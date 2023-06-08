@@ -32,6 +32,9 @@
             @if ($formTitle === 'Edit Order')
                 <x-jet-button class="ml-2" wire:click.prevent="orderUpdate">
                     Save</x-jet-button>
+            @elseif ($formTitle === 'Edit Item' || $formTitle === 'Edit Price' || $formTitle === 'Edit Branch')
+                <x-jet-button class="ml-2" wire:click.prevent="itemUpdate">
+                    Save</x-jet-button>
             @else
                 <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">
                     Save

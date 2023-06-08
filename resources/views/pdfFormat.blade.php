@@ -25,9 +25,7 @@
         }
 
         .stocks table {
-            margin: 15px;
-            text-align: center;
-
+            margin: 20px;
         }
 
         .stocks h3 {
@@ -39,48 +37,27 @@
 </head>
 
 <body>
-    {{-- <img src="{{ public_path('/images/egmbanner.png') }}" alt="" style="width: 200px; height: 200px" /> --}}
-    {{-- <table class="table table-bordered">
-        <tr>
-            <th>Item Name</th>
-            <th>Unit Name</th>
-            <th>Whole</th>
-            <th>Pieces</th>
-            <th>Last Updated</th>
-
-
-        </tr>
-        @foreach ($stocks as $stock)
-            <tr>
-                <td>{{ $stock->item_name }}</td>
-                <td>{{ $stock->unit_name }}</td>
-                <td>{{ intval($stock->totalqtyWHOLE) }}</td>
-                <td>{{ $stock->totalqtyREMAINDER }}</td>
-                <td>{{ $stock->created_at }}</td>
-            </tr>
-        @endforeach
-    </table> --}}
 
     <div class="stocks">
         <h3>INVENTORY STOCKS REPORT</h3>
-        <table width="100%">
+        <table width="100%" cellpadding="1" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Item Name</th>
-                    <th>Unit Name</th>
-                    <th>Whole</th>
-                    <th>Pieces</th>
+                    <th style="text-align: left;">Item Name</th>
+                    <th style="text-align: left;">Unit Name</th>
+                    <th style="text-align: right;">Whole</th>
+                    <th style="text-align: right;">Pieces</th>
                     <th>Last Updated</th>
                 </tr>
             </thead>
 
             @foreach ($stocks as $stock)
                 <tr>
-                    <td>{{ $stock->item_name }}</td>
+                    <td style="text-align: left;">{{ $stock->item_name }}</td>
                     <td>{{ $stock->unit_name }}</td>
-                    <td>{{ intval($stock->totalqtyWHOLE) }}</td>
-                    <td>{{ $stock->totalqtyREMAINDER }}</td>
-                    <td>{{ $stock->created_at }}</td>
+                    <td style="text-align: right;">{{ intval($stock->totalqtyWHOLE) }}</td>
+                    <td style="text-align: right;">{{ $stock->totalqtyREMAINDER }}</td>
+                    <td style="text-align: center;">{{ $stock->created_at }}</td>
                 </tr>
             @endforeach
 

@@ -74,68 +74,70 @@
                         </div>
                     </div>
                 </div>
+                @if (Auth()->user()->branch_id === 1)
+                    <div class="flex flex-wrap">
+                        <div class="w-full px-3 py-3 xl:w">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <div>
+                                    <p class="font-bold text-center underline">REORDER LIST</p>
+                                </div>
 
-                <div class="flex flex-wrap">
-                    <div class="w-full px-3 py-3 xl:w">
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                            <div>
-                                <p class="font-bold text-center underline">REORDER LIST</p>
-                            </div>
-
-                            <table class="min-w-full divide-y divide-gray-200 table-fixed">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="w-1/3 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Item Name
-                                        </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Quantity
-                                        </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Reorder level
-                                        </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($lowStocks as $stock)
-                                        <tr
-                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ $stock->item_name }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ $stock->total }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ $stock->reorder_level }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="red"
-                                                    class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="w-1/3 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Item Name
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Quantity
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Reorder level
+                                            </th>
+                                            <th
+                                                class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($lowStocks as $stock)
+                                            <tr
+                                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->item_name }}
+                                                </td>
+                                                <td class="text-right px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->total }}</td>
+                                                <td class="text-right px-6 py-4 whitespace-no-wrap">
+                                                    {{ $stock->reorder_level }}</td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="red"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 
                                                             3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 
                                                             3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 
                                                             15.75h.007v.008H12v-.008z" />
-                                                </svg>
+                                                    </svg>
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
+
                 <div class="flex flex-wrap">
-                    <div class="w-full px-3 py-3 xl:w">
-                        <div class="chart-container" style="position: relative; height:50ch; width:50vw; margin: auto;">
+                    <div class="w-full">
+                        <div class="chart-container">
                             <canvas id="orderChart" class="rounded shadow"></canvas>
                         </div>
                     </div>

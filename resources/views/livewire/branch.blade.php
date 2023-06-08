@@ -131,7 +131,7 @@
                                                 class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                                 <div class="flex items-center">
                                                     <a href="javascript:" title="Edit"
-                                                        wire:click="selectArrayItem({{ $loop->index }})"
+                                                        wire:click="modalEdit({{ $branch->id }}, 'Edit')"
                                                         class="text-gray-500 mt-1 ml-2">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 20 20" fill="LimeGreen">
@@ -145,7 +145,7 @@
                                                     &nbsp;
                                                     &nbsp;
                                                     <a href="javascript:" title="Delete"
-                                                        wire:click="selectArrayItem({{ $loop->index }}, 'Delete')"
+                                                        wire:click="modalDelete({{ $branch->id }}, 'Delete')"
                                                         class="text-gray-500 mt-1 ml-2">
                                                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                             viewBox="0 0 20 20" fill="crimson">

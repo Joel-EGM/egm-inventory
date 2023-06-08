@@ -25,9 +25,6 @@
                             class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
                             PDF</a>
 
-                        {{-- <button wire:click="generatePDF" target="_blank"
-                            class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
-                            PDF</button> --}}
                     </div>
 
                     <div class="flex flex-row mb-0 sm:mb-0">
@@ -61,7 +58,6 @@
                                 class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 
                                 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white 
                                 focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
-                            {{-- <button type="button" wire:click="itemsearch()">search</button> --}}
                         </div>
                     </div>
                 </div>
@@ -78,17 +74,13 @@
                                                 Item Name
                                             </th>
                                             <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Quantity
                                             </th>
                                             <th
                                                 class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Date Received
                                             </th>
-                                            {{-- <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                Price
-                                            </th> --}}
                                         @else
                                             <th
                                                 class="w-1/4 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -99,11 +91,11 @@
                                                 Unit Name
                                             </th>
                                             <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 WHOLE
                                             </th>
                                             <th
-                                                class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 PIECES
                                             </th>
                                             <th
@@ -131,7 +123,7 @@
                                                 <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ ucfirst(trans($stock['item_name'])) }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                <td class="text-right px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock['totalqty'] }}</td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock['created_at'] }}
@@ -148,9 +140,9 @@
                                                 <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ ucfirst(trans($stock['unit_name'])) }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                <td class="text-right px-6 py-4 whitespace-no-wrap">
                                                     {{ intval($stock['totalqtyWHOLE']) }}</td>
-                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                <td class="text-right px-6 py-4 whitespace-no-wrap">
                                                     {{ $stock['totalqtyREMAINDER'] }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">

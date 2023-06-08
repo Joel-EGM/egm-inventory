@@ -22,6 +22,7 @@ class WireItem extends Component implements FieldValidationMessage
 
     public $layoutTitle = 'New Item';
     public $search = '';
+    public $updateID;
 
 
     protected $rules = [
@@ -69,39 +70,22 @@ class WireItem extends Component implements FieldValidationMessage
     public function submit()
     {
         $validatedItem = $this->validate();
-        logger($this->Index);
         if (is_null($this->Index)) {
 
-            logger("true part");
-            if ($this->fixedUnit === false) {
-                $item = Item::create([
+            $item = Item::create([
 
 
-                    'item_name' => $this->itemName,
+                'item_name' => $this->itemName,
 
-                    'unit_name' => $this->unitIName,
+                'unit_name' => $this->unitIName,
 
-                    'pieces_perUnit' => $this->piecesPerUnit,
+                'pieces_perUnit' => $this->piecesPerUnit,
 
-                    'reorder_level' => $this->reorder_level,
+                'reorder_level' => $this->reorder_level,
 
-                    'fixed_unit' => 0,
-                ]);
-            } else {
-                $item = Item::create([
+                'fixed_unit' => !$this->fixedUnit ? 0 : 1,
+            ]);
 
-
-                    'item_name' => $this->itemName,
-
-                    'unit_name' => $this->unitIName,
-
-                    'pieces_perUnit' => $this->piecesPerUnit,
-
-                    'reorder_level' => $this->reorder_level,
-
-                    'fixed_unit' => 1,
-                ]);
-            }
 
             $this->allitems->push($item);
 
@@ -109,48 +93,6 @@ class WireItem extends Component implements FieldValidationMessage
             $this->modalToggle();
 
             $notificationMessage = 'Record successfully created.';
-
-            $this->dispatchBrowserEvent('show-message', [
-                'notificationType' => 'success',
-                'messagePrimary'   => $notificationMessage
-            ]);
-        } else {
-            if($this->isDirty) {
-                logger("false part");
-
-                $id = $this->allitems[$this->Index]['id'];
-                Item::whereId($id)->update([
-
-
-                    'item_name' => $this->itemName,
-
-                    'unit_name' => $this->unitIName,
-
-                    'pieces_perUnit' => $this->piecesPerUnit,
-
-                    'reorder_level' => $this->reorder_level,
-
-                    'fixed_unit' => $this->fixedUnit,
-
-                ]);
-
-                $this->allitems[$this->Index]['item_name'] = $this->itemName;
-                $this->allitems[$this->Index]['unit_name'] = $this->unitIName;
-                $this->allitems[$this->Index]['pieces_perUnit'] = $this->piecesPerUnit;
-                $this->allitems[$this->Index]['reorder_level'] = $this->reorder_level;
-                $this->allitems[$this->Index]['fixed_unit'] = $this->fixedUnit;
-
-                $this->allitems->push();
-                $this->Index = null;
-                $this->clearForm();
-
-                $notificationMessage = 'Record successfully updated.';
-            } else {
-
-                $notificationMessage = 'No changes were detected';
-            }
-
-            $this->modalToggle();
 
             $this->dispatchBrowserEvent('show-message', [
                 'notificationType' => 'success',
@@ -190,12 +132,6 @@ class WireItem extends Component implements FieldValidationMessage
         $this->reorder_level = $this->allitems[$this->Index]['reorder_level'];
         $this->fixedUnit = $this->allitems[$this->Index]['fixed_unit'];
 
-
-
-        if (isset($this->allitems[$this->Index]['dirty_fields'])) {
-            $this->dirtyProperties = $this->allitems[$this->Index]['dirty_fields'];
-        }
-
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
             $this->isFormOpen = true;
@@ -205,10 +141,21 @@ class WireItem extends Component implements FieldValidationMessage
         }
     }
 
+
+    public function modalDelete($id, $formAction = null)
+    {
+        $this->deleteID = $this->allitems->where('id', $id)->pluck('id');
+
+        if ($formAction) {
+            $this->formTitle = 'Delete Item';
+            $this->isDeleteOpen = true;
+        }
+    }
+
     public function deleteArrayItem()
     {
-        $id = $this->allitems[$this->Index]['id'];
-        Item::find($id)->delete();
+        $id = $this->deleteID;
+        Item::where('id', $id)->delete();
 
 
         $filtered = $this->allitems->reject(function ($value, $key) use ($id) {
@@ -224,6 +171,62 @@ class WireItem extends Component implements FieldValidationMessage
         $this->dispatchBrowserEvent('show-message', [
             'notificationType' => 'error',
             'messagePrimary'   => $notificationMessage2
+        ]);
+    }
+
+    public function modalEdit($id, $formAction = null)
+    {
+        $this->updateID = $id;
+        $this->itemName = $this->allitems->where('id', $this->updateID)->pluck('item_name')->first();
+        $this->unitIName = $this->allitems->where('id', $this->updateID)->pluck('unit_name')->first();
+        $this->piecesPerUnit = $this->allitems->where('id', $this->updateID)->pluck('pieces_perUnit')->first();
+        $this->reorder_level = $this->allitems->where('id', $this->updateID)->pluck('reorder_level')->first();
+        $this->fixedUnit = $this->allitems->where('id', $this->updateID)->pluck('fixed_unit')->first();
+
+
+        if (isset($this->allitems[$this->updateID]['dirty_fields'])) {
+            $this->dirtyProperties = $this->allitems[$this->updateID]['dirty_fields'];
+        }
+
+        if ($formAction) {
+            $this->formTitle = 'Edit Item';
+            $this->isFormOpen = true;
+        }
+    }
+
+    public function itemUpdate()
+    {
+        if($this->isDirty) {
+            Item::where('id', $this->updateID)->update([
+
+
+                'item_name' => $this->itemName,
+
+                'unit_name' => $this->unitIName,
+
+                'pieces_perUnit' => $this->piecesPerUnit,
+
+                'reorder_level' => $this->reorder_level,
+
+                'fixed_unit' => $this->fixedUnit,
+
+            ]);
+
+
+            $this->allitems->push();
+            $this->Index = null;
+            $this->clearForm();
+
+            $notificationMessage = 'Record successfully updated.';
+        } else {
+
+            $notificationMessage = 'No changes were detected';
+        }
+        $this->modalToggle();
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
         ]);
     }
 

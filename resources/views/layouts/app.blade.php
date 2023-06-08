@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Inventory') }}</title>
-    <link rel="icon" href="{{ asset('/images/logo.png') }}" width="60" height="40" />
+    <link rel="icon" href="{{ asset('/images/egmlogo.png') }}" width="10" height="10" />
 
 
     <!-- Fonts -->

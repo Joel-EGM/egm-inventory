@@ -35,28 +35,36 @@
             text-align: center;
         }
     </style>
+
 </head>
 
 <body>
+    <div>
+        Printed Date: {{ now()->format('Y-m-d H:i') }}
+    </div>
     <div class="stocks">
-        <h3>INVENTORY STOCKS REPORT</h3>
+        <h3>MONTHLY REPORT</h3>
         <table width="100%">
             <thead>
                 <tr>
-                    <th style="text-align: left;">Item Name</th>
-                    <th style="text-align: right;">Quantity</th>
-                    <th>Date Received</th>
+                    <th>BRANCH NAME</th>
+                    <th>YEAR</th>
+                    <th>MONTH</th>
+                    <th>TOTAL AMOUNT</th>
                 </tr>
             </thead>
-            @foreach ($stocks as $stock)
+
+            @foreach ($monthlyreport as $report)
                 <tr>
-                    <td style="text-align: left;">{{ $stock->item_name }}</td>
-                    <td style="text-align: right;">{{ $stock->totalqty }}</td>
-                    <td style="text-align: center;">{{ $stock->created_at }}</td>
+                    <td>{{ $report->branch_name }}</td>
+                    <td>{{ $report->Year }}</td>
+                    <td>{{ $report->MonthName }}</td>
+                    <td>{{ $report->Total }}</td>
                 </tr>
             @endforeach
-        </table>
 
+        </table>
+    </div>
 </body>
 
 </html>

@@ -1,4 +1,3 @@
-<!--Body-->
 <div class="grid grid-cols-6">
     <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
         <x-jet-label for="getsupplierName" value="{{ __('Supplier Name') }}" />

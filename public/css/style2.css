@@ -1,13 +1,65 @@
 @page {
-  margin: 50px;
+  margin: 20px;
+}
+
+.topPadding{
+    padding-top:5px;
+    font-size: 11px;
+}
+
+.header{
+    padding-top:80px;
+    font-size: 11px;
+    font-weight: bold;
+}
+.item{
+    font-size: 10px;
 }
 footer { 
     position: fixed; 
     bottom: 45px; 
     left: 0px; 
     right: 0px; 
-    height: 15px; 
+    height: 15px;
+    font-size: 12px;
+    font-style: Italic;
 }
+
+
+
+
+
+
+
+
+/* @media only screen and (max-width: 600px) {
+    .po-box table tr.top table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+
+    .po-box table tr.information table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+} */
+
+/** RTL **/
+/* .po-box.rtl {
+    direction: rtl;
+    font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+}
+
+.po-box.rtl table {
+    text-align: right;
+}
+
+.po-box.rtl table tr td:nth-child(2) {
+    text-align: left;
+}
+
 
 .po-box {
     max-width: 100%;
@@ -85,32 +137,4 @@ footer {
 .po-box table tr.total td:nth-child(2) {
     border-top: 2px solid #eee;
     font-weight: bold;
-}
-
-@media only screen and (max-width: 600px) {
-    .po-box table tr.top table td {
-        width: 100%;
-        display: block;
-        text-align: center;
-    }
-
-    .po-box table tr.information table td {
-        width: 100%;
-        display: block;
-        text-align: center;
-    }
-}
-
-/** RTL **/
-.po-box.rtl {
-    direction: rtl;
-    font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-}
-
-.po-box.rtl table {
-    text-align: right;
-}
-
-.po-box.rtl table tr td:nth-child(2) {
-    text-align: left;
-}
+} */

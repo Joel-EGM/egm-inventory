@@ -11,10 +11,12 @@
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
                     <div class="flex flex-row mt-0 sm:mb-0">
+
                         <div class="relative">
                             <div x-data="{ isFormOpen: @entangle('isFormOpen'), isDeleteOpen: @entangle('isDeleteOpen') }" class="px-2 py-4">
                                 <a href="javascript:" wire:click.prevent="modalToggle"
-                                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 
+                                    bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500">
                                         <path fill-rule="evenodd"
                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
@@ -28,16 +30,26 @@
                                 </x-modals.modal-form>
 
                                 <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
+
                             </div>
+
                         </div>
 
                     </div>
 
+                    <a href="{{ route('generate-user', Auth()->user()->id) }}" target="_blank"
+                        class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">EXPORT
+                        ALL ACCOUNT TO
+                        PDF</a>
 
                     <div class="flex flex-row mb-0 sm:mb-0">
+
+
+
                         <div class="relative">
                             <select wire:model="paginatePage"
-                                class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
+                                class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 
+                                py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
                                 <option value=5>5</option>
                                 <option value=10>10</option>
                                 <option value=20>20</option>
@@ -46,7 +58,8 @@
 
                         <div class="relative">
                             <select
-                                class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300">
+                                class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white 
+                                border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300">
                                 <option>All</option>
                                 <option>Active</option>
                                 <option>Inactive</option>
@@ -61,7 +74,8 @@
                                 </svg>
                             </span>
                             <input placeholder="Search" wire:model="search"
-                                class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
+                                class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 py-2 w-full 
+                                bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
                         </div>
                     </div>
                 </div>
@@ -88,10 +102,7 @@
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             User Role
                                         </th>
-                                        <th
-                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Password
-                                        </th>
+
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Action
@@ -140,9 +151,7 @@
                                                         {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
                                                 </select>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{ Str::limit($user->password, 30) }}
-                                            </td>
+
 
 
                                             <td

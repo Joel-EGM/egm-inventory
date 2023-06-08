@@ -30,7 +30,7 @@
                 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="None" class="text-center text-gray-400">--select branch--</option>
                     @foreach ($branches as $branch)
-                        <option value="{{ $branch->id }}" class="text-center">{{ $branch->branch_name }}
+                        <option value="{{ $branch->id }}">{{ $branch->branch_name }}
                         </option>
                     @endforeach
         @endif
@@ -47,10 +47,10 @@
                 leading-tight focus:outline-none focus:shadow-outline">
             <option value="None" class="text-center text-gray-400">--select supplier--</option>
             @if ($branch_id != 1)
-                <option value="1" class="text-center" selected>Head Office</option>
+                <option value="1" selected>Head Office</option>
             @else
                 @foreach ($filteredSuppliers as $supplier)
-                    <option value="{{ $supplier->id }}" class="text-center">{{ $supplier->suppliers_name }}</option>
+                    <option value="{{ $supplier->id }}">{{ $supplier->suppliers_name }}</option>
                 @endforeach
             @endif
         </select>
@@ -60,8 +60,7 @@
 </div>
 
 <div class="flex flex-row -mx-3 mb-6 space-x-4">
-
-    <div class="w-full px-3">
+    <div class="w-1/2 px-3">
         <x-jet-label for="item_id" value="{{ __('Item') }}" />
 
         <select name="item_id" wire:model="item_id"
@@ -71,22 +70,34 @@
             <option value="None" class="text-center text-gray-400">--select item--</option>
             @if ($branch_id != 1)
                 @foreach ($itemList as $item)
-                    <option value="{{ $item['id'] }}" class="text-center">{{ $item['item_name'] }}
-                        {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
+                    <option value="{{ $item['id'] }}">{{ $item['item_name'] }}
+                        {{-- <option value="{{ $item->id }}">{{ $item->items->item_name }} --}}
                     </option>
                 @endforeach
             @else
                 @foreach ($itemList as $item)
-                    <option value="{{ $item['item_id'] }}" class="text-center">{{ $item['items']['item_name'] }}
+                    <option value="{{ $item['item_id'] }}">{{ $item['items']['item_name'] }}
                         {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
                     </option>
                 @endforeach
             @endif
         </select>
+
         <x-jet-input-error for="item_id" class="mt-2" />
+
     </div>
 
-    <div class="w-full">
+    <div class="w-1/3">
+        <x-jet-label for="inStocks" value="{{ __('Available') }}" />
+
+        <x-jet-input wire:model="inStocks" x-ref="inStocks" id="inStocks" type="text" maxlength="50"
+            class="block appearance-none w-full bg-gray-300 border border-gray-400
+        hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+        leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="In Pieces" autocomplete="inStocks" readonly />
+    </div>
+
+    <div class="w-1/3">
         <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
 
         <select name="unitType" wire:model="unitType"
@@ -97,9 +108,9 @@
             @foreach ($unitName as $unit)
                 @if ($unit->fixed_unit != 1)
                     <option value="None" class="text-center text-gray-400">--select unit--</option>
-                    <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                    <option class="w-full" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
                 @else
-                    <option class="w-full text-center" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                    <option class="w-full" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
                 @endif
             @endforeach
 
@@ -107,7 +118,7 @@
         <x-jet-input-error for="unitType" class="mt-2" />
     </div>
 
-    <div class="w-full px-3">
+    <div class="w-1/2 px-3">
         <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
         <select name="unit_id" wire:model="unit_id"
             class="block appearance-none w-full bg-white border border-gray-400
@@ -117,10 +128,10 @@
             @foreach ($unitName as $unit)
                 @if ($unit->fixed_unit != 1)
                     <option value="None" class="text-center text-gray-400">--select pricing--</option>
-                    <option class="w-full text-center" value="{{ $unit->id }} Unit">Per Unit</option>
-                    <option class="w-full text-center" value="{{ $unit->id }} Pieces">Per Pieces</option>
+                    <option class="w-full" value="{{ $unit->id }} Unit">Per Unit</option>
+                    <option class="w-full" value="{{ $unit->id }} Pieces">Per Pieces</option>
                 @else
-                    <option class="w-full text-center" value="{{ $unit->id }} Unit" selected>Per Unit</option>
+                    <option class="w-full" value="{{ $unit->id }} Unit" selected>Per Unit</option>
                 @endif
             @endforeach
         </select>
@@ -201,13 +212,16 @@
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['unit_name'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['quantity'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['price'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['total_amount'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -240,13 +254,16 @@
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['unit_name'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['quantity'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['price'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['total_amount'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -267,6 +284,8 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    {{-- <td>Grand Total: {{ var_dump($orderArrays) }}</td> --}}
+
                 </table>
             </div>
         </div>

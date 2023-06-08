@@ -36,7 +36,6 @@ class WireStock extends Component
         });
 
         $gg = $filtered->all();
-        // dd($gg);
         return view('livewire.stock', ['stockitems' => collect($gg)->paginateArray($page)]);
     }
 
@@ -68,22 +67,5 @@ class WireStock extends Component
                 ];
             }
         });
-        // dd($filtered);
-    }
-
-    public function itemsearch()
-    {
-        // $gg = $this->stocks;
-        // $ey = $gg->where('item_name', 'like', '%'.$this->search.'%');
-
-        // dd($gg);
-        // $filtered = $gg->filter(function ($value, $key) {
-        //     return data_get($value, 'item_name') === $this->search;
-        // });
-        // $filtered->all();
-
-        // dd($ey);
-
-        // dd($filter);
     }
 }

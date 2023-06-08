@@ -24,6 +24,8 @@ class WireBranch extends Component implements FieldValidationMessage
     public $branch_name;
     public $branch_address;
     public $search = '';
+    public $updateID;
+    public $deleteID;
 
     protected function rules()
     {
@@ -57,8 +59,6 @@ class WireBranch extends Component implements FieldValidationMessage
     public function mount()
     {
         $this->allbranches = Branch::all();
-        // dd($this->allbranches);
-
     }
 
     public function updated($propertyName)
@@ -82,24 +82,13 @@ class WireBranch extends Component implements FieldValidationMessage
         }
     }
 
-    // public function updatedSortList()
-    // {
-    //     // dd($this->sortList);
-    // }
-
     public function render()
     {
-        // dd($this->sortList);
         $page = (int)$this->paginatePage;
         $filtered = $this->allbranches->filter(function ($value) {
             return $value->status === (int)$this->sortList;
         });
-        // dd($filtered);
         $gg = $filtered->all();
-        // dd($gg);
-
-
-        // ->where('branch_name', 'like', '%'.$this->search.'%')
 
         if($this->sortList === 'all') {
             return view('livewire.branch', ['activebranches' => Branch::where('branch_name', 'like', '%'.$this->search.'%')->paginate($page),]);
@@ -151,43 +140,11 @@ class WireBranch extends Component implements FieldValidationMessage
                 'notificationType' => 'success',
                 'messagePrimary'   => $notificationMessage
             ]);
-        } else {
-
-            if($this->isDirty) {
-                $id = $this->allbranches[$this->Index]['id'];
-                Branch::whereId($id)->update([
-
-                    'branch_name' => $this->branch_name,
-
-                    'branch_address' => $this->branch_address,
-
-                    'branch_contactNo' => $this->branchContactNo,
-
-                ]);
-
-
-                $this->allbranches[$this->Index]['branch_name'] = $this->branch_name;
-
-                $this->allbranches[$this->Index]['branch_address'] = $this->branch_address;
-
-                $this->allbranches[$this->Index]['branch_contactNo'] = $this->branchContactNo;
-
-                $this->Index = null;
-                $this->clearForm();
-                $notificationMessage = 'Record successfully updated.';
-            } else {
-
-                $notificationMessage = 'No changes were detected';
-            }
-
-            $this->modalToggle();
-
-            $this->dispatchBrowserEvent('show-message', [
-                'notificationType' => 'success',
-                'messagePrimary'   => $notificationMessage
-            ]);
-
         }
+
+
+
+
     }
 
     public function clearFormVariables()
@@ -239,28 +196,6 @@ class WireBranch extends Component implements FieldValidationMessage
         }
     }
 
-    public function deleteArrayItem()
-    {
-        $id = $this->allbranches[$this->Index]['id'];
-        Branch::find($id)->delete();
-
-
-        $filtered = $this->allbranches->reject(function ($value, $key) use ($id) {
-            return $value->id === $id;
-        });
-
-
-        $filtered->all();
-        $this->allbranches = $filtered;
-        $this->modalToggle('Delete');
-
-        $notificationMessage2 = 'Record successfully deleted.';
-
-        $this->dispatchBrowserEvent('show-message', [
-            'notificationType' => 'error',
-            'messagePrimary'   => $notificationMessage2
-        ]);
-    }
 
     public function modalToggle($formAction = null)
     {
@@ -285,6 +220,88 @@ class WireBranch extends Component implements FieldValidationMessage
 
         $this->dispatchBrowserEvent('show-message', [
             'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage2
+        ]);
+    }
+
+    public function modalEdit($id, $formAction = null)
+    {
+        $this->updateID = $id;
+        $this->branch_name = $this->allbranches->where('id', $this->updateID)->pluck('branch_name')->first();
+        $this->branch_address = $this->allbranches->where('id', $this->updateID)->pluck('branch_address')->first();
+        $this->branchContactNo = $this->allbranches->where('id', $this->updateID)->pluck('branch_contactNo')->first();
+
+        if (isset($this->allbranches[$this->updateID]['dirty_fields'])) {
+            $this->dirtyProperties = $this->allbranches[$this->updateID]['dirty_fields'];
+        }
+
+        if ($formAction) {
+            $this->formTitle = 'Edit Branch';
+            $this->isFormOpen = true;
+        }
+    }
+
+    public function itemUpdate()
+    {
+        if($this->isDirty) {
+            Branch::where('id', $this->updateID)->update([
+
+                'branch_name' => $this->branch_name,
+
+                'branch_address' => $this->branch_address,
+
+                'branch_contactNo' => $this->branchContactNo,
+
+            ]);
+
+
+            $this->Index = null;
+            $this->clearForm();
+            $notificationMessage = 'Record successfully updated.';
+        } else {
+
+            $notificationMessage = 'No changes were detected';
+        }
+
+        $this->modalToggle();
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
+
+    }
+
+    public function modalDelete($id, $formAction = null)
+    {
+        $this->deleteID = $this->allbranches->where('id', $id)->pluck('id');
+
+        if ($formAction) {
+            $this->formTitle = 'Delete Item';
+            $this->isDeleteOpen = true;
+        }
+    }
+
+
+    public function deleteArrayItem()
+    {
+        $id = $this->deleteID;
+        Branch::where('id', $id)->delete();
+
+
+        $filtered = $this->allbranches->reject(function ($value, $key) use ($id) {
+            return $value->id === $id;
+        });
+
+
+        $filtered->all();
+        $this->allbranches = $filtered;
+        $this->modalToggle('Delete');
+
+        $notificationMessage2 = 'Record successfully deleted.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'error',
             'messagePrimary'   => $notificationMessage2
         ]);
     }

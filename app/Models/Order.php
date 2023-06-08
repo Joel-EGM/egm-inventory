@@ -17,6 +17,8 @@ class Order extends Model
         'order_date',
         'order_status',
         'created_by',
+        'or_number',
+        'or_date',
     ];
 
     public function branches()

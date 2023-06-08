@@ -22,11 +22,9 @@
 <br />
 <div>
     <x-jet-label for="unitAName" value="{{ __('Unit Name') }}" />
-    {{-- @if (!empty($unitAName)) --}}
     @foreach ($unitAName as $unit)
         <input type="text" maxlength="50" class="w-full text-center" value="{{ $unit->unit_name }}"readonly />
     @endforeach
-    {{-- @endif --}}
 </div>
 <br />
 <div>
@@ -45,49 +43,51 @@
 
 <br />
 <br />
+@if ($formTitle === 'Add Item Price')
+    <table class="table-fixed w-full">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="px-4 py-2">Supplier</th>
 
-<table class="table-fixed w-full">
-    <thead>
-        <tr class="bg-gray-100">
-            <th class="px-4 py-2">Supplier</th>
+                <th class="px-4 py-2">Item</th>
 
-            <th class="px-4 py-2">Item</th>
+                <th class="text-right px-4 py-2">Price Per Unit</th>
 
-            <th class="px-4 py-2">Price Per Unit</th>
+                <th class="text-right px-4 py-2">Price Per Pieces</th>
 
-            <th class="px-4 py-2">Price Per Pieces</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($priceArrays as $price)
+                <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
-            <th class="px-4 py-2">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($priceArrays as $price)
-            <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                    <td class="border px-4 py-2">{{ $price['suppliers_name'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['suppliers_name'] }}</td>
+                    <td class="border px-4 py-2">{{ ucfirst(trans($price['item_name'])) }}</td>
 
-                <td class="border px-4 py-2">{{ ucfirst(trans($price['item_name'])) }}</td>
+                    <td class="text-right border px-4 py-2">{{ $price['price_perUnit'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['price_perUnit'] }}</td>
+                    <td class="text-right border px-4 py-2">{{ $price['price_perPieces'] }}</td>
 
-                <td class="border px-4 py-2">{{ $price['price_perPieces'] }}</td>
-
-                <td class="border px-4 py-2">
-                    <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
-                        class="text-gray-500 mt-1 ml-2 inline-flex">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 
+                    <td class="border px-4 py-2">
+                        <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
+                            class="text-gray-500 mt-1 ml-2 inline-flex">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 
                                 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 
                                 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-<br />
-<button wire:click.prevent="addPriceArray"
-    class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">ADD</button>
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+    <br />
+    <button wire:click.prevent="addPriceArray"
+        class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">ADD</button>
+@endif
