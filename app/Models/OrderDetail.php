@@ -22,6 +22,8 @@ class OrderDetail extends Model
         'total_amount',
         'order_status',
         'is_received',
+        'order_type',
+
     ];
 
     protected $casts = [

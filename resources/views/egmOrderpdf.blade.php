@@ -12,7 +12,7 @@
             <td style="padding-left: 100px">{{ $orderDetails[0]->branch_name }}</td>
         </tr>
         <td></td>
-        <td style="align-items: right; padding-left:300px; padding-bottom:40px">{{ now()->format('m-d-Y') }}</td>
+        <td style="align-items: right; padding-left:300px; padding-bottom:20px">{{ now()->format('m-d-Y') }}</td>
 
     </table>
     <table class="topPadding" cellpadding="1" cellspacing="0" width="100%">
@@ -28,10 +28,10 @@
             <tr class="item">
 
                 <td style="padding-right: 50px; text-align: center;"> </td>
-                <td style="padding-right: 15px; text-align: center;">{{ $detail->totalQuantity }}</td>
-                <td style="padding-left: 15px; text-align: left;">{{ $detail->itemName }}</td>
-                <td style="text-align: right;">{{ $detail->price }}</td>
-                <td style="text-align: right;">{{ $detail->totalAmount }}</td>
+                <td style="padding-right: 10px; text-align: center;">{{ $detail->totalQuantity }}</td>
+                <td style="padding-left: 10px; text-align: left;">{{ $detail->itemName }}</td>
+                <td style="padding-left: 10px;">{{ $detail->price }}</td>
+                <td style="padding-right: 10px;">{{ $detail->totalAmount }}</td>
             </tr>
         @endforeach
 

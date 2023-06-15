@@ -60,7 +60,7 @@
 </div>
 
 <div class="flex flex-row -mx-3 mb-6 space-x-4">
-    <div class="w-1/2 px-3">
+    <div class="w-full px-3">
         <x-jet-label for="item_id" value="{{ __('Item') }}" />
 
         <select name="item_id" wire:model="item_id"
@@ -87,7 +87,7 @@
 
     </div>
 
-    <div class="w-1/3">
+    <div class="w-full">
         <x-jet-label for="inStocks" value="{{ __('Available') }}" />
 
         <x-jet-input wire:model="inStocks" x-ref="inStocks" id="inStocks" type="text" maxlength="50"
@@ -97,7 +97,7 @@
             placeholder="In Pieces" autocomplete="inStocks" readonly />
     </div>
 
-    <div class="w-1/3">
+    {{-- <div class="w-1/3">
         <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
 
         <select name="unitType" wire:model="unitType"
@@ -116,9 +116,9 @@
 
         </select>
         <x-jet-input-error for="unitType" class="mt-2" />
-    </div>
+    </div> --}}
 
-    <div class="w-1/2 px-3">
+    <div class="w-full px-3">
         <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
         <select name="unit_id" wire:model="unit_id"
             class="block appearance-none w-full bg-white border border-gray-400
@@ -177,10 +177,10 @@
                                 Item
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                Unit
+                                Quantity
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                Quantity
+                                Order Type
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                 Price
@@ -209,12 +209,13 @@
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['item_name'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['unit_name'] }}</td>
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['quantity'] }}</td>
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ $order['order_type'] }}</td>
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -251,12 +252,13 @@
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['item_name'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['unit_name'] }}</td>
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         {{ $order['quantity'] }}</td>
+                                    <td
+                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ $order['order_type'] }}</td>
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -283,11 +285,19 @@
                                 @endif
                             </tr>
                         @endforeach
+
                     </tbody>
-                    {{-- <td>Grand Total: {{ var_dump($orderArrays) }}</td> --}}
 
                 </table>
+                <br />
+                @if (count($orderArrays) != 0)
+                    <table width="90%">
+                        <td style="text-align: right; text-size: sm">Grand Total:
+                            {{ array_sum(array_column($orderArrays, 'total_amount')) }}.00</td>
+                    </table>
+                @endif
             </div>
+            {{-- {{ var_dump($orderArrays) }} --}}
         </div>
     </div>
 </div>
