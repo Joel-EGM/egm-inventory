@@ -61,17 +61,19 @@
                                 </select>
                             </div>
                         @endif
-                        @if ($sortList === 'all')
-                            <div class="block relative">
-                                <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
-                                    <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-600">
-                                        <path
-                                            d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z" />
-                                    </svg>
-                                </span>
-                                <input placeholder="Search" wire:model="search"
-                                    class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
-                            </div>
+                        @if (Auth()->user()->branch_id === 1)
+                            @if ($sortList === 'all')
+                                <div class="block relative">
+                                    <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
+                                        <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-600">
+                                            <path
+                                                d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z" />
+                                        </svg>
+                                    </span>
+                                    <input placeholder="Search" wire:model="search"
+                                        class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -142,14 +144,20 @@
 
 
                                                 <div class="flex items-center">
-                                                    <a href="{{ route('generatePO', $order->id) }}" title="PO"
-                                                        class="text-gray-500 mt-1 ml-2" target="_blank">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                            fill="red" class="h-4 w-4">
-                                                            <path fill-rule="evenodd"
-                                                                d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0 0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0 011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0 111.114-1.004l.943 1.048V8.75z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
+                                                    @if ($order->branch_id != 1)
+                                                        <a href="{{ route('generatePO', $order->id) }}" title="SO"
+                                                            class="text-gray-500 mt-1 ml-2" target="_blank">
+                                                        @else
+                                                            <a href="{{ route('generatePO', $order->id) }}"
+                                                                title="PO" class="text-gray-500 mt-1 ml-2"
+                                                                target="_blank">
+                                                    @endif
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                        fill="red" class="h-4 w-4">
+                                                        <path fill-rule="evenodd"
+                                                            d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0 0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0 011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0 111.114-1.004l.943 1.048V8.75z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
                                                     </a>
                                                     &nbsp;
                                                     @if ($order->order_status != 'pending' || $order->order_status === 'incomplete')

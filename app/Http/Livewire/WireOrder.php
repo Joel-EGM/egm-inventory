@@ -96,7 +96,7 @@ class WireOrder extends Component implements FieldValidationMessage
             return view('livewire.order', [
                 'allorders' =>
                 Order::whereHas('branches', function ($query) {
-                    $query->where('order_date', 'like', '%'.$this->search.'%');
+                    $query->where('order_date', 'like', $this->search.'%');
                 })->where('order_status', '!=', 'received')->where('branch_id', Auth()->user()->branch_id)->paginate($page),
             ]);
         } elseif($this->sortList === 'all') {
@@ -117,7 +117,9 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function submit()
     {
-        $validatedItem = $this->validate();
+        if(!$this->orderArrays) {
+            $validatedItem = $this->validate();
+        }
 
         if (is_null($this->Index)) {
 
@@ -253,49 +255,73 @@ class WireOrder extends Component implements FieldValidationMessage
             }
         }
 
+        $itemExists = false;
 
+        if(count($this->orderArrays) > 0) {
+            foreach ($this->orderArrays as $key=>$value) {
 
-        array_push($this->orderArrays, [
-        'id' => 0,
-        'order_id' => 0,
-        'order_date' => $this->order_date,
+                if($value['item_id'] === $this->item_id) {
 
-        'branch_id'  => $this->branch_id,
-        'branch_name'  => $branchName,
+                    $this->orderArrays[$key]['quantity'] += $this->quantity;
 
-        'supplier_id' => $this->supplier_id,
-        'suppliers_name' => $supplierName,
-
-        'item_id' => $this->item_id,
-        'item_name'  => $itemName,
-
-        'quantity' => $this->quantity,
-        'price' => $this->unitPrice,
-        'total_amount' => $this->total_amount,
-
-        'order_type' => $this->unitString,
-
-        ]);
-
-        $id = $this->unitPriceID['id'];
-
-        $ipq = ItemPrice::whereId($id);
-
-
-        if ($this->unitString === "Unit") {
-            $price = $this->unitPriceID->price_perUnit;
-
-            if ($this->unitPrice != $price) {
-                $ipq->update(['price_perUnit' => $this->unitPrice,]);
-            }
-        } else {
-            $price = $this->unitPriceID->price_perPieces;
-
-            if ($this->unitPrice != $price) {
-                $ipq->update(['price_perPieces' => $this->unitPrice,]);
+                    $itemExists = true;
+                    break;
+                }
             }
         }
-        // dd($this->total_amount);
+
+        if(!$itemExists) {
+            array_push($this->orderArrays, [
+            'id' => 0,
+            'order_id' => 0,
+            'order_date' => $this->order_date,
+
+            'branch_id'  => $this->branch_id,
+            'branch_name'  => $branchName,
+
+            'supplier_id' => $this->supplier_id,
+            'suppliers_name' => $supplierName,
+
+            'item_id' => $this->item_id,
+            'item_name'  => $itemName,
+
+            'quantity' => $this->quantity,
+            'price' => $this->unitPrice,
+            'total_amount' => $this->total_amount,
+
+            'order_type' => $this->unitString,
+
+            ]);
+
+            $id = $this->unitPriceID['id'];
+
+            $ipq = ItemPrice::whereId($id);
+
+
+            if ($this->unitString === "Unit") {
+                $price = $this->unitPriceID->price_perUnit;
+
+                if ($this->unitPrice != $price) {
+                    $ipq->update(['price_perUnit' => $this->unitPrice,]);
+                }
+            } else {
+                $price = $this->unitPriceID->price_perPieces;
+
+                if ($this->unitPrice != $price) {
+                    $ipq->update(['price_perPieces' => $this->unitPrice,]);
+                }
+            }
+
+        }
+
+        $this->reset([
+            'item_id',
+            'inStocks',
+            'unit_id',
+            'quantity',
+            'unitPrice',
+            'total_amount',
+        ]);
     }
 
     public function removeItem($index)
@@ -343,7 +369,7 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->updateID = $id;
         $this->order_date = $this->orders->where('id', $id)->pluck('order_date')->first();
-
+        $this->updatedBranchId();
         $this->branch_id = $this->orders->where('id', $id)->pluck('branch_id')->first();
         $this->orderArrays = OrderDetail::with('branches', 'items', 'orders', 'suppliers')
         ->select(
@@ -402,12 +428,17 @@ class WireOrder extends Component implements FieldValidationMessage
     private function getOrderInfo($id)
     {
         $this->details = OrderDetail::with('suppliers', 'items')->where('order_id', $id)->get();
+
+
         $this->getOrderID = Order::where('id', $id)->pluck('id');
         $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
+
+
     }
 
     public function viewOrderDetails($id, $formAction = null)
     {
+
         $this->getOrderInfo($id);
         if (!$formAction) {
             $this->formTitle = 'Order Details';
@@ -466,7 +497,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 'item_id' => $detail['item_id'],
 
-                'quantity' => $checkFixedUnit === 1 ? $detail['quantity']  * $getQuantity : $detail['quantity'],
+                'quantity' => $checkFixedUnit === 1 ? $detail['quantity'] * $getQuantity : $detail['quantity'],
 
                 'price' => $detail['price'],
 
@@ -596,6 +627,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 $this->formTitle = 'Create Order';
                 if(Auth()->user()->branch_id != 1) {
                     $this->branch_id = Auth()->user()->branch_id;
+                    $this->updatedBranchId();
                 }
             }
 
@@ -620,6 +652,10 @@ class WireOrder extends Component implements FieldValidationMessage
             'itemList',
             'total_amount',
         ]);
+        if($this->branch_id != 1) {
+            $this->supplier_id = 1;
+            $this->updatedSupplierId();
+        }
     }
 
     public function resetForm()
@@ -694,7 +730,6 @@ class WireOrder extends Component implements FieldValidationMessage
 
         if ($this->unitName->pluck('fixed_unit')->first() === 1) {
             $this->unitString = "Unit";
-            $this->unitType = $this->item_id;
             $this->unit_id = $this->item_id;
             $this->inStocks = $this->stocks->where('item_id', $this->item_id)->sum('quantity');
             $this->unitPriceID = $this->userBranch != 1 ? ItemPrice::where('item_id', $this->item_id)->first() : ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();

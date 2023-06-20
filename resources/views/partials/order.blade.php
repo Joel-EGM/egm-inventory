@@ -38,17 +38,18 @@
         <x-jet-input-error for="branch_id" class="mt-2" />
     </div>
 
-
     <div class="w-full px-3">
         <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
         <select name="supplier_id" wire:model="supplier_id"
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
-            <option value="None" class="text-center text-gray-400">--select supplier--</option>
-            @if ($branch_id != 1)
-                <option value="1" selected>Head Office</option>
+            @if (is_null($branch_id))
+                <option value="None" class="text-center text-gray-400">--select supplier--</option>
+            @elseif($branch_id != 1)
+                <option value="1">Head Office</option>
             @else
+                <option value="None" class="text-center text-gray-400">--select supplier--</option>
                 @foreach ($filteredSuppliers as $supplier)
                     <option value="{{ $supplier->id }}">{{ $supplier->suppliers_name }}</option>
                 @endforeach
@@ -96,27 +97,6 @@
         leading-tight focus:outline-none focus:shadow-outline"
             placeholder="In Pieces" autocomplete="inStocks" readonly />
     </div>
-
-    {{-- <div class="w-1/3">
-        <x-jet-label for="unitName" value="{{ __('Unit Name') }}" />
-
-        <select name="unitType" wire:model="unitType"
-            class="block appearance-none w-full bg-white border border-gray-400
-             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-             leading-tight focus:outline-none focus:shadow-outline">
-
-            @foreach ($unitName as $unit)
-                @if ($unit->fixed_unit != 1)
-                    <option value="None" class="text-center text-gray-400">--select unit--</option>
-                    <option class="w-full" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                @else
-                    <option class="w-full" value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                @endif
-            @endforeach
-
-        </select>
-        <x-jet-input-error for="unitType" class="mt-2" />
-    </div> --}}
 
     <div class="w-full px-3">
         <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />

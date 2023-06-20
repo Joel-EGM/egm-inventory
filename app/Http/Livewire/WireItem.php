@@ -42,7 +42,7 @@ class WireItem extends Component implements FieldValidationMessage
 
         return view('livewire.item', [
             'listItems' =>
-            Item::where('item_name', 'like', '%'.$this->search.'%')->paginate($page),
+            Item::where('item_name', 'like', $this->search.'%')->paginate($page),
         ]);
     }
 

@@ -10,38 +10,41 @@
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
                     <div class="flex flex-row mt-0 sm:mb-0">
-                        <div class="relative">
-                            <select wire:model="year"
-                                class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                <option>Select Year</option>
-                                <option value=2023>2023</option>
-                                <option value=2024>2024</option>
-                                <option value=2025>2025</option>
-                                <option value=2026>2026</option>
-                                <option value=2027>2027</option>
-                            </select>
-                        </div>
-                        <div class="relative">
-                            <select wire:model="month"
-                                class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                <option>Select Month</option>
-                                <option value=1>January</option>
-                                <option value=2>February</option>
-                                <option value=3>March</option>
-                                <option value=4>April</option>
-                                <option value=5>May</option>
-                                <option value=6>June</option>
-                                <option value=7>July</option>
-                                <option value=8>August</option>
-                                <option value=9>September</option>
-                                <option value=10>October</option>
-                                <option value=11>November</option>
-                                <option value=12>December</option>
-                            </select>
-                        </div>
-                        <a href="{{ route('generateMonthly', ['yr' => $year, 'mos' => $month]) }}" target="_blank"
-                            class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">GENERATE
-                            MONTHLY</a>
+                        @if (Auth()->user()->branch_id != 1)
+                        @else
+                            <div class="relative">
+                                <select wire:model="year"
+                                    class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
+                                    <option>Select Year</option>
+                                    <option value=2023>2023</option>
+                                    <option value=2024>2024</option>
+                                    <option value=2025>2025</option>
+                                    <option value=2026>2026</option>
+                                    <option value=2027>2027</option>
+                                </select>
+                            </div>
+                            <div class="relative">
+                                <select wire:model="month"
+                                    class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
+                                    <option>Select Month</option>
+                                    <option value=1>January</option>
+                                    <option value=2>February</option>
+                                    <option value=3>March</option>
+                                    <option value=4>April</option>
+                                    <option value=5>May</option>
+                                    <option value=6>June</option>
+                                    <option value=7>July</option>
+                                    <option value=8>August</option>
+                                    <option value=9>September</option>
+                                    <option value=10>October</option>
+                                    <option value=11>November</option>
+                                    <option value=12>December</option>
+                                </select>
+                            </div>
+                            <a href="{{ route('generateMonthly', ['yr' => $year, 'mos' => $month]) }}" target="_blank"
+                                class="bg-red-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full text-black">GENERATE
+                                MONTHLY</a>
+                        @endif
                         <div class="relative">
                             <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
 
@@ -158,14 +161,20 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 <div class="flex items-center">
-                                                    <a href="{{ route('generatePO', $order->id) }}" title="PO"
-                                                        class="text-gray-500 mt-1 ml-2" target="_blank">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                            fill="red" class="h-4 w-4">
-                                                            <path fill-rule="evenodd"
-                                                                d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0 0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0 011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0 111.114-1.004l.943 1.048V8.75z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
+                                                    @if ($order->branch_id != 1)
+                                                        <a href="{{ route('generatePO', $order->id) }}" title="SO"
+                                                            class="text-gray-500 mt-1 ml-2" target="_blank">
+                                                        @else
+                                                            <a href="{{ route('generatePO', $order->id) }}"
+                                                                title="PO" class="text-gray-500 mt-1 ml-2"
+                                                                target="_blank">
+                                                    @endif
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                        fill="red" class="h-4 w-4">
+                                                        <path fill-rule="evenodd"
+                                                            d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0 0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0 011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0 111.114-1.004l.943 1.048V8.75z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
                                                     </a>
                                                 </div>
                                             </td>

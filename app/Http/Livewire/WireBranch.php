@@ -91,7 +91,7 @@ class WireBranch extends Component implements FieldValidationMessage
         $gg = $filtered->all();
 
         if($this->sortList === 'all') {
-            return view('livewire.branch', ['activebranches' => Branch::where('branch_name', 'like', '%'.$this->search.'%')->paginate($page),]);
+            return view('livewire.branch', ['activebranches' => Branch::where('branch_name', 'like', $this->search.'%')->paginate($page),]);
         } else {
             return view('livewire.branch', ['activebranches' => collect($gg)->paginateArray($page)]);
         }

@@ -57,7 +57,7 @@ class WireHistory extends Component
                 return view('livewire.history', [
                     'orderHistory' =>
                     Order::whereHas('branches', function ($query) {
-                        $query->where('branch_name', 'like', '%'.$this->search.'%');
+                        $query->where('branch_name', 'like', $this->search.'%');
                     })->where('order_status', '=', 'received')->paginate($page),
                 ]);
             } else {
