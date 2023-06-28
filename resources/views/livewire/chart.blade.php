@@ -14,10 +14,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
-                                        <div class="chart-container"
-                                            style="position: relative; height:60vh; width:58vw; margin: auto;">
+                                        <div class="chart-container" style="height: 600px">
                                             <canvas id="orderChart" class="rounded shadow"></canvas>
-                                            {{-- <canvas id="myChart"></canvas> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -30,68 +28,6 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-{{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script> --}}
-
-<!-- CHARTS -->
-{{-- <script>
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'Last Year Orders',
-                backgroundColor: 'lightGray',
-                data: [{
-                        x: '2023-03-02',
-                        y: 9
-                    },
-                    {
-                        x: '2023-03-05',
-                        y: 10
-                    },
-                    {
-                        x: '2023-03-07',
-                        y: 13
-                    },
-                    {
-                        x: '2023-03-10',
-                        y: 25
-                    }
-                ],
-                borderWidth: 2,
-                borderColor: 'red'
-            }, {
-                label: 'This Year Orders',
-                backgroundColor: 'lightGreen',
-                data: [{
-                        x: '2023-05-03',
-                        y: 2
-                    },
-                    {
-                        x: '2023-05-07',
-                        y: 23
-                    },
-                    {
-                        x: '2023-05-09',
-                        y: 30
-                    },
-                    {
-                        x: '2023-05-15',
-                        y: 4
-                    }
-                ],
-                borderWidth: 2,
-                borderColor: 'green'
-
-            }]
-
-        }
-    });
-</script> --}}
-
 <script>
     var ctx = document.getElementById('orderChart').getContext('2d');
 
@@ -101,37 +37,45 @@
             labels: {!! json_encode($charts->labels) !!},
             datasets: [{
                 label: 'ORDER COUNT',
-                backgroundColor: {!! json_encode($charts->colours) !!},
                 data: {!! json_encode($charts->dataset) !!},
                 borderWidth: 3,
+                backgroundColor: {!! json_encode($charts->colours) !!},
                 borderColor: {!! json_encode($charts->colours) !!},
+                fill: true
             }, ]
         },
         options: {
+            maintainAspectRatio: false,
             responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: (ctx) => 'Count of ORDER By Branch'
+                },
+                tooltip: {
+                    mode: 'index'
+                },
+            },
             interaction: {
-                intersect: false,
-                axis: 'x'
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
             },
-            animations: {
-                tension: {
-                    duration: 2000,
-                    easing: 'easeOutSine',
-                    from: 1,
-                    to: 0,
-                    loop: false
-                }
-            },
-            hide: {
-                animations: {
-                    x: {
-                        to: 0
-                    },
-                    y: {
-                        to: 0
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Branch Name'
+                    }
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
                     }
                 }
-            },
+            }
         }
     });
 </script>

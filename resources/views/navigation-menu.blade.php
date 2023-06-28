@@ -1,3 +1,4 @@
+{{-- <link href="/dist/output.css" rel="stylesheet"> --}}
 <nav x-data="{ open: false }" class="bg-white-500">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -178,22 +179,115 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-jet-responsive-nav-link>
+            {{-- <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            {{ __('Dashboard') }}
+        </x-jet-responsive-nav-link>
 
-            <x-jet-responsive-nav-link href="#" :active="request()->routeIs()">
-                {{ __('Stocks') }}
-            </x-jet-responsive-nav-link>
+        <x-jet-responsive-nav-link href="#" :active="request()->routeIs()">
+            {{ __('Stocks') }}
+        </x-jet-responsive-nav-link>
 
-            <x-jet-responsive-nav-link href="#" :active="request()->routeIs()">
-                {{ __('Manage') }}
-            </x-jet-responsive-nav-link>
+        <x-jet-responsive-nav-link href="#" :active="request()->routeIs()">
+            {{ __('Manage') }}
+        </x-jet-responsive-nav-link>
 
-            <x-jet-responsive-nav-link href="#" :active="request()->routeIs()">
-                {{ __('Order') }}
-            </x-jet-responsive-nav-link>
+        <x-jet-responsive-nav-link href="#" :active="request()->routeIs()">
+            {{ __('Order') }}
+        </x-jet-responsive-nav-link>
+    </div> --}}
+            <nav class="bg-white-500">
+                <ul class="bg-white-500">
+                    <li>
+                        <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-jet-nav-link>
+                    </li>
+                    <li>
+                        <x-customdropdown class="bg-gray-800">
+                            <x-slot name="trigger">
+                                <span class="inline-flex rounded-md">
+                                    <button type="button"
+                                        class="inline-flex items-center px-3 py-2 border border-transparent 
+                                    text-sm leading-4 font-medium rounded-md text-white-300 
+                                    hover:bg-gray-700 hover:text-white focus:bg-gray-400 focus:outline-none 
+                                    transition ease-in-out duration-150">
+                                        {{ __('Stocks') }}
+
+                                    </button>
+                                </span>
+                            </x-slot>
+                            <x-slot name="content">
+
+                                <x-jet-dropdown-link href="{{ route('stocks') }}">
+                                    {{ __('Current Stock') }}
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('charts') }}">
+                                    {{ __('Track Usage') }}
+                                </x-jet-dropdown-link>
+
+                            </x-slot>
+                        </x-customdropdown>
+                    </li>
+                    <li>
+                        <!-- Manage DropDown List -->
+                        <x-customdropdown align="right" width="48" class="bg-gray-800">
+                            <x-slot name="trigger">
+                                <span class="inline-flex rounded-md">
+                                    <button type="button"
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white-300 hover:bg-gray-700 hover:text-white focus:bg-gray-400 focus:outline-none transition ease-in-out duration-150">
+                                        {{ __('Manage') }}
+
+                                    </button>
+                                </span>
+                            </x-slot>
+                            <x-slot name="content">
+
+                                <x-jet-dropdown-link href="{{ route('branches') }}">
+                                    {{ __('Branch') }}
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('suppliers') }}">
+                                    {{ __('Supplier') }}
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('items') }}">
+                                    {{ __('Items') }}
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('prices') }}">
+                                    {{ __('Pricing') }}
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('users') }}">
+                                    {{ __('User') }}
+                                </x-jet-dropdown-link>
+                            </x-slot>
+                        </x-customdropdown>
+                    </li>
+                    <li>
+                        <!-- Orders DropDown List -->
+                        <x-customdropdown align="right" width="48" class="bg-gray-800">
+                            <x-slot name="trigger">
+                                <span class="inline-flex rounded-md">
+                                    <button type="button"
+                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white-300 hover:bg-gray-700 hover:text-white focus:bg-gray-400 focus:outline-none transition ease-in-out duration-150">
+                                        {{ __('Orders') }}
+
+                                    </button>
+                                </span>
+                            </x-slot>
+                            <x-slot name="content">
+
+                                <x-jet-dropdown-link href="{{ route('orders') }}">
+                                    {{ __('Create Order') }}
+                                </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('history') }}">
+                                    {{ __('Order History') }}
+                                </x-jet-dropdown-link>
+                            </x-slot>
+                        </x-customdropdown>
+                    </li>
+                </ul>
+            </nav>
         </div>
+
+
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="flex items-center px-4">

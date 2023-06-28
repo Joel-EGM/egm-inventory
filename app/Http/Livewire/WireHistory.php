@@ -9,6 +9,7 @@ use App\Models\OrderDetail;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use Livewire\WithPagination;
+use Carbon\Carbon;
 
 class WireHistory extends Component
 {
@@ -28,10 +29,18 @@ class WireHistory extends Component
 
         $this->orders = Order::all();
 
-        $listBranches = $this->branches->pluck('id');
-        $this->filteredBranches = $this->orders->where('order_status', '=', 'received')->whereIn('branch_id', $listBranches)->unique('branch_id');
+        $this->order_date = Carbon::now()->format('Y-m');
 
-        $this->filteredBranches->values()->all();
+
+        $listBranches = $this->branches->pluck('id');
+        $this->filteredBranches = $this->orders
+            ->where('order_status', '=', 'received')
+            ->whereIn('branch_id', $listBranches)
+            ->unique('branch_id');
+
+        $this->filteredBranches
+            ->values()
+            ->all();
     }
 
     public function render()
@@ -50,20 +59,37 @@ class WireHistory extends Component
         if($user != 1) {
             return view('livewire.history', [
                 'orderHistory' =>
-                collect($gg)->where('order_status', '=', 'received')->paginateArray($page),
+                collect($gg)
+                    ->where('order_status', '=', 'received')
+                    ->sortBy(
+                        [
+                        ['order_date','DESC'],
+                        ['updated_at','DESC']
+                        ]
+                    )
+                    ->paginateArray($page),
             ]);
         } else {
             if($this->sortList === 'all') {
                 return view('livewire.history', [
                     'orderHistory' =>
                     Order::whereHas('branches', function ($query) {
-                        $query->where('branch_name', 'like', $this->search.'%');
-                    })->where('order_status', '=', 'received')->paginate($page),
+                        $query->where('branch_name', 'like', '%'.$this->search.'%');
+                    })->where('order_status', '=', 'received')
+                    ->orderBy('order_date', 'DESC')
+                    ->orderBy('updated_at', 'DESC')
+                    ->paginate($page),
                 ]);
             } else {
                 return view('livewire.history', [
                     'orderHistory' =>
-                    collect($gg)->where('order_status', '=', 'received')->paginateArray($page),
+                    collect($gg)->where('order_status', '=', 'received')
+                    ->sortBy(
+                        [
+                    ['order_date','DESC'],
+                    ['updated_at','DESC']]
+                    )
+                    ->paginateArray($page),
                 ]);
             }
         }
@@ -71,7 +97,21 @@ class WireHistory extends Component
 
     private function getOrderInfo($id)
     {
-        $this->details = OrderDetail::with('suppliers', 'items')->where('order_id', $id)->get();
+        $this->details = OrderDetail::select(
+            'supplier_id',
+            'suppliers_name',
+            'item_id',
+            'item_name',
+            'quantity',
+            'order_type',
+            'price',
+            'total_amount',
+            'order_details.order_status'
+        )
+        ->join('orders', 'orders.id', '=', 'order_details.order_id')
+        ->join('suppliers', 'suppliers.id', '=', 'order_details.supplier_id')
+        ->join('items', 'items.id', '=', 'order_details.item_id')
+        ->where('order_id', $id)->get();
         $this->getOrderID = Order::where('id', $id)->pluck('id');
         $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
     }
@@ -87,7 +127,6 @@ class WireHistory extends Component
 
     public function modalToggle($formAction = null)
     {
-        $this->clearForm();
         if (!$formAction) {
 
             $this->isFormOpen = !$this->isFormOpen;
@@ -104,4 +143,6 @@ class WireHistory extends Component
             'formTitle',
         ]);
     }
+
+
 }

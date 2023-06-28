@@ -91,6 +91,9 @@ trait WireVariables
     public $sortList = 'all';
     public $filteredBranches;
     public $deleteID;
+    public $inStocks;
+    public $userBranch;
+
 
 
 

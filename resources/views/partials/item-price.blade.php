@@ -88,6 +88,6 @@
         </tbody>
     </table>
     <br />
-    <button wire:click.prevent="addPriceArray"
+    <button wire:click.prevent="addPriceArray" wire:loading.attr="disabled"
         class="bg-green-300 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full text-black">ADD</button>
 @endif

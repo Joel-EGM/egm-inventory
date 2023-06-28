@@ -25,6 +25,6 @@ class Stock extends Model
 
     public function orderDetails()
     {
-        return $this->hasMany(Stock::class, 'item_id', 'id');
+        return $this->hasMany(Stock::class, 'item_id', 'item_id');
     }
 }

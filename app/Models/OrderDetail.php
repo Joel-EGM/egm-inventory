@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderDetail extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = [
 
@@ -23,7 +21,6 @@ class OrderDetail extends Model
         'order_status',
         'is_received',
         'order_type',
-
     ];
 
     protected $casts = [
@@ -53,5 +50,11 @@ class OrderDetail extends Model
     public function branches()
     {
         return $this->hasManyThrough(Branch::class, Order::class, 'branch_id', 'id');
+    }
+
+    public function stocks()
+    {
+        return $this->belongsTo(Stock::class, 'item_id', 'item_id');
+
     }
 }

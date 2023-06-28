@@ -43,6 +43,14 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        'modes' => [
+            'STRICT_ALL_TABLES',
+            'ERROR_FOR_DIVISION_BY_ZERO',
+            'NO_ZERO_DATE',
+            'NO_ZERO_IN_DATE',
+            'NO_AUTO_CREATE_USER',
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

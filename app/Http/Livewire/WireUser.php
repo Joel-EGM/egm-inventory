@@ -37,7 +37,7 @@ class WireUser extends Component implements FieldValidationMessage
 
         return view('livewire.user', [
             'listUsers' =>
-            User::where('name', 'like', $this->search.'%')->paginate($page),
+            User::where('name', 'like', '%'.$this->search.'%')->paginate($page),
         ]);
     }
 

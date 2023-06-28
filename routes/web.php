@@ -27,9 +27,11 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get(
+        '/dashboard',
+        \App\Http\Livewire\WireDashboard::class,
+        'render'
+    )->name('dashboard');
 
     //MANAGE
     Route::get('manage/branches', \App\Http\Livewire\WireBranch::class, 'render')->name('branches');
@@ -52,9 +54,13 @@ Route::middleware([
     //EXPORT TO PDF
     Route::get('stocks/generate-pdf/{stock}', [ExportController::class, 'generatePDF'])->name('generate-pdf');
     Route::get('user/generate-user/{user}', [ExportUserController::class, 'generateUser'])->name('generate-user');
-    Route::get('history/generate-report/{yr}/{mos}', function ($yr, $mos) {
+    Route::get('history/generate-report/{mos}', function ($mos) {
 
-        $findData = DB::select("CALL getMonthlyReport($yr,$mos)");
+        $explode = explode('-', $mos);
+        $yr = $explode[0];
+        $mons = $explode[1];
+        // dd($mons);
+        $findData = DB::select("CALL getMonthlyReport($yr,$mons)");
 
         $data = [
             'monthlyreport' => $findData

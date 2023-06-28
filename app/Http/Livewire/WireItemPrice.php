@@ -65,7 +65,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
         if($this->sortList === 'all') {
             return view('livewire.item-price', [     'listItemPrices' =>
             ItemPrice::whereHas('items', function ($query) {
-                $query->where('item_name', 'like', $this->search.'%');
+                $query->where('item_name', 'like', '%'.$this->search.'%');
             })->paginate($page),]);
         } else {
             return view('livewire.item-price', [

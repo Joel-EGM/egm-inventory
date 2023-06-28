@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -20,6 +21,14 @@ class Order extends Model
         'or_number',
         'or_date',
     ];
+
+
+    public function getIsEditedAttribute()
+    {
+        $ymd = strtotime($this->attributes['updated_at']);
+        $format = date('Y-m-d', $ymd);
+        return ($format === Carbon::now()->format('Y-m-d')) ? true : false;
+    }
 
     public function branches()
     {

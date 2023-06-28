@@ -8,7 +8,7 @@
         }
 
         body {
-            margin: 30px;
+            margin: 0px;
         }
 
         * {
@@ -24,7 +24,14 @@
             font-size: x-small;
         }
 
+        .stocks table {
+            margin: 15px;
+            text-align: center;
+
+        }
+
         .stocks h3 {
+            margin-left: 15px;
             text-align: center;
         }
     </style>
@@ -40,19 +47,19 @@
         <table width="100%">
             <thead>
                 <tr>
-                    <th style="text-align: left">BRANCH NAME</th>
-                    <th style="text-align: center">YEAR</th>
-                    <th style="text-align: center">MONTH</th>
-                    <th style="text-align: right">TOTAL AMOUNT</th>
+                    <th>BRANCH NAME</th>
+                    <th>YEAR</th>
+                    <th>MONTH</th>
+                    <th>TOTAL AMOUNT</th>
                 </tr>
             </thead>
 
             @foreach ($monthlyreport as $report)
                 <tr>
-                    <td style="text-align: left">{{ $report->branch_name }}</td>
-                    <td style="text-align: center">{{ $report->Year }}</td>
-                    <td style="text-align: center">{{ $report->MonthName }}</td>
-                    <td style="text-align: right">{{ $report->Total }}</td>
+                    <td>{{ $report->branch_name }}</td>
+                    <td>{{ $report->Year }}</td>
+                    <td>{{ $report->MonthName }}</td>
+                    <td>{{ $report->Total }}</td>
                 </tr>
             @endforeach
 

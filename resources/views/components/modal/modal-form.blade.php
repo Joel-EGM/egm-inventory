@@ -5,8 +5,7 @@
     <div class="modal-content py-4 text-left px-6 bg-green-300">
         <div class="flex justify-between items-center">
             <p class="text-black text-2xl font-bold">{{ $formTitle }}</p>
-
-            <div wire:click.prevent="$emitSelf('modalToggle')" class="modal-close cursor-pointer z-50">
+            <div wire:click.prevent="modalToggle" class="modal-close cursor-pointer z-50">
                 <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                     viewBox="0 0 18 18">
                     <path
@@ -30,10 +29,10 @@
                 Cancel
             </x-jet-secondary-button>
             @if ($formTitle === 'Edit Order')
-                <x-jet-button class="ml-2" wire:click.prevent="orderUpdate">
+                <x-jet-button class="ml-2" wire:click.prevent="orderUpdate" wire:loading.attr="disabled">
                     Save</x-jet-button>
             @elseif ($formTitle === 'Edit Item' || $formTitle === 'Edit Price' || $formTitle === 'Edit Branch')
-                <x-jet-button class="ml-2" wire:click.prevent="itemUpdate">
+                <x-jet-button class="ml-2" wire:click.prevent="itemUpdate" wire:loading.attr="disabled">
                     Save</x-jet-button>
             @else
                 <x-jet-button class="ml-2" wire:click.prevent="submit" wire:loading.attr="disabled">

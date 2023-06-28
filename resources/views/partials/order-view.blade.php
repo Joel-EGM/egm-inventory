@@ -14,10 +14,7 @@
                             Item Name
                         </th>
 
-                        <th
-                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                            Quantity
-                        </th>
+
                         <th
                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Order Type
@@ -27,7 +24,10 @@
                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Price
                         </th>
-
+                        <th
+                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Quantity
+                        </th>
                         <th
                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Total Amount
@@ -66,7 +66,7 @@
                             @if ($formTitle === 'Order Details')
                                 <td class="px-6 py-4 whitespace-no-wrap">
                                     @if ($detail->order_status === 'pending')
-                                        <input type="checkbox" wire:model="selectedRecord"
+                                        <input type="checkbox" wire:model.defer="selectedRecord"
                                             value="{{ $detail->id }}" />
                                     @else
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -87,9 +87,8 @@
     <input name="completedOrder" type="checkbox" wire:model="completedOrder">Order Complete
 
     <div class="flex flex-row-reverse">
-        <x-jet-button class="ml-2" wire:click.prevent="saveMethod">
+        <x-jet-button class="ml-2" wire:click.prevent="saveMethod" wire:loading.attr="disabled">
             SAVE</x-jet-button>
-        <x-jet-input-error for="selectedRecord" class="mt-2 text-lg" />
 
     </div>
 @endif

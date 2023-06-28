@@ -51,7 +51,7 @@
                                         d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z" />
                                 </svg>
                             </span>
-                            <input placeholder="Search" wire:model="search"
+                            <input placeholder="Search" wire:keydown.enter="$set('search', $event.target.value)"
                                 class="appearance-none rounded-r rounded-l-none border border-gray-300 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-500 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-600 focus:outline-none" />
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($listItems) === 0)
                                         <tr>
-                                            <td colspan="5" class="px-3 py-3 whitespace-no-wrap">
+                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
                                                         NO DATA AVAILABLE</div>

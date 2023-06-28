@@ -1,140 +1,140 @@
 @page {
-  margin: 20px;
-}
-
-.topPadding{
-    padding-top:20px;
-    font-size: 11px;
-}
-
-.header{
-    padding-top:120px;
-    font-size: 15px;
-    font-weight: bold;
-}
-.item{
-    font-size: 15px;
-}
-footer { 
-    position: fixed; 
-    bottom: 45px; 
-    left: 0px; 
-    right: 0px; 
-    height: 15px;
-    font-size: 12px;
-    font-style: Italic;
-}
-
-
-
-
-
-
-
-
-/* @media only screen and (max-width: 600px) {
-    .po-box table tr.top table td {
-        width: 100%;
-        display: block;
-        text-align: center;
-    }
-
-    .po-box table tr.information table td {
-        width: 100%;
-        display: block;
-        text-align: center;
-    }
-} */
-
-/** RTL **/
-/* .po-box.rtl {
-    direction: rtl;
-    font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-}
-
-.po-box.rtl table {
-    text-align: right;
-}
-
-.po-box.rtl table tr td:nth-child(2) {
-    text-align: left;
-}
-
-
-.po-box {
-    max-width: 100%;
-    margin: .5px, .5px, .5px, .5px;
-    padding: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    font-size: 15px;
-    line-height: 24px;
-    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-    color: #555;
-}
-
-.po-box table {
-    width: 100%;
-    line-height: inherit;
-    text-align: left;
-}
-
-.po-box table td {
-    padding: 5px;
-    vertical-align: top;
-}
-
-.po-box table tr td:nth-child(2) {
-    text-align: right;
-}
-
-.po-box table tr.top table td {
-    padding-bottom: 10px;
-}
-
-.po-box table tr.top table td.title {
-    font-size: 15px;
-    line-height: 45px;
-    color: #333;
-}
-
-.po-box table tr.information table td {
-    padding-bottom: 10px;
-}
-
-.po-box table tr.title table td {
-    padding-bottom: 10px;
-}
-
-.po-box table tr.heading td {
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    font-weight: bold;
-    text-align: center;
-}
-
-.po-box table tr.footer td {
-    font-weight: strong;
-    text-align: center;
-}
-
-.po-box table tr.line td {
-    text-align: center;
-    padding-top: 2em;
-}
-
-.po-box table tr.details td {
-    padding-bottom: 20px;
-}
-
-.po-box table tr.item td {
-    border-bottom: 1px solid #eee;
-}
-
-.po-box table tr.item.last td {
-    border-bottom: none;
-}
-
-.po-box table tr.total td:nth-child(2) {
-    border-top: 2px solid #eee;
-    font-weight: bold;
-} */
+    margin: 20px;
+  }
+  
+  .topPadding{
+      padding-top:20px;
+      font-size: 11px;
+  }
+  
+  .header{
+      padding-top:60px;
+      font-size: 15px;
+      font-weight: bold;
+  }
+  .item{
+      font-size: 15px;
+  }
+  footer { 
+      position: fixed; 
+      bottom: 45px; 
+      left: 0px; 
+      right: 0px; 
+      height: 15px;
+      font-size: 12px;
+      font-style: Italic;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  /* @media only screen and (max-width: 600px) {
+      .po-box table tr.top table td {
+          width: 100%;
+          display: block;
+          text-align: center;
+      }
+  
+      .po-box table tr.information table td {
+          width: 100%;
+          display: block;
+          text-align: center;
+      }
+  } */
+  
+  /** RTL **/
+  /* .po-box.rtl {
+      direction: rtl;
+      font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  }
+  
+  .po-box.rtl table {
+      text-align: right;
+  }
+  
+  .po-box.rtl table tr td:nth-child(2) {
+      text-align: left;
+  }
+  
+  
+  .po-box {
+      max-width: 100%;
+      margin: .5px, .5px, .5px, .5px;
+      padding: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      font-size: 15px;
+      line-height: 24px;
+      font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+      color: #555;
+  }
+  
+  .po-box table {
+      width: 100%;
+      line-height: inherit;
+      text-align: left;
+  }
+  
+  .po-box table td {
+      padding: 5px;
+      vertical-align: top;
+  }
+  
+  .po-box table tr td:nth-child(2) {
+      text-align: right;
+  }
+  
+  .po-box table tr.top table td {
+      padding-bottom: 10px;
+  }
+  
+  .po-box table tr.top table td.title {
+      font-size: 15px;
+      line-height: 45px;
+      color: #333;
+  }
+  
+  .po-box table tr.information table td {
+      padding-bottom: 10px;
+  }
+  
+  .po-box table tr.title table td {
+      padding-bottom: 10px;
+  }
+  
+  .po-box table tr.heading td {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+      text-align: center;
+  }
+  
+  .po-box table tr.footer td {
+      font-weight: strong;
+      text-align: center;
+  }
+  
+  .po-box table tr.line td {
+      text-align: center;
+      padding-top: 2em;
+  }
+  
+  .po-box table tr.details td {
+      padding-bottom: 20px;
+  }
+  
+  .po-box table tr.item td {
+      border-bottom: 1px solid #eee;
+  }
+  
+  .po-box table tr.item.last td {
+      border-bottom: none;
+  }
+  
+  .po-box table tr.total td:nth-child(2) {
+      border-top: 2px solid #eee;
+      font-weight: bold;
+  } */

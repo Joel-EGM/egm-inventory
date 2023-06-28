@@ -36,7 +36,7 @@ class WireStock extends Component
         });
 
         $gg = $filtered->all();
-        return view('livewire.stock', ['stockitems' => collect($gg)->paginateArray($page)]);
+        return view('livewire.stock', ['stockitems' => collect($gg)->sortBy('created_at')->paginateArray($page)]);
     }
 
     public function updatedViewMode()

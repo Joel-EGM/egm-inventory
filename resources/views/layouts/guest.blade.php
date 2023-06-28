@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Inventory') }}</title>
+    <title>{{ config('app.name', 'DUMMY') }}</title>
     <link rel="icon" href="{{ asset('/images/egmlogo.png') }}" width="60" height="40" />
 
     <!-- Fonts -->

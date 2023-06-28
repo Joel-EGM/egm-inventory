@@ -113,7 +113,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($allusers) === 0)
                                         <tr>
-                                            <td colspan="5" class="px-3 py-3 whitespace-no-wrap">
+                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
                                                         NO DATA AVAILABLE</div>
