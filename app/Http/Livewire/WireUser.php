@@ -44,36 +44,30 @@ class WireUser extends Component implements FieldValidationMessage
     protected function rules()
     {
         return [
-            'name' => ['bail','required','regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i','min:2','max:50',
-            Rule::unique('users')
+        'name' => ['bail','required','regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i','min:2','max:50',
+                Rule::unique('users')
 
-            ->where(function ($query) {
-                return $query
-                ->where('name', $this->name);
+                ->where(function ($query) {
+                    return $query
+                    ->where('name', $this->name);
 
+                })->ignore($this->userID)],
 
-            })->ignore($this->userID)],
+        'email' => ['bail','required','email',
 
+                Rule::unique('users')
+                ->where(function ($query) {
+                    return $query
 
+                    ->where('email', $this->email);
+                    ;
 
-            'email' => ['bail','required','email',
+                })->ignore($this->userID)],
 
-            Rule::unique('users')
-            ->where(function ($query) {
-                return $query
-
-                ->where('email', $this->email);
-                ;
-
-            })->ignore($this->userID)],
-
-
-            'userRole' => 'bail|required',
-            'branch_id' => 'bail|required',
-
+        'userRole' => 'bail|required',
+        'branch_id' => 'bail|required',
         ];
     }
-
 
     public function updated($propertyName)
     {
@@ -85,20 +79,16 @@ class WireUser extends Component implements FieldValidationMessage
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
 
-
         try {
             $this->validateOnly($propertyName);
         } catch (\Throwable $th) {
         } finally {
             $this->updatedDirtyProperties($propertyName, $this->$propertyName);
         }
-
-
     }
 
     public function submit()
     {
-
         try {
 
             $validate = $this->validate();
@@ -107,8 +97,6 @@ class WireUser extends Component implements FieldValidationMessage
             throw $exception;
 
         }
-
-        logger($validate);
 
         if (is_null($this->Index)) {
             $user = User::create([
@@ -151,7 +139,6 @@ class WireUser extends Component implements FieldValidationMessage
                 'password' => Hash::make($this->password),
 
             ]);
-
 
             $this->allusers[$this->Index]['name'] = $this->name;
 

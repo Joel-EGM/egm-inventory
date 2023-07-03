@@ -27,7 +27,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.js"></script>
 <script>
     var ctx = document.getElementById('orderChart').getContext('2d');
 

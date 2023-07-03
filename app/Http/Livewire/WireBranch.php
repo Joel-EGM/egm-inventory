@@ -30,29 +30,35 @@ class WireBranch extends Component implements FieldValidationMessage
     protected function rules()
     {
         return [
-            'branch_name' => ['bail','required','regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i','min:2','max:50',
-            Rule::unique('branches')
-
-            ->where(function ($query) {
-                return $query
-                ->where('branch_name', $this->branch_name)
-                ->where('branch_address', $this->branch_address);
-
-            })->ignore($this->branchID)],
-
-            'branch_address' => ['bail','required','regex:/^[\pL\s\-\,\.]+$/u','min:2','max:25',
+        'branch_name' => [
+                'bail',
+                'required',
+                'regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i',
+                'min:2','max:50',
 
             Rule::unique('branches')
-            ->where(function ($query) {
-                return $query
+                ->where(function ($query) {
+                    return $query
+                    ->where('branch_name', $this->branch_name)
+                    ->where('branch_address', $this->branch_address);
 
-                ->where('branch_address', $this->branch_address)
-                ->where('branch_name', $this->branch_name);
+                })->ignore($this->branchID)],
 
-            })->ignore($this->branchID)],
+        'branch_address' => [
+                'bail',
+                'required',
+                'regex:/^[\pL\s\-\,\.]+$/u',
+                'min:2',
+                'max:25',
+
+            Rule::unique('branches')
+                ->where(function ($query) {
+                    return $query
+                    ->where('branch_address', $this->branch_address)
+                    ->where('branch_name', $this->branch_name);
+                })->ignore($this->branchID)],
 
         'branchContactNo' => 'bail|required|numeric',
-
         ];
     }
 
@@ -88,23 +94,23 @@ class WireBranch extends Component implements FieldValidationMessage
         $filtered = $this->allbranches->filter(function ($value) {
             return $value->status === (int)$this->sortList;
         });
-        $gg = $filtered->all();
+        $filteredBranches = $filtered->all();
 
         if($this->sortList === 'all') {
-            return view('livewire.branch', ['activebranches' => Branch::where('branch_name', 'like', $this->search.'%')->paginate($page),]);
+            return view('livewire.branch', [
+                'activebranches' => Branch::where('branch_name', 'like', $this->search.'%')
+                ->paginate($page),]);
         } else {
-            return view('livewire.branch', ['activebranches' => collect($gg)->paginateArray($page)]);
+            return view('livewire.branch', [
+                'activebranches' => collect($filteredBranches)
+                ->paginateArray($page)]);
         }
-
-
     }
 
     public function submit()
     {
         try {
-
             $this->validate();
-
         } catch (ValidationException $exception) {
 
             $messages = $exception->validator->errors();
@@ -116,7 +122,6 @@ class WireBranch extends Component implements FieldValidationMessage
                 return;
             };
             throw $exception;
-
         }
         if (is_null($this->Index)) {
             $branch = Branch::updateOrCreate([
@@ -141,10 +146,6 @@ class WireBranch extends Component implements FieldValidationMessage
                 'messagePrimary'   => $notificationMessage
             ]);
         }
-
-
-
-
     }
 
     public function clearFormVariables()
@@ -186,7 +187,6 @@ class WireBranch extends Component implements FieldValidationMessage
             $this->dirtyProperties = $this->allbranches[$this->Index]['dirty_fields'];
         }
 
-
         if (!$formAction) {
             $this->formTitle = 'Edit Branch';
             $this->isFormOpen = true;
@@ -227,9 +227,20 @@ class WireBranch extends Component implements FieldValidationMessage
     public function modalEdit($id, $formAction = null)
     {
         $this->updateID = $id;
-        $this->branch_name = $this->allbranches->where('id', $this->updateID)->pluck('branch_name')->first();
-        $this->branch_address = $this->allbranches->where('id', $this->updateID)->pluck('branch_address')->first();
-        $this->branchContactNo = $this->allbranches->where('id', $this->updateID)->pluck('branch_contactNo')->first();
+        $this->branch_name = $this->allbranches
+            ->where('id', $this->updateID)
+            ->pluck('branch_name')
+            ->first();
+
+        $this->branch_address = $this->allbranches
+            ->where('id', $this->updateID)
+            ->pluck('branch_address')
+            ->first();
+
+        $this->branchContactNo = $this->allbranches
+            ->where('id', $this->updateID)
+            ->pluck('branch_contactNo')
+            ->first();
 
         if (isset($this->allbranches[$this->updateID]['dirty_fields'])) {
             $this->dirtyProperties = $this->allbranches[$this->updateID]['dirty_fields'];
@@ -259,7 +270,6 @@ class WireBranch extends Component implements FieldValidationMessage
             $this->clearForm();
             $notificationMessage = 'Record successfully updated.';
         } else {
-
             $notificationMessage = 'No changes were detected';
         }
 
@@ -274,7 +284,9 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function modalDelete($id, $formAction = null)
     {
-        $this->deleteID = $this->allbranches->where('id', $id)->pluck('id');
+        $this->deleteID = $this->allbranches
+            ->where('id', $id)
+            ->pluck('id');
 
         if ($formAction) {
             $this->formTitle = 'Delete Item';

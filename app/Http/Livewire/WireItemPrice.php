@@ -48,7 +48,9 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
         $this->listSuppliers = $this->allsuppliers->pluck('id');
 
-        $this->filteredSuppliers = $this->itemprices->whereIn('supplier_id', $this->listSuppliers)->unique('supplier_id');
+        $this->filteredSuppliers = $this->itemprices
+            ->whereIn('supplier_id', $this->listSuppliers)
+            ->unique('supplier_id');
 
         $this->filteredSuppliers->values()->all();
 
@@ -60,7 +62,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
         $filtered = $this->itemprices->filter(function ($value) {
             return $value->supplier_id === (int)$this->sortList;
         });
-        $gg = $filtered->all();
+        $filteredSupplierList = $filtered->all();
 
         if($this->sortList === 'all') {
             return view('livewire.item-price', [     'listItemPrices' =>
@@ -70,7 +72,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
         } else {
             return view('livewire.item-price', [
                 'listItemPrices' =>
-                collect($gg)->paginateArray($page),
+                collect($filteredSupplierList)->paginateArray($page),
             ]);
         }
     }
@@ -102,7 +104,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
         if (is_null($this->Index)) {
             foreach ($this->priceArrays as $priceArray) {
                 $price = ItemPrice::create([
-
                     'supplier_id' => $priceArray['supplier_id'],
 
                     'item_id' => $priceArray['item_id'],
@@ -110,7 +111,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
                     'price_perUnit' => $priceArray['price_perUnit'],
 
                     'price_perPieces' => $priceArray['price_perPieces'],
-
                 ]);
 
                 $this->itemprices->push($price);
@@ -142,7 +142,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
             }
         }
 
-
         $itemName = '';
         foreach ($this->allitems as $item) {
             if ($item->id === (int) $this->item_id) {
@@ -158,7 +157,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
             'item_name' => $itemName,
             'price_perUnit' => $this->price_perUnit,
             'price_perPieces' => $this->price_perPieces,
-
         ]);
     }
 
@@ -217,7 +215,9 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
     public function modalDelete($id, $formAction = null)
     {
-        $this->deleteID = $this->itemprices->where('id', $id)->pluck('id');
+        $this->deleteID = $this->itemprices
+            ->where('id', $id)
+            ->pluck('id');
 
         if ($formAction) {
             $this->formTitle = 'Delete Item Price';
@@ -231,11 +231,9 @@ class WireItemPrice extends Component implements FieldValidationMessage
 
         ItemPrice::where('id', $id)->delete();
 
-
         $filtered = $this->itemprices->reject(function ($value, $key) use ($id) {
             return $value->id === $id;
         });
-
 
         $filtered->all();
         $this->itemprices = $filtered;
@@ -272,10 +270,26 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public function modalEdit($id, $formAction = null)
     {
         $this->updateID = $id;
-        $this->supplier_id = $this->itemprices->where('id', $this->updateID)->pluck('supplier_id')->first();
-        $this->item_id = $this->itemprices->where('id', $this->updateID)->pluck('item_id')->first();
-        $this->price_perUnit = $this->itemprices->where('id', $this->updateID)->pluck('price_perUnit')->first();
-        $this->price_perPieces = $this->itemprices->where('id', $this->updateID)->pluck('price_perPieces')->first();
+
+        $this->supplier_id = $this->itemprices
+            ->where('id', $this->updateID)
+            ->pluck('supplier_id')
+            ->first();
+
+        $this->item_id = $this->itemprices
+            ->where('id', $this->updateID)
+            ->pluck('item_id')
+            ->first();
+
+        $this->price_perUnit = $this->itemprices
+            ->where('id', $this->updateID)
+            ->pluck('price_perUnit')
+            ->first();
+
+        $this->price_perPieces = $this->itemprices
+            ->where('id', $this->updateID)
+            ->pluck('price_perPieces')
+            ->first();
 
         if ($formAction) {
             $this->formTitle = 'Edit Price';
@@ -286,10 +300,8 @@ class WireItemPrice extends Component implements FieldValidationMessage
     public function itemUpdate()
     {
         if($this->isDirty) {
-
             $id = $this->updateID;
             $price = ItemPrice::where('id', $id)->update([
-
                 'supplier_id' => $this->supplier_id,
 
                 'item_id' => $this->item_id,
@@ -297,15 +309,14 @@ class WireItemPrice extends Component implements FieldValidationMessage
                 'price_perUnit' => $this->price_perUnit,
 
                 'price_perPieces' => $this->price_perPieces,
-
             ]);
 
             $this->itemprices->push();
             $this->Index = null;
             $this->clearForm();
+
             $notificationMessage = 'Record successfully updated.';
         } else {
-
             $notificationMessage = 'No changes were detected';
         }
         $this->modalToggle();

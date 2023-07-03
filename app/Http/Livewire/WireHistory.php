@@ -20,7 +20,6 @@ class WireHistory extends Component
     public $month = 0;
     public $year = 0;
 
-
     public function mount()
     {
         $this->branches = Branch::all();
@@ -112,6 +111,7 @@ class WireHistory extends Component
         ->join('suppliers', 'suppliers.id', '=', 'order_details.supplier_id')
         ->join('items', 'items.id', '=', 'order_details.item_id')
         ->where('order_id', $id)->get();
+
         $this->getOrderID = Order::where('id', $id)->pluck('id');
         $this->getBranchID = Order::where('id', $id)->pluck('branch_id')->first();
     }
@@ -143,6 +143,4 @@ class WireHistory extends Component
             'formTitle',
         ]);
     }
-
-
 }

@@ -35,8 +35,12 @@ class WireStock extends Component
             return str_contains($item['item_name'], $name);
         });
 
-        $gg = $filtered->all();
-        return view('livewire.stock', ['stockitems' => collect($gg)->sortBy('created_at')->paginateArray($page)]);
+        $filteredStockList = $filtered->all();
+        return view('livewire.stock', [
+            'stockitems' => collect($filteredStockList)
+                ->sortBy('created_at')
+                ->paginateArray($page)
+        ]);
     }
 
     public function updatedViewMode()

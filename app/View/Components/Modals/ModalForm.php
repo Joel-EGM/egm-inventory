@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 class ModalForm extends Component
 {
     public $formTitle;
+    
 
     public function __construct($formTitle)
     {

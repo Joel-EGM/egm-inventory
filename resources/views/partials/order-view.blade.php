@@ -53,12 +53,11 @@
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ ucfirst(trans($detail->items->item_name)) }}
                             </td>
-
-                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
-
                             <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->order_type }}</td>
 
                             <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->price }}</td>
+
+                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
 
                             <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
 

@@ -35,7 +35,8 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 
+                                        2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
                             <div class="mx-5">
@@ -92,34 +93,37 @@
                 @if (Auth()->user()->branch_id === 1)
                     <div class="flex flex-wrap">
                         <div class="w-full px-2 py-1 xl:w">
-                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                <div x-data="{ isFormOpen: @entangle('isFormOpen'), isDeleteOpen: @entangle('isDeleteOpen') }"
-                                    class="grid grid-cols-6 gap-4
-                                        content-start">
+                            <div x-data="{ isFormOpen: @entangle('isFormOpen'), isDeleteOpen: @entangle('isDeleteOpen') }"
+                                class="grid grid-cols-6 gap-4
+                                content-start">
 
-                                    <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="7xl">
-                                        @if ($formTitle === 'Quick Order')
-                                            @include('partials.quickOrder')
-                                        @endif
-                                    </x-modals.modal-form>
-                                    <select name="supplier_id" wire:model="selectedSupplier"
-                                        class="block appearance-none bg-white border border-gray-400
-                                                hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-                                                leading-tight focus:outline-none focus:shadow-outline">
-                                        <option value="All">-select supplier-</option>
-                                        @foreach ($radioSupplier as $supplier)
-                                            <option value="{{ $supplier['supplier_id'] }}">
-                                                {{ $supplier['suppliers_name'] }}
-                                        @endforeach
-                                    </select>
-                                    <button wire:click.prevent="quickOrder" wire:loading.attr="disabled"
-                                        class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
-                                        border-transparent rounded-md font-semibold text-sm text-white 
-                                        uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 
-                                        focus:outline-none focus:border-gray-900 focus:ring 
-                                        focus:ring-gray-300 disabled:opacity-25 transition">
-                                        QUICK ORDER</button>
-                                </div>
+                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="7xl">
+                                    @if ($formTitle === 'Quick Order')
+                                        <livewire:wire-quickorder :selectedSupplier="$selectedSupplier" />
+                                    @endif
+                                </x-modals.modal-form>
+
+                                <select name="supplier_id" wire:model="selectedSupplier"
+                                    class="block appearance-none bg-white border border-gray-400
+                                        hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                                        leading-tight focus:outline-none focus:shadow-outline">
+                                    <option value="All">-select supplier-</option>
+                                    @foreach ($radioSupplier as $supplier)
+                                        <option value="{{ $supplier['supplier_id'] }}">
+                                            {{ $supplier['suppliers_name'] }}</option>
+                                    @endforeach
+                                </select>
+                                <button wire:click.prevent="modalToggle" wire:loading.attr="disabled"
+                                    class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
+                                border-transparent rounded-md font-semibold text-sm text-white 
+                                uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 
+                                focus:outline-none focus:border-gray-900 focus:ring 
+                                focus:ring-gray-300 disabled:opacity-25 transition">
+                                    QUICK ORDER
+                                </button>
+                            </div>
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
                                 <div>
                                     <p class="font-bold text-center underline">STOCK(S) FOR ORDER</p>
                                     {{ $allLowStocks->links('vendor.pagination.tailwind') }}
@@ -137,7 +141,7 @@
                                                 </th>
                                                 <th
                                                     class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                                    Quantity
+                                                    Stock Quantity
                                                 </th>
                                                 <th
                                                     class="w-1/5 px-6 py-3 font-bold bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -190,7 +194,7 @@
             <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
                 <div class="mt-4 shadow-md">
                     <div class="flex flex-wrap">
-                        <div class="w-full px-2 py-1">
+                        <div class="w-full px-2 py-1 xl:w">
                             <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                 <x-chart></x-chart>
                             </div>

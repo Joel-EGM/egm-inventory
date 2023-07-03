@@ -7,7 +7,7 @@
 <div class="py-8">
     <x-modal.modal-notification />
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="mt-4 grid grid-cols-1">
+        <div class="mt-4 grid grid-cols-1 bg-white">
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
                 <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
                     <div class="flex flex-row mt-0 sm:mb-0">
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="flex flex-wrap">
-                    <div class="w-full px-3 py-3 xl:w">
+                    <div class="w-full px-2 py-1 xl:w">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200 table-fixed">
                                 <thead>
