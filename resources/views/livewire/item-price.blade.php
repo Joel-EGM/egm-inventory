@@ -115,9 +115,9 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ ucfirst(trans($price->items->item_name)) }}</td>
                                             <td class="text-right px-6 py-4 whitespace-no-wrap">
-                                                {{ $price->price_perUnit }}</td>
+                                                &#8369;{{ $price->price_perUnit }}</td>
                                             <td class="text-right px-6 py-4 whitespace-no-wrap">
-                                                {{ $price->price_perPieces }}</td>
+                                                &#8369;{{ $price->price_perPieces }}</td>
 
 
                                             <td

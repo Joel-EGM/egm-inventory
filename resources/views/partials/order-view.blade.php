@@ -16,7 +16,7 @@
 
 
                         <th
-                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-right leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs text-left leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Order Type
                         </th>
 
@@ -53,13 +53,16 @@
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ ucfirst(trans($detail->items->item_name)) }}
                             </td>
-                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->order_type }}</td>
+                            <td class="text-left px-6 py-4 whitespace-no-wrap">{{ $detail->order_type }}</td>
 
-                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->price }}</td>
+                            <td class="text-right px-6 py-4 whitespace-no-wrap">
+                                &#8369;{{ number_format($detail->price, 2) }}
+                            </td>
 
                             <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->quantity }}</td>
 
-                            <td class="text-right px-6 py-4 whitespace-no-wrap">{{ $detail->total_amount }}</td>
+                            <td class="text-right px-6 py-4 whitespace-no-wrap">
+                                &#8369;{{ number_format($detail->total_amount, 2) }}</td>
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
                             @if ($formTitle === 'Order Details')
@@ -88,6 +91,6 @@
     <div class="flex flex-row-reverse">
         <x-jet-button class="ml-2" wire:click.prevent="saveMethod" wire:loading.attr="disabled">
             SAVE</x-jet-button>
-
+        <x-jet-input-error for="selectedRecord" class="mt-2" />
     </div>
 @endif

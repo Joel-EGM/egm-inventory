@@ -104,6 +104,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 })
                     ->where('order_status', '!=', 'received')
                     ->where('branch_id', Auth()->user()->branch_id)
+                    ->orderBy('created_at', 'desc')
                     ->paginate($page),
             ]);
         } elseif($this->sortList === 'all') {
@@ -113,6 +114,7 @@ class WireOrder extends Component implements FieldValidationMessage
                     $query->where('branch_name', 'like', '%'.$this->search.'%');
                 })
                     ->where('order_status', '!=', 'received')
+                    ->orderBy('created_at', 'desc')
                     ->paginate($page),
             ]);
         } else {
@@ -120,6 +122,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 'allorders' =>
                 collect($filteredBranchList)
                     ->where('order_status', '!=', 'received')
+                    ->orderBy('created_at', 'desc')
                     ->paginateArray($page),
             ]);
         }

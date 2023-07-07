@@ -10,6 +10,7 @@ use App\Models\OrderDetail;
 use App\Http\Traits\ModalVariables;
 use App\Http\Traits\WireVariables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 use Carbon\Carbon;
 
 class WireQuickorder extends Component
@@ -29,6 +30,13 @@ class WireQuickorder extends Component
     public $selectedSupplier;
 
     protected $listeners = ['submitQuickOrder'];
+
+    protected function messages()
+    {
+        return[
+            'arrayItemId.required' => 'No changes were detected.'
+        ];
+    }
 
     public function mount()
     {
@@ -125,6 +133,12 @@ class WireQuickorder extends Component
 
     public function submitQuickOrder()
     {
+        if(empty($this->arrayItemId)) {
+            $validatedData = $this->validate([
+                'arrayItemId' => 'required',
+               ]);
+        }
+
         $orders = Order::create([
              'branch_id' => 1,
 
@@ -137,17 +151,20 @@ class WireQuickorder extends Component
              'created_by' => Auth()->user()->name,
          ]);
 
-        $data = [];
+        $arrayData = [];
 
         foreach ($this->getBySupplier as $key => $orderArray) {
-            $data = [
+
+            // $filtered = Arr::except($orderArray, empty('order_type'));
+
+            array_push($arrayData, [
                 'order_id' => $orders->id,
 
                 'supplier_id' => $orderArray['supplier_id'],
 
                 'item_id' => $orderArray['item_id'],
 
-                'order_type' => $this->arrayItemId[$key],
+                'order_type' => preg_replace('/[^A-Za-z]/', '', $this->arrayItemId[$key]),
 
                 'price' => $this->arrayUnitPrice[$key],
 
@@ -158,33 +175,14 @@ class WireQuickorder extends Component
                 'order_status' => 'pending',
 
                 'is_received'   => 0,
-            ];
+            ]);
         }
-
         $this->orders->push($orders);
-        OrderDetail::insert($data);
-        $this->modalToggle();
 
-        $notificationMessage = 'Order successfully created.';
+        OrderDetail::insert($arrayData);
 
-        $this->dispatchBrowserEvent('show-message', [
-            'notificationType' => 'success',
-            'messagePrimary'   => $notificationMessage
-        ]);
-
-    }
-
-    public function modalToggle($formAction = null)
-    {
-
-        if (!$formAction) {
-
-            $this->formTitle = 'Quick Order';
-
-            $this->isFormOpen = !$this->isFormOpen;
-            $this->clearAndResetForm();
-        }
         $this->clearForm();
+        $this->clearFormVariables();
 
     }
 
@@ -211,6 +209,8 @@ class WireQuickorder extends Component
             'arrayTotalAmt',
         ]);
     }
+
+
 
     public function loadPrice()
     {

@@ -126,7 +126,7 @@
 
                                 <div>
                                     <p class="font-bold text-center underline">STOCK(S) FOR ORDER</p>
-                                    {{ $allLowStocks->links('vendor.pagination.tailwind') }}
+                                    {{ $allLowStocks->links('vendor.pagination.simple-tailwind') }}
                                     <br />
                                     <table class="min-w-full divide-y divide-gray-200 table-fixed">
                                         <thead>

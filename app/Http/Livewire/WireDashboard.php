@@ -100,6 +100,14 @@ class WireDashboard extends Component
     public function submit()
     {
         $this->emit('submitQuickOrder');
+        $this->modalToggle();
+
+        $notificationMessage = 'Record successfully created.';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
     }
 
     public function modalToggle($formAction = null)
@@ -107,9 +115,7 @@ class WireDashboard extends Component
         if (!$formAction) {
 
             $this->formTitle = 'Quick Order';
-
             $this->isFormOpen = !$this->isFormOpen;
-            $this->clearAndResetForm();
         }
     }
 
