@@ -198,11 +198,11 @@
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['price'] }}</td>
+                                        &#8369;{{ $order['price'] }}</td>
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['total_amount'] }}</td>
+                                        &#8369;{{ $order['total_amount'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         <a href="javascript:" title="DeleteArray"
@@ -241,11 +241,11 @@
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['price'] }}</td>
+                                        &#8369;{{ $order['price'] }}</td>
 
                                     <td
                                         class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['total_amount'] }}</td>
+                                        &#8369;{{ $order['total_amount'] }}</td>
 
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         <a href="javascript:" title="DeleteArray"
@@ -272,7 +272,7 @@
                 @if (count($orderArrays) != 0)
                     <table width="90%">
                         <td style="text-align: right; text-size: sm">Grand Total:
-                            {{ array_sum(array_column($orderArrays, 'total_amount')) }}.00</td>
+                            &#8369;{{ array_sum(array_column($orderArrays, 'total_amount')) }}.00</td>
                     </table>
                 @endif
             </div>

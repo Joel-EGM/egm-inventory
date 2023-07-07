@@ -3,7 +3,6 @@
 @once
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.js"></script>
     <script>
-        // chart.destroy();
         var ctx = document.getElementById('orderChart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'bar',

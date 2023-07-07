@@ -42,7 +42,8 @@ class WireItem extends Component implements FieldValidationMessage
 
         return view('livewire.item', [
             'listItems' =>
-            Item::where('item_name', 'like', $this->search.'%')->paginate($page),
+            Item::where('item_name', 'like', $this->search.'%')
+                ->paginate($page),
         ]);
     }
 
@@ -56,7 +57,6 @@ class WireItem extends Component implements FieldValidationMessage
         if (in_array($propertyName, $wire_models)) {
             $this->$propertyName = ucwords(strtolower($this->$propertyName));
         }
-
 
         try {
             $this->validateOnly($propertyName);
@@ -73,8 +73,6 @@ class WireItem extends Component implements FieldValidationMessage
         if (is_null($this->Index)) {
 
             $item = Item::create([
-
-
                 'item_name' => $this->itemName,
 
                 'unit_name' => $this->unitIName,
@@ -144,7 +142,9 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function modalDelete($id, $formAction = null)
     {
-        $this->deleteID = $this->allitems->where('id', $id)->pluck('id');
+        $this->deleteID = $this->allitems
+            ->where('id', $id)
+            ->pluck('id');
 
         if ($formAction) {
             $this->formTitle = 'Delete Item';
@@ -177,11 +177,31 @@ class WireItem extends Component implements FieldValidationMessage
     public function modalEdit($id, $formAction = null)
     {
         $this->updateID = $id;
-        $this->itemName = $this->allitems->where('id', $this->updateID)->pluck('item_name')->first();
-        $this->unitIName = $this->allitems->where('id', $this->updateID)->pluck('unit_name')->first();
-        $this->piecesPerUnit = $this->allitems->where('id', $this->updateID)->pluck('pieces_perUnit')->first();
-        $this->reorder_level = $this->allitems->where('id', $this->updateID)->pluck('reorder_level')->first();
-        $this->fixedUnit = $this->allitems->where('id', $this->updateID)->pluck('fixed_unit')->first();
+
+        $this->itemName = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('item_name')
+            ->first();
+
+        $this->unitIName = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('unit_name')
+            ->first();
+
+        $this->piecesPerUnit = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('pieces_perUnit')
+            ->first();
+
+        $this->reorder_level = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('reorder_level')
+            ->first();
+
+        $this->fixedUnit = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('fixed_unit')
+            ->first();
 
 
         if (isset($this->allitems[$this->updateID]['dirty_fields'])) {
@@ -198,8 +218,6 @@ class WireItem extends Component implements FieldValidationMessage
     {
         if($this->isDirty) {
             Item::where('id', $this->updateID)->update([
-
-
                 'item_name' => $this->itemName,
 
                 'unit_name' => $this->unitIName,
@@ -209,7 +227,6 @@ class WireItem extends Component implements FieldValidationMessage
                 'reorder_level' => $this->reorder_level,
 
                 'fixed_unit' => $this->fixedUnit,
-
             ]);
 
 
@@ -219,9 +236,10 @@ class WireItem extends Component implements FieldValidationMessage
 
             $notificationMessage = 'Record successfully updated.';
         } else {
-
             $notificationMessage = 'No changes were detected';
         }
+
+
         $this->modalToggle();
 
         $this->dispatchBrowserEvent('show-message', [

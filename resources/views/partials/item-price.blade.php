@@ -66,9 +66,9 @@
 
                     <td class="border px-4 py-2">{{ ucfirst(trans($price['item_name'])) }}</td>
 
-                    <td class="text-right border px-4 py-2">{{ $price['price_perUnit'] }}</td>
+                    <td class="text-right border px-4 py-2">&#8369;{{ $price['price_perUnit'] }}</td>
 
-                    <td class="text-right border px-4 py-2">{{ $price['price_perPieces'] }}</td>
+                    <td class="text-right border px-4 py-2">&#8369;{{ $price['price_perPieces'] }}</td>
 
                     <td class="border px-4 py-2">
                         <a href="javascript:" title="DeleteArray" wire:click="removeItem({{ $loop->index }})"
