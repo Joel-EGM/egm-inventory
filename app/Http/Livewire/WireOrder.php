@@ -695,11 +695,7 @@ class WireOrder extends Component implements FieldValidationMessage
             'total_amount',
         ]);
 
-<<<<<<< HEAD
-        if($this->branch_id != 1 || Auth()->user()->branch_id != 1) {
-=======
         if($this->branch_id != 1) {
->>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
             $this->supplier_id = 1;
             $this->updatedSupplierId();
         }
