@@ -91,6 +91,6 @@
     <div class="flex flex-row-reverse">
         <x-jet-button class="ml-2" wire:click.prevent="saveMethod" wire:loading.attr="disabled">
             SAVE</x-jet-button>
-
+        <x-jet-input-error for="selectedRecord" class="mt-2" />
     </div>
 @endif

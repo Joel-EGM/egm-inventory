@@ -1,4 +1,9 @@
 <div>
+<<<<<<< HEAD
+=======
+    <x-jet-input-error for="arrayItemId" class="mt-2 text-center" />
+
+>>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
     <table class="min-w-full divide-y divide-gray-200 table-fixed">
         <thead>
             <tr>
@@ -49,7 +54,10 @@
                             <option class="w-full" value="{{ $order['item_id'] }} Pieces">Per Pieces</option>
 
                         </select>
+<<<<<<< HEAD
                         <x-jet-input-error for="arrayItemId" class="mt-2" />
+=======
+>>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
                     </td>
                     <td class="text-left px-6 py-4 whitespace-no-wrap">
                         <x-jet-input wire:model="arrayOrderQty.{{ $key }}" x-ref="quantity" id="quantity"

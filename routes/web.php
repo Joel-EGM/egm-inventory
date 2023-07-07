@@ -27,11 +27,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get(
+    Route::any(
         '/dashboard',
         \App\Http\Livewire\WireDashboard::class,
         'render'
     )->name('dashboard');
+
 
     //MANAGE
     Route::get('manage/branches', \App\Http\Livewire\WireBranch::class, 'render')->name('branches');
