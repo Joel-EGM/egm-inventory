@@ -31,16 +31,6 @@ class WireQuickorder extends Component
 
     protected $listeners = ['submitQuickOrder'];
 
-<<<<<<< HEAD
-=======
-    protected function messages()
-    {
-        return[
-            'arrayItemId.required' => 'No changes were detected.'
-        ];
-    }
-
->>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
     public function mount()
     {
         $this->orders = Order::all();
@@ -136,14 +126,6 @@ class WireQuickorder extends Component
 
     public function submitQuickOrder()
     {
-<<<<<<< HEAD
-=======
-        if(empty($this->arrayItemId)) {
-            $validatedData = $this->validate([
-                'arrayItemId' => 'required',
-               ]);
-        }
->>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
 
         $orders = Order::create([
              'branch_id' => 1,
@@ -161,11 +143,6 @@ class WireQuickorder extends Component
 
         foreach ($this->getBySupplier as $key => $orderArray) {
 
-<<<<<<< HEAD
-=======
-            // $filtered = Arr::except($orderArray, empty('order_type'));
-
->>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
             array_push($arrayData, [
                 'order_id' => $orders->id,
 
@@ -192,10 +169,6 @@ class WireQuickorder extends Component
 
         $this->clearForm();
         $this->clearFormVariables();
-<<<<<<< HEAD
-=======
-
->>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
     }
 
     public function clearFormVariables()
@@ -222,11 +195,6 @@ class WireQuickorder extends Component
         ]);
     }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 10c2a7fdf65f46c80b92361a9cbef95b518162b9
     public function loadPrice()
     {
         $unitPrice = ItemPrice::whereIn('item_id', $this->itemID)

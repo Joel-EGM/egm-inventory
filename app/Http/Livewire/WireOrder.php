@@ -331,6 +331,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public function removeItem($index)
     {
         unset($this->orderArrays[$index]);
+        $this->orderArrays = array_values($this->orderArrays);
+
     }
 
     public function deleteItem($index)
@@ -338,6 +340,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $id = $this->orderArrays[$index]['id'];
         OrderDetail::find($id)->delete();
         unset($this->orderArrays[$index]);
+        $this->orderArrays = array_values($this->orderArrays);
     }
 
     public function clearFormVariables()
