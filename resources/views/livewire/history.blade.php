@@ -25,7 +25,7 @@
                             MONTHLY</a>
                         <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
 
-                            <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
+                            <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="7xl">
 
                                 @if ($formTitle === 'View Details')
                                     @include('partials.order-view')

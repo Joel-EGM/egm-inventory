@@ -42,6 +42,12 @@
                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                 Received
                             </th>
+                            <div class="grid justify-items-end">
+                                <div>
+                                    <input type="checkbox" wire:model="selectALL" />
+                                    Select All
+                                </div>
+                            </div>
                         @endif
                     </tr>
                 </thead>

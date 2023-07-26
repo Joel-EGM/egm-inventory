@@ -1,6 +1,6 @@
-<div>
-    <x-jet-input-error for="arrayItemId" class="mt-2 text-center" />
+<x-jet-input-error for="arrayItemId" class="mt-2 text-center" />
 
+<div>
     <table class="min-w-full divide-y divide-gray-200 table-fixed">
         <thead>
             <tr>

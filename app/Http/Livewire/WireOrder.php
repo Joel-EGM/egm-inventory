@@ -33,6 +33,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $search = '';
     public $filteredSuppliers;
     public $checkStatus;
+    public $selectALL = false;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -225,6 +226,11 @@ class WireOrder extends Component implements FieldValidationMessage
             'notificationType' => 'success',
             'messagePrimary'   => $notificationMessage
         ]);
+
+        $this->reset([
+            'selectALL',
+            'completedOrder'
+        ]);
     }
 
     public function addOrderArray()
@@ -331,6 +337,8 @@ class WireOrder extends Component implements FieldValidationMessage
     public function removeItem($index)
     {
         unset($this->orderArrays[$index]);
+        $this->orderArrays = array_values($this->orderArrays);
+
     }
 
     public function deleteItem($index)
@@ -338,6 +346,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $id = $this->orderArrays[$index]['id'];
         OrderDetail::find($id)->delete();
         unset($this->orderArrays[$index]);
+        $this->orderArrays = array_values($this->orderArrays);
     }
 
     public function clearFormVariables()
@@ -686,8 +695,6 @@ class WireOrder extends Component implements FieldValidationMessage
     public function updatedBranchId()
     {
         $this->reset([
-            'item_id',
-            'supplier_id',
             'unitType',
             'unitName',
             'unit_id',
@@ -733,7 +740,6 @@ class WireOrder extends Component implements FieldValidationMessage
             ]);
             return;
         }
-
         if ($this->branch_id != 1) {
             $items = Item::with('itemprices')->get();
 
@@ -855,5 +861,15 @@ class WireOrder extends Component implements FieldValidationMessage
     private function computeTotalAmount()
     {
         $this->total_amount = number_format((int) $this->quantity * $this->unitPrice, 2, '.', '');
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if($value) {
+            $this->selectedRecord = $this->details->pluck('id');
+            // dd($this->selectedRecord);
+        } else {
+            $this->selectedRecord = [];
+        }
     }
 }

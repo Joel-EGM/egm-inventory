@@ -26,7 +26,7 @@ class WireHistory extends Component
 
         $this->order_details = OrderDetail::all();
 
-        $this->orders = Order::all();
+        $this->orders = Order::with('branches')->get();
 
         $this->order_date = Carbon::now()->format('Y-m');
 
@@ -62,8 +62,8 @@ class WireHistory extends Component
                     ->where('order_status', '=', 'received')
                     ->sortBy(
                         [
-                        ['order_date','DESC'],
-                        ['updated_at','DESC']
+                        ['updated_at','DESC'],
+                        ['order_date','DESC']
                         ]
                     )
                     ->paginateArray($page),
@@ -72,11 +72,11 @@ class WireHistory extends Component
             if($this->sortList === 'all') {
                 return view('livewire.history', [
                     'orderHistory' =>
-                    Order::whereHas('branches', function ($query) {
+                    Order::with('branches')->whereHas('branches', function ($query) {
                         $query->where('branch_name', 'like', '%'.$this->search.'%');
                     })->where('order_status', '=', 'received')
-                    ->orderBy('order_date', 'DESC')
                     ->orderBy('updated_at', 'DESC')
+                    ->orderBy('order_date', 'DESC')
                     ->paginate($page),
                 ]);
             } else {
@@ -85,8 +85,8 @@ class WireHistory extends Component
                     collect($gg)->where('order_status', '=', 'received')
                     ->sortBy(
                         [
-                    ['order_date','DESC'],
-                    ['updated_at','DESC']]
+                    ['updated_at','DESC'],
+                    ['order_date','DESC']]
                     )
                     ->paginateArray($page),
                 ]);

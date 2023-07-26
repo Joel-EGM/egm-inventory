@@ -155,8 +155,6 @@ class WireQuickorder extends Component
 
         foreach ($this->getBySupplier as $key => $orderArray) {
 
-            // $filtered = Arr::except($orderArray, empty('order_type'));
-
             array_push($arrayData, [
                 'order_id' => $orders->id,
 
@@ -223,6 +221,7 @@ class WireQuickorder extends Component
 
     public function updatedArrayItemId($value, $key)
     {
+        $this->arrayOrderQty[$key] = 0;
         $this->key = $key;
 
         $explodeResult = explode(' ', $value);
