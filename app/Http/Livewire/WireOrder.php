@@ -867,7 +867,6 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         if($value) {
             $this->selectedRecord = $this->details->pluck('id');
-            // dd($this->selectedRecord);
         } else {
             $this->selectedRecord = [];
         }
