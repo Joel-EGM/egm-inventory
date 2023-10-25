@@ -53,20 +53,22 @@ Route::middleware([
     Route::get('stocks/generate-pdf/{stock}', [ExportController::class, 'generatePDF'])->name('generate-pdf');
     Route::get('user/generate-user/{user}', [ExportUserController::class, 'generateUser'])->name('generate-user');
     Route::get('history/generate-report/{mos}', function ($mos) {
-
         $explode = explode('-', $mos);
         $yr = $explode[0];
         $mons = $explode[1];
-        // dd($mons);
         $findData = DB::select("CALL getMonthlyReport($yr,$mons)");
 
+        $collect = collect($findData)->where('branch_name', '!=', 'Head Office Emp')->where('branch_name', '!=', 'Head Office Main')->groupby('branch_name');
+        $HOcollect = collect($findData)->where('branch_name', 'Head Office Emp')->groupby('branch_name');
         $data = [
-            'monthlyreport' => $findData
+            'year' => $yr,
+            'month' => date('F', mktime(0, 0, 0, $mons, 10)),
+            'monthlyreport' => $collect,
+            'horeport' => $HOcollect
         ];
-
         $pdf = PDF::loadView('monthlyReport', $data);
 
-        return $pdf->stream('monthly_report_'.today()->toDateString().'.pdf');
+        return $pdf->stream('monthly_report_' . today()->toDateString() . '.pdf');
     })->name('generateMonthly');
 
 

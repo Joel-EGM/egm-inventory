@@ -23,6 +23,7 @@ class WireStock extends Component
 
     public function mount()
     {
+        // dd();
         $this->loadData($this->viewMode);
     }
 
@@ -51,7 +52,8 @@ class WireStock extends Component
     private function loadData($mode)
     {
         $id = (int) $mode;
-        $this->stocks = collect(DB::select("CALL getData($id)"))
+        $branch_id = Auth()->user()->branch_id;
+        $this->stocks = collect(DB::select("CALL getData($id,$branch_id)"))
         ->map(function ($items) {
             if($this->viewMode != 1) {
                 return[
@@ -66,6 +68,7 @@ class WireStock extends Component
                     'created_at' => $items->created_at,
                     'item_name' => $items->item_name,
                     'unit_name' => $items->unit_name,
+                    'category' => $items->category,
                     'totalqtyWHOLE' => $items->totalqtyWHOLE,
                     'totalqtyREMAINDER' => $items->totalqtyREMAINDER
                 ];

@@ -17,6 +17,17 @@
     </div>
 
     <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <x-jet-label for="itemCategory" value="{{ __('Category') }}" />
+        <select name="itemCategory" wire:model="itemCategory"
+            class="block appearance-none w-full bg-white border border-gray-400
+            hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+            leading-tight focus:outline-none focus:shadow-outline">
+            <option value="1">Forms</option>
+            <option value="2">Supplies</option>
+        </select>
+    </div>
+
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
         <x-jet-label for="piecesPerUnit" value="{{ __('Pcs per Unit') }}" />
         <x-jet-input wire:model.defer="piecesPerUnit" x-ref="piecesPerUnit" id="piecesPerUnit" type="number"
             maxlength="50" class="mt-1 block w-full" autocomplete="piecesPerUnit" />

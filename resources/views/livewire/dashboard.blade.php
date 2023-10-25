@@ -90,7 +90,7 @@
         <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
             <div class="mt-4 shadow-md">
 
-                @if (Auth()->user()->branch_id === 1)
+                @can('isAdmin')
                     <div class="flex flex-wrap">
                         <div class="w-full px-2 py-1 xl:w">
                             <div x-data="{ isFormOpen: @entangle('isFormOpen'), isDeleteOpen: @entangle('isDeleteOpen') }"
@@ -187,9 +187,10 @@
                             </div>
                         </div>
                     </div>
-                @endif
+
+                </div>
             </div>
-        </div>
+        @endcan
         <div class="py-6">
             <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
                 <div class="mt-4 shadow-md">

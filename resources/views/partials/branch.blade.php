@@ -23,4 +23,18 @@
             maxlength="50" class="mt-1 block w-full" autocomplete="branchContactNo" />
         <x-jet-input-error for="branchContactNo" class="mt-2" />
     </div>
+
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <x-jet-label for="acc_number" value="{{ __('Branch Account Number') }}" />
+        <x-jet-input wire:model.defer="acc_number" x-ref="acc_number" id="acc_number" type="text" maxlength="50"
+            class="mt-1 block w-full" autocomplete="acc_number" />
+        <x-jet-input-error for="acc_number" class="mt-2" />
+    </div>
+
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <input name="has_inventory" type="checkbox" wire:model.defer="has_inventory">Has Inventory
+    </div>
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <input name="can_createall" type="checkbox" wire:model.defer="can_createall">Admin Rights
+    </div>
 </div>

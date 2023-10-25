@@ -2,69 +2,144 @@
 <html>
 
 <head>
-    <style type="text/css">
-        @page {
-            margin: 0px;
-        }
-
-        body {
-            margin: 0px;
-        }
-
-        * {
-            font-family: Verdana, Arial, sans-serif;
-        }
-
-        a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        table {
-            font-size: x-small;
-        }
-
-        .stocks table {
-            margin: 15px;
-            text-align: center;
-
-        }
-
-        .stocks h3 {
-            margin-left: 15px;
-            text-align: center;
-        }
-    </style>
-
+    <link rel="stylesheet" href="{{ public_path('css/tablelayout.css') }}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
 <body>
-    <div>
-        Printed Date: {{ now()->format('Y-m-d H:i') }}
-    </div>
-    <div class="stocks">
-        <h3>MONTHLY REPORT</h3>
-        <table width="100%">
-            <thead>
-                <tr>
-                    <th>BRANCH NAME</th>
-                    <th>YEAR</th>
-                    <th>MONTH</th>
-                    <th>TOTAL AMOUNT</th>
-                </tr>
-            </thead>
+    <footer>Printed Date: {{ now()->format('Y-m-d') }}</footer>
 
-            @foreach ($monthlyreport as $report)
-                <tr>
-                    <td>{{ $report->branch_name }}</td>
-                    <td>{{ $report->Year }}</td>
-                    <td>{{ $report->MonthName }}</td>
-                    <td>{{ $report->Total }}</td>
-                </tr>
-            @endforeach
+    @if (count($horeport) > 0)
+        <div class="stocks">
+            <h3>HEAD OFFICE FORMS AND OFFICE SUPPLIES FOR THE MONTH OF
+                {{ Str::upper($month) }}
+                {{ $year }}
+            </h3>
 
-        </table>
+            <table id="tablelayout">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; width: 20%">BRANCH NAME</th>
+                        <th style="text-align: center; width: 20%">ACCOUNT NUMBER</th>
+                        <th style="text-align: center; width: 20%">OR NUMBER</th>
+                        <th style="text-align: left; width: 20%">OR DATE</th>
+                        <th class="rightalign; width: 20%">TOTAL AMOUNT</th>
+                    </tr>
+                </thead>
+                <?php $grand_total = 0;
+                ?>
+                @foreach ($horeport as $key => $report)
+                    <tr>
+                        <td class="leftalign bold">{{ Str::upper($key) }}</td>
+                        <td class="center">{{ $report[0]->acc_number }}</td>
+                        @foreach ($report as $key => $ret)
+                            @if ($key > 0)
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td class="center">{{ sprintf('%08d', $ret->or_number) }}</td>
+                        <td class="leftalign">{{ $ret->or_date }}</td>
+                        <td class="rightalign" style="font-family: DejaVu Sans;">
+                            {{ number_format($ret->Total, 2) }}
+                        </td>
+                    </tr>
+                @else
+                    <td class="center">{{ sprintf('%08d', $ret->or_number) }}</td>
+                    <td class="leftalign">{{ $ret->or_date }}</td>
+                    <td class="rightalign" style="font-family: DejaVu Sans;">{{ number_format($ret->Total, 2) }}
+                    </td>
+                @endif
+    @endforeach
+
+    <?php
+    $grand_total += $report->sum('Total');
+    ?>
+    </tr>
+    @endforeach
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="rightalign total">GRAND TOTAL: </td>
+        <td class="rightalign total green" style="font-family: DejaVu Sans;">
+            &#8369;{{ number_format($grand_total, 2) }}</td>
+    </tr>
+    </table>
     </div>
+    @if (count($monthlyreport) > 0)
+        <div class="page-break"></div>
+    @endif
+    @endif
+
+    @if (count($monthlyreport) > 0)
+
+        <div class="stocks">
+            <h3>BRANCH's FORMS AND OFFICE SUPPLIES FOR THE MONTH OF
+                {{ Str::upper($month) }}
+                {{ $year }}
+            </h3>
+
+            <table id="tablelayout">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; width: 20%">BRANCH NAME</th>
+                        <th style="text-align: center; width: 20%">ACCOUNT NUMBER</th>
+                        <th style="text-align: center; width: 20%">OR NUMBER</th>
+                        <th style="text-align: left; width: 20%">OR DATE</th>
+                        <th class="rightalign; width: 20%">TOTAL AMOUNT</th>
+                    </tr>
+                </thead>
+                <?php $grand_total = 0;
+                ?>
+                @foreach ($monthlyreport as $key => $report)
+                    <tr>
+                        <td class="leftalign bold">{{ Str::upper($key) }}</td>
+                        <td class="center">{{ $report[0]->acc_number }}</td>
+                        @foreach ($report as $key => $ret)
+                            @if ($key > 0)
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td class="center">{{ sprintf('%08d', $ret->or_number) }}</td>
+                        <td class="leftalign">{{ $ret->or_date }}</td>
+                        <td class="rightalign" style="font-family: DejaVu Sans;">
+                            {{ number_format($ret->Total, 2) }}
+                        </td>
+                    </tr>
+                @else
+                    <td class="center">{{ sprintf('%08d', $ret->or_number) }}</td>
+                    <td class="leftalign">{{ $ret->or_date }}</td>
+                    <td class="rightalign" style="font-family: DejaVu Sans;">{{ number_format($ret->Total, 2) }}
+                    </td>
+                @endif
+    @endforeach
+    @if (count($report) > 1)
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td class="rightalign total">Branch Total: </td>
+            <td class="rightalign total blue" style="font-family: DejaVu Sans;">
+                &#8369;{{ number_format($report->sum('Total'), 2) }}</td>
+
+        </tr>
+    @endif
+    <?php
+    $grand_total += $report->sum('Total');
+    ?>
+    </tr>
+    @endforeach
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="rightalign total">GRAND TOTAL: </td>
+        <td class="rightalign total green" style="font-family: DejaVu Sans;">
+            &#8369;{{ number_format($grand_total, 2) }}</td>
+    </tr>
+    </table>
+    </div>
+    @endif
 </body>
 
 </html>

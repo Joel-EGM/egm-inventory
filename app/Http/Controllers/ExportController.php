@@ -11,15 +11,13 @@ use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
-    public function __invoke(Stock $stock)
-    {
-
-    }
+    public function __invoke(Stock $stock) {}
 
     public function generatePDF()
     {
         $getID = last(request()->segments());
-        $stock = DB::select("CALL getData($getID)");
+        $branch_id = Auth()->user()->branch_id;
+        $stock = DB::select("CALL getData($getID,$branch_id)");
 
         $data = [
             'stocks' => $stock
@@ -31,7 +29,7 @@ class ExportController extends Controller
             $pdf = PDF::loadView('pdfFormat', $data);
         }
 
-        return $pdf->stream('stocksreport_'.today()->toDateString().'.pdf');
+        return $pdf->stream('stocksreport_'.today()->toDateString().'_'.Auth()->user()->name.'.pdf');
     }
 
     public function export()
@@ -39,7 +37,5 @@ class ExportController extends Controller
         return Excel::download(new StocksExport(), 'stocksreport_'.today()->toDateString().'.xlsx');
     }
 
-    public function generatePO()
-    {
-    }
+    public function generatePO() {}
 }

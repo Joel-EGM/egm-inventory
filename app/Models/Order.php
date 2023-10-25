@@ -18,6 +18,7 @@ class Order extends Model
         'order_date',
         'order_status',
         'created_by',
+        'recieved_by',
         'or_number',
         'or_date',
     ];

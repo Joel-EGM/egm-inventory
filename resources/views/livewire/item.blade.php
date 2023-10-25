@@ -73,6 +73,10 @@
                                             Unit Name
                                         </th>
                                         <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Category
+                                        </th>
+                                        <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             PiecesPerUnit
                                         </th>
@@ -104,6 +108,7 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ ucfirst(trans($item->item_name)) }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $item->category }}</td>
                                             <td class="text-right px-6 py-4 whitespace-no-wrap">
                                                 {{ $item->pieces_perUnit }}</td>
                                             <td class="text-right px-6 py-4 whitespace-no-wrap">

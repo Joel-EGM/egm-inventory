@@ -2,57 +2,28 @@
 <html>
 
 <head>
-    <style type="text/css">
-        @page {
-            margin: 0px;
-        }
-
-        body {
-            margin: 0px;
-        }
-
-        * {
-            font-family: Verdana, Arial, sans-serif;
-        }
-
-        a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        table {
-            font-size: x-small;
-        }
-
-        .stocks table {
-            margin: 15px;
-            text-align: center;
-
-        }
-
-        .stocks h3 {
-            margin-left: 15px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ public_path('css/tablelayout.css') }}" />
 </head>
 
 <body>
+    <div>
+        Printed Date: {{ now()->format('Y-m-d') }}
+    </div>
     <div class="stocks">
         <h3>INVENTORY STOCKS REPORT</h3>
-        <table width="100%">
+        <table id="tablelayout">
             <thead>
                 <tr>
-                    <th style="text-align: left;">Item Name</th>
-                    <th style="text-align: right;">Quantity</th>
-                    <th>Date Received</th>
+                    <th>ITEM NAME</th>
+                    <th>QUANTITY</th>
+                    <th>DATE RECEIVED</th>
                 </tr>
             </thead>
             @foreach ($stocks as $stock)
                 <tr>
-                    <td style="text-align: left;">{{ $stock->item_name }}</td>
-                    <td style="text-align: right;">{{ $stock->totalqty }}</td>
-                    <td style="text-align: center;">{{ $stock->created_at }}</td>
+                    <td class="leftalign">{{ $stock->item_name }}</td>
+                    <td class="center">{{ $stock->totalqty }}</td>
+                    <td class="leftalign">{{ $stock->created_at }}</td>
                 </tr>
             @endforeach
         </table>

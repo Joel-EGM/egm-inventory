@@ -15,6 +15,7 @@ class Item extends Model
         'supplier_id',
         'item_name',
         'unit_name',
+        'category',
         'pieces_perUnit',
         'fixed_unit',
         'reorder_level',

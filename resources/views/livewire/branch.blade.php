@@ -74,15 +74,19 @@
                                     <tr>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Branch Name
+                                            Name
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Branch Address
+                                            Address
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Branch Contact No
+                                            Account No
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Contact No
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -110,6 +114,7 @@
                                             class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_address }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->acc_number }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_contactNo }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">

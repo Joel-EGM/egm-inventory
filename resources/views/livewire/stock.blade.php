@@ -37,6 +37,16 @@
                             </select>
                         </div>
 
+                        {{-- <div class="relative">
+                            <select
+                                class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 
+                                text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-300"
+                                wire:model="bid">
+                                <option value="1">Head Office</option>
+                                <option value="40">Head Office Sattelite</option>
+                            </select>
+                        </div> --}}
+
                         <div class="relative">
                             <select
                                 class="appearance-none h-full border-t rounded-r-none border-r-0 border-b block appearance-none w-full bg-white border-gray-300 
@@ -91,6 +101,10 @@
                                                 Unit Name
                                             </th>
                                             <th
+                                                class="w-1/8 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Category
+                                            </th>
+                                            <th
                                                 class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 WHOLE
                                             </th>
@@ -139,6 +153,9 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-no-wrap">
                                                     {{ ucfirst(trans($stock['unit_name'])) }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    {{ ucfirst(trans($stock['category'])) }}
                                                 </td>
                                                 <td class="text-right px-6 py-4 whitespace-no-wrap">
                                                     {{ intval($stock['totalqtyWHOLE']) }}</td>

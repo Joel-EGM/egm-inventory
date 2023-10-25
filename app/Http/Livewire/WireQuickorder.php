@@ -31,13 +31,6 @@ class WireQuickorder extends Component
 
     protected $listeners = ['submitQuickOrder'];
 
-    protected function messages()
-    {
-        return[
-            'arrayItemId.required' => 'No changes were detected.'
-        ];
-    }
-
     public function mount()
     {
         $this->orders = Order::all();
@@ -133,11 +126,6 @@ class WireQuickorder extends Component
 
     public function submitQuickOrder()
     {
-        if(empty($this->arrayItemId)) {
-            $validatedData = $this->validate([
-                'arrayItemId' => 'required',
-               ]);
-        }
 
         $orders = Order::create([
              'branch_id' => 1,
@@ -181,7 +169,6 @@ class WireQuickorder extends Component
 
         $this->clearForm();
         $this->clearFormVariables();
-
     }
 
     public function clearFormVariables()
@@ -208,8 +195,6 @@ class WireQuickorder extends Component
         ]);
     }
 
-
-
     public function loadPrice()
     {
         $unitPrice = ItemPrice::whereIn('item_id', $this->itemID)
@@ -221,7 +206,6 @@ class WireQuickorder extends Component
 
     public function updatedArrayItemId($value, $key)
     {
-        $this->arrayOrderQty[$key] = 0;
         $this->key = $key;
 
         $explodeResult = explode(' ', $value);

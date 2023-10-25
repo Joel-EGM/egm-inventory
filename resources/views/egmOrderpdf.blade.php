@@ -39,7 +39,7 @@
         <tr>
             <td style="font-size: 12px; padding-left: 380px; padding-top: 20px">GRAND TOTAL:</td>
             <td style="text-align: right; padding-top: 20px; padding-right: 25px">
-                {{ array_sum(array_column($orderDetails, 'total_amount')) }}.00</td>
+                {{ array_sum(array_column($orderDetails, 'total_amount')) }}</td>
         </tr>
     </table>
 

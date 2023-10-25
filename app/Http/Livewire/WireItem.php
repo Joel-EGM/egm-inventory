@@ -23,6 +23,7 @@ class WireItem extends Component implements FieldValidationMessage
     public $layoutTitle = 'New Item';
     public $search = '';
     public $updateID;
+    public $itemCategory;
 
 
     protected $rules = [
@@ -77,6 +78,8 @@ class WireItem extends Component implements FieldValidationMessage
 
                 'unit_name' => $this->unitIName,
 
+                'category' => $this->itemCategory,
+
                 'pieces_perUnit' => $this->piecesPerUnit,
 
                 'reorder_level' => $this->reorder_level,
@@ -126,6 +129,7 @@ class WireItem extends Component implements FieldValidationMessage
         $this->Index = $index;
         $this->itemName = $this->allitems[$this->Index]['item_name'];
         $this->unitIName = $this->allitems[$this->Index]['unit_name'];
+        $this->itemCategory = $this->allitems[$this->Index]['category'];
         $this->piecesPerUnit = $this->allitems[$this->Index]['pieces_perUnit'];
         $this->reorder_level = $this->allitems[$this->Index]['reorder_level'];
         $this->fixedUnit = $this->allitems[$this->Index]['fixed_unit'];
@@ -188,6 +192,11 @@ class WireItem extends Component implements FieldValidationMessage
             ->pluck('unit_name')
             ->first();
 
+        $this->itemCategory = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('category')
+            ->first();
+
         $this->piecesPerUnit = $this->allitems
             ->where('id', $this->updateID)
             ->pluck('pieces_perUnit')
@@ -221,6 +230,8 @@ class WireItem extends Component implements FieldValidationMessage
                 'item_name' => $this->itemName,
 
                 'unit_name' => $this->unitIName,
+
+                'category' => $this->itemCategory,
 
                 'pieces_perUnit' => $this->piecesPerUnit,
 

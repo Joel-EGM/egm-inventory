@@ -14,7 +14,7 @@
 
     <div class="w-full">
         <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
-        @if (Auth()->user()->branch_id != 1)
+        @if ($has_inventory != 1)
             <select name="branch_id" wire:model="branch_id"
                 class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
@@ -45,8 +45,9 @@
                 leading-tight focus:outline-none focus:shadow-outline">
             @if (is_null($branch_id))
                 <option value="None" class="text-center text-gray-400">--select supplier--</option>
-            @elseif($branch_id != 1)
+            @elseif($createTag != 1)
                 <option value="1">Head Office</option>
+                <option value="40">Head Office Satellite</option>
             @else
                 <option value="None" class="text-center text-gray-400">--select supplier--</option>
                 @foreach ($filteredSuppliers as $supplier)
@@ -86,17 +87,17 @@
         <x-jet-input-error for="item_id" class="mt-2" />
 
     </div>
+    @can('isAdmin')
+        <div class="w-full">
+            <x-jet-label for="inStocks" value="{{ __('Available') }}" />
 
-    <div class="w-full">
-        <x-jet-label for="inStocks" value="{{ __('Available') }}" />
-
-        <x-jet-input wire:model="inStocks" x-ref="inStocks" id="inStocks" type="text" maxlength="50"
-            class="block appearance-none w-full bg-gray-300 border border-gray-400
+            <x-jet-input wire:model="inStocks" x-ref="inStocks" id="inStocks" type="text" maxlength="50"
+                class="block appearance-none w-full bg-gray-300 border border-gray-400
         hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
         leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="In Pieces" autocomplete="inStocks" readonly />
-    </div>
-
+                placeholder="In Pieces" autocomplete="inStocks" readonly />
+        </div>
+    @endcan
     <div class="w-full px-3">
         <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
         <select name="unit_id" wire:model="unit_id"
@@ -211,8 +212,8 @@
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd"
-                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 
-                                                2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 
+                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2
+                                                2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
                                                 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                     clip-rule="evenodd" />
                                             </svg>
@@ -253,9 +254,8 @@
                                             class="text-gray-500 mt-1 ml-2 inline-flex">
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 
-                                            2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 
+                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2
+                                            2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
                                             1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                     clip-rule="evenodd" />
                                             </svg>

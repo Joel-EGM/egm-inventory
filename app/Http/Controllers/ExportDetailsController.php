@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ExportDetailsController extends Controller
 {
-    public function __invoke(OrderDetail $detail)
-    {
-    }
+    public function __invoke(OrderDetail $detail) {}
 
     public function generatePO()
     {
@@ -25,10 +23,10 @@ class ExportDetailsController extends Controller
         ];
         // dd($data);
 
-        $pdf = PDF::loadView('egmOrderpdf', $data);
-        $customPaper = array(0,0,450,500);
-        $pdf->set_paper($customPaper);
+        $pdf = PDF::loadView('orderpdf', $data);
+        // $customPaper = array(0,0,450,500);
+        // $pdf->set_paper($customPaper);
         // $pdf->set_paper('letter', 'landscape');
-        return $pdf->stream('order_report_'.today()->toDateString().'.pdf');
+        return $pdf->stream('order_report_' . today()->toDateString() . '.pdf');
     }
 }

@@ -1,0 +1,76 @@
+* {
+    font-family: Verdana, Arial, sans-serif;
+}
+
+table {
+    font-size: x-small;
+}
+
+footer {
+    position: fixed; 
+    bottom: -60px; 
+    left: 0px; 
+    right: 0px;
+    height: 50px; 
+    text-align: right;
+    font-size: 15px;
+    line-height: 35px;
+}
+
+.stocks h3 {
+    margin-left: 15px;
+    text-align: center;
+}
+
+.rightalign {
+    text-align: right
+}
+
+.leftalign {
+    text-align: left
+}
+
+.center {
+    text-align: center
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.total {
+    font-weight: bold;
+    color: red
+}
+
+.blue{
+    background-color: #96D4D4;
+}
+
+.green{
+    background-color: #3eec78
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+#tablelayout {
+    /* font-family: Arial, Helvetica, sans-serif; */
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#tablelayout td,
+#tablelayout th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#tablelayout th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: silver;
+    color: white;
+}

@@ -14,7 +14,10 @@ class Branch extends Model
         'branch_name',
         'branch_address',
         'branch_contactNo',
-        'status'
+        'status',
+        'has_inventory',
+        'can_createall',
+        'acc_number',
     ];
 
     public function orders()

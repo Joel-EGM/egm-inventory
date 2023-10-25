@@ -8,44 +8,48 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mt-4 grid grid-cols-1 bg-white">
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
-                <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
-                    <div class="grid grid-cols-3 gap-4
+                @can('isAdmin')
+
+                    <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
+                        <div class="grid grid-cols-3 gap-4
                     content-start">
-                        <input type="month" wire:model="order_date" min="2023-01"
-                            class="block appearance-none bg-white border border-gray-400
+                            <input type="month" wire:model="order_date" min="2023-01"
+                                class="block appearance-none bg-white border border-gray-400
                             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                             leading-tight focus:outline-none focus:shadow-outline">
 
-                        <a href="{{ route('generateMonthly', ['mos' => $order_date]) }}" target="_blank"
-                            class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
+                            <a href="{{ route('generateMonthly', ['mos' => $order_date]) }}" target="_blank"
+                                class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
                             border-transparent rounded-md font-semibold text-sm text-white 
                             uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 
                             focus:outline-none focus:border-gray-900 focus:ring 
                             focus:ring-gray-300 disabled:opacity-25 transition">GENERATE
-                            MONTHLY</a>
-                        <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
+                                MONTHLY</a>
+                            <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
 
-                            <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="7xl">
+                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
 
-                                @if ($formTitle === 'View Details')
-                                    @include('partials.order-view')
-                                @endif
-                            </x-modals.modal-form>
+                                    @if ($formTitle === 'View Details')
+                                        @include('partials.order-view')
+                                    @endif
+                                </x-modals.modal-form>
 
-                            <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
+                                <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
+                            </div>
                         </div>
 
-                    </div>
-                    <div class="flex flex-row mb-0 sm:mb-0">
+                        <div class="flex flex-row mb-0 sm:mb-0">
 
-                        <div class="relative">
-                            <select wire:model="paginatePage"
-                                class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                <option value=5>5</option>
-                                <option value=10>10</option>
-                                <option value=20>20</option>
-                            </select>
-                        </div>
+                            <div class="relative">
+                                <select wire:model="paginatePage"
+                                    class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
+                                    <option value=5>5</option>
+                                    <option value=10>10</option>
+                                    <option value=20>20</option>
+                                </select>
+                            </div>
+                        @endcan
+
                         @if (Auth()->user()->branch_id === 1)
                             <div class="relative">
                                 <select wire:model="sortList"
@@ -88,6 +92,10 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            OR No.
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Order Date
                                         </th>
                                         <th
@@ -107,7 +115,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @if (count($orderHistory) === 0)
                                         <tr>
-                                            <td colspan="4" class="px-3 py-3 whitespace-no-wrap">
+                                            <td colspan="5" class="px-3 py-3 whitespace-no-wrap">
                                                 <div class="flex items-center place-content-center">
                                                     <div class="text-sm leading-5 font-medium text-gray-500 font-bold">
                                                         NO DATA AVAILABLE</div>
@@ -121,6 +129,8 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 {{ $order->branches->branch_name }}
                                             </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{ sprintf('%08d', $order->or_number) }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
                                                 @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')

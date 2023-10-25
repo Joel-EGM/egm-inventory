@@ -2,33 +2,7 @@
 <html>
 
 <head>
-    <style type="text/css">
-        * {
-            font-family: Verdana, Arial, sans-serif;
-        }
-
-        a {
-            color: #fff;
-        }
-
-        /* table {
-            margin: 15px;
-            font-size: x-small;
-        } */
-
-        .stocks table {
-            text-align: left;
-            font-size: x-small;
-        }
-
-        .stocks th {
-            text-align: left;
-        }
-
-        .stocks h3 {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ public_path('css/tablelayout.css') }}" />
 </head>
 
 <body>
@@ -37,7 +11,7 @@
     </div>
     <div class="stocks">
         <h3>USER ACCOUNT</h3>
-        <table width="100%" border="1px" cellpadding="1" cellspacing="0">
+        <table id="tablelayout">
             <thead>
                 <tr>
                     <th>NAME</th>

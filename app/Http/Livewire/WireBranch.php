@@ -26,6 +26,9 @@ class WireBranch extends Component implements FieldValidationMessage
     public $search = '';
     public $updateID;
     public $deleteID;
+    public $acc_number;
+    public $has_inventory = false;
+    public $can_createall = false;
 
     protected function rules()
     {
@@ -65,6 +68,7 @@ class WireBranch extends Component implements FieldValidationMessage
     public function mount()
     {
         $this->allbranches = Branch::all();
+
     }
 
     public function updated($propertyName)
@@ -98,7 +102,7 @@ class WireBranch extends Component implements FieldValidationMessage
 
         if($this->sortList === 'all') {
             return view('livewire.branch', [
-                'activebranches' => Branch::where('branch_name', 'like', $this->search.'%')
+                'activebranches' => Branch::where('branch_name', 'like', $this->search . '%')
                 ->paginate($page),]);
         } else {
             return view('livewire.branch', [
@@ -132,6 +136,12 @@ class WireBranch extends Component implements FieldValidationMessage
 
                 'branch_contactNo' => $this->branchContactNo,
 
+                'acc_number' => $this->acc_number,
+
+                'has_inventory' => $this->has_inventory === false ? 0 : 1,
+
+                'can_createall' => $this->can_createall === false ? 0 : 1,
+
             ]);
 
             $this->allbranches->push($branch);
@@ -158,6 +168,9 @@ class WireBranch extends Component implements FieldValidationMessage
             'branch_name',
             'branch_address',
             'branchContactNo',
+            'acc_number',
+            'has_inventory',
+            'can_createall',
         ]);
     }
 
@@ -181,6 +194,9 @@ class WireBranch extends Component implements FieldValidationMessage
         $this->branch_address = $this->allbranches[$this->Index]['branch_address'];
 
         $this->branchContactNo = $this->allbranches[$this->Index]['branch_contactNo'];
+
+        $this->acc_number = $this->allbranches[$this->Index]['acc_number'];
+
 
 
         if (isset($this->allbranches[$this->Index]['dirty_fields'])) {
@@ -242,6 +258,11 @@ class WireBranch extends Component implements FieldValidationMessage
             ->pluck('branch_contactNo')
             ->first();
 
+        $this->acc_number = $this->allbranches
+            ->where('id', $this->updateID)
+            ->pluck('acc_number')
+            ->first();
+
         if (isset($this->allbranches[$this->updateID]['dirty_fields'])) {
             $this->dirtyProperties = $this->allbranches[$this->updateID]['dirty_fields'];
         }
@@ -262,6 +283,8 @@ class WireBranch extends Component implements FieldValidationMessage
                 'branch_address' => $this->branch_address,
 
                 'branch_contactNo' => $this->branchContactNo,
+
+                'acc_number' => $this->acc_number,
 
             ]);
 
