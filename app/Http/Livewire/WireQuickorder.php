@@ -33,7 +33,7 @@ class WireQuickorder extends Component
 
     public function mount()
     {
-        $this->orders = Order::all();
+        $this->orders = Order::select('id', 'branch_id', 'order_status')->get();
         $this->lowCollection = collect(DB::select("CALL getLowOnStocks"));
         $this->lowStocks = $this->lowCollection->map(function ($low) {
             return[

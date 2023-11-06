@@ -22,11 +22,9 @@ class WireHistory extends Component
 
     public function mount()
     {
-        $this->branches = Branch::all();
+        $this->branches = Branch::select('id', 'branch_name')->get();
 
-        $this->order_details = OrderDetail::all();
-
-        $this->orders = Order::all();
+        $this->orders = Order::select('id', 'branch_id', 'order_date', 'order_status', 'or_number', 'updated_at')->get();
 
         $this->order_date = Carbon::now()->format('Y-m');
 
@@ -73,7 +71,7 @@ class WireHistory extends Component
                 return view('livewire.history', [
                     'orderHistory' =>
                     Order::whereHas('branches', function ($query) {
-                        $query->where('branch_name', 'like', '%'.$this->search.'%');
+                        $query->where('branch_name', 'like', '%' . $this->search . '%');
                     })->where('order_status', '=', 'received')
                     ->orderBy('order_date', 'DESC')
                     ->orderBy('updated_at', 'DESC')

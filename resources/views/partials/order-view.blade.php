@@ -73,8 +73,8 @@
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
                             @if ($formTitle === 'Order Details')
                                 <td class="px-6 py-4 whitespace-no-wrap">
-                                    @if ($detail->order_status === 'pending')
-                                        <input type="checkbox" wire:model.defer="selectedRecord"
+                                    @if ($detail->order_status === 'pending' || $detail->order_status === 'completed')
+                                        <input type="checkbox" wire:model="selectedRecord"
                                             value="{{ $detail->id }}" />
                                     @else
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

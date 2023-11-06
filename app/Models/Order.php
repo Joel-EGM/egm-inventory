@@ -21,6 +21,7 @@ class Order extends Model
         'recieved_by',
         'or_number',
         'or_date',
+        'order_completed'
     ];
 
 

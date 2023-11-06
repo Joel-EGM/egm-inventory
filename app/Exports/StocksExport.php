@@ -13,7 +13,7 @@ class StocksExport implements FromView, ShouldAutoSize
 {
     public function view(): View
     {
-        $getSummary = DB::select("CALL getData(1)");
+        $getSummary = DB::select("CALL getData(1,1)");
         return view('partials.stocks', [
             'stocks' => $getSummary
         ]);

@@ -17,6 +17,7 @@ class ExportDetailsController extends Controller
         $getID = last(request()->segments());
 
         $findData = DB::select("CALL getOrderDetails($getID)");
+        
 
         $data = [
             'orderDetails' => $findData

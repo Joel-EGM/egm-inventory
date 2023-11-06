@@ -46,8 +46,10 @@
             @if (is_null($branch_id))
                 <option value="None" class="text-center text-gray-400">--select supplier--</option>
             @elseif($createTag != 1)
-                <option value="1">Head Office</option>
-                <option value="40">Head Office Satellite</option>
+                <option value="None" class="text-center text-gray-400">--select supplier--</option>
+                @foreach ($filteredHasInventory as $HOsupplier)
+                    <option value="{{ $HOsupplier['id'] }}">{{ $HOsupplier['branch_name'] }}</option>
+                @endforeach
             @else
                 <option value="None" class="text-center text-gray-400">--select supplier--</option>
                 @foreach ($filteredSuppliers as $supplier)
@@ -72,13 +74,11 @@
             @if ($branch_id != 1)
                 @foreach ($itemList as $item)
                     <option value="{{ $item['id'] }}">{{ $item['item_name'] }}
-                        {{-- <option value="{{ $item->id }}">{{ $item->items->item_name }} --}}
                     </option>
                 @endforeach
             @else
                 @foreach ($itemList as $item)
                     <option value="{{ $item['item_id'] }}">{{ $item['items']['item_name'] }}
-                        {{-- <option value="{{ $item->id }}" class="text-center">{{ $item->items->item_name }} --}}
                     </option>
                 @endforeach
             @endif

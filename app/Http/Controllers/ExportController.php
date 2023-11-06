@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\StocksExport;
+use App\Exports\MonthlyReport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Stock;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -29,12 +30,17 @@ class ExportController extends Controller
             $pdf = PDF::loadView('pdfFormat', $data);
         }
 
-        return $pdf->stream('stocksreport_'.today()->toDateString().'_'.Auth()->user()->name.'.pdf');
+        return $pdf->stream('stocksreport_' . today()->toDateString() . '_' . Auth()->user()->name . '.pdf');
     }
 
     public function export()
     {
-        return Excel::download(new StocksExport(), 'stocksreport_'.today()->toDateString().'.xlsx');
+        return Excel::download(new StocksExport(), 'stocksreport_' . today()->toDateString() . '.xlsx');
+    }
+
+    public function monthlyreport($mos)
+    {
+        return Excel::download(new MonthlyReport($mos), 'monthlyreport_' . today()->toDateString() . '.xlsx');
     }
 
     public function generatePO() {}

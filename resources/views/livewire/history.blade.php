@@ -11,7 +11,7 @@
                 @can('isAdmin')
 
                     <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
-                        <div class="grid grid-cols-3 gap-4
+                        <div class="grid grid-cols-4 gap-1
                     content-start">
                             <input type="month" wire:model="order_date" min="2023-01"
                                 class="block appearance-none bg-white border border-gray-400
@@ -25,6 +25,13 @@
                             focus:outline-none focus:border-gray-900 focus:ring 
                             focus:ring-gray-300 disabled:opacity-25 transition">GENERATE
                                 MONTHLY</a>
+                            <a href="{{ route('generate-excel', ['mos' => $order_date]) }}" target="_blank"
+                                class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
+                            border-transparent rounded-md font-semibold text-sm text-white 
+                            uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 
+                            focus:outline-none focus:border-gray-900 focus:ring 
+                            focus:ring-gray-300 disabled:opacity-25 transition">EXPORT
+                                EXCEL</a>
                             <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
 
                                 <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
@@ -42,7 +49,7 @@
 
                             <div class="relative">
                                 <select wire:model="paginatePage"
-                                    class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
+                                    class="appearance-none h-full rounded-l border block appearance-none w-fullj bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
                                     <option value=5>5</option>
                                     <option value=10>10</option>
                                     <option value=20>20</option>

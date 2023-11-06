@@ -33,8 +33,8 @@ class WireDashboard extends Component
 
     public function mount()
     {
-        $this->orders = Order::all();
-        $this->order_details = OrderDetail::all();
+        $this->orders = Order::select('id', 'branch_id', 'order_status')->get();
+        $this->order_details = OrderDetail::select('order_id', 'supplier_id', 'item_id')->get();
 
         $this->branches = Branch::select('status')->where('status', 1)->count();
 
@@ -42,7 +42,7 @@ class WireDashboard extends Component
 
         $this->branch2HO = collect(DB::select("CALL getPendingPO(2)"));
 
-        $this->stocks = Stock::all();
+        // $this->stocks = Stock::all();
 
         $this->lowCollection = collect(DB::select("CALL getLowOnStocks"));
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\ExportDetailsController;
 use App\Http\Controllers\ExportUserController;
 use App\Http\Controllers\ChartController;
 use App\Models\OrderDetail;
+use App\Exports\MonthlyReport;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,7 @@ Route::middleware([
 
     //EXPORT TO EXCEL
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
+    Route::get('history/export/{mos}', [ExportController::class, 'monthlyreport'])->name('generate-excel');
     Route::get('orders/generate-PO/{detail}', [ExportDetailsController::class, 'generatePO'])->name('generatePO');
 
 

@@ -36,7 +36,21 @@
                                 <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
                             </div>
                         </div>
+                        <div
+                            class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
+                            <div class="flex flex-row mt-0 sm:mb-0">
 
+                                <div class="relative">
+
+                                    <a href="javascript:" wire:click="batchcomplete"
+                                        class="inline-flex items-center px-4 py-2 border border-gray-300 
+                                        rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white 
+                                        hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        Batch Order Complete</a>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
 
@@ -77,11 +91,19 @@
                 </div>
 
                 <div class="flex flex-wrap">
-                    <div class="w-full px-2 py-1 xl:w">
+                    <div class="w-full px-3 py-1 xl:w">
+                        <div>
+                            <input type="checkbox" wire:model="selectALLOrders" />
+                            Select All
+                        </div>
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200 table-fixed">
                                 <thead>
                                     <tr>
+                                        <th
+                                            class="w-1/8 px-6 py-3 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            &nbsp;
+                                        </th>
                                         <th
                                             class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Branch Name
@@ -113,45 +135,57 @@
                                         </tr>
                                     @endif
                                     @foreach ($allorders as $order)
-                                        <tr
-                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')
-                                                    <a href="javascript:" title="Details"
-                                                        wire:click="viewOrderDetails({{ $order->id }})"
-                                                        class="no-underline hover:underline font-mono text-blue-500">{{ $order->order_status }}</a>
-                                                @endif
-                                            </td>
+                                        @if ($order->order_completed === 1)
+                                            <tr
+                                                class="bg-green-500 border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                <td class="px-1 py-1 whitespace-no-wrap">&nbsp;
+                                                </td>
+                                            @else
+                                            <tr
+                                                class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                <td class="px-1 py-1 whitespace-no-wrap"><input type="checkbox"
+                                                        wire:model="selectedOrders" value="{{ $order->id }}" />
+                                                </td>
+                                        @endif
 
 
-                                            <td
-                                                class="px-2 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+
+                                        <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
+                                        <td class="px-6 py-4 whitespace-no-wrap">
+                                            @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')
+                                                <a href="javascript:" title="Details"
+                                                    wire:click="viewOrderDetails({{ $order->id }})"
+                                                    class="no-underline hover:underline font-mono text-blue-500">{{ $order->order_status }}</a>
+                                            @endif
+                                        </td>
 
 
-                                                <div class="flex items-center">
-                                                    @if ($order->branch_id != 1)
-                                                        <a href="{{ route('generatePO', $order->id) }}" title="SO"
+                                        <td
+                                            class="px-2 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+
+
+                                            <div class="flex items-center">
+                                                @if ($order->branch_id != 1)
+                                                    <a href="{{ route('generatePO', $order->id) }}" title="SO"
+                                                        class="text-gray-500 mt-1 ml-2" target="_blank">
+                                                    @else
+                                                        <a href="{{ route('generatePO', $order->id) }}" title="PO"
                                                             class="text-gray-500 mt-1 ml-2" target="_blank">
-                                                        @else
-                                                            <a href="{{ route('generatePO', $order->id) }}"
-                                                                title="PO" class="text-gray-500 mt-1 ml-2"
-                                                                target="_blank">
-                                                    @endif
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                        fill="red" class="h-4 w-4">
-                                                        <path fill-rule="evenodd"
-                                                            d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0
+                                                @endif
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                    fill="red" class="h-4 w-4">
+                                                    <path fill-rule="evenodd" d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0
                                                                  001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
                                                                   0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0
                                                                    011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0
                                                                     111.114-1.004l.943 1.048V8.75z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                    </a>
-                                                    &nbsp;
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                                </a>
+                                                &nbsp;
+                                                @if ($order->order_completed === 0)
                                                     @if ($order->order_status != 'pending' || $order->order_status === 'incomplete')
                                                         <a href="javascript:" title="Order already Received"
                                                             class="text-gray-500 mt-1 ml-2">
@@ -193,9 +227,10 @@
                                                         </svg>
                                                     </a>
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                    @endif
+                                    </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>

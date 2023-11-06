@@ -17,6 +17,7 @@ class Stock extends Model
         'item_id',
         'quantity',
         'price',
+        'qty_out'
     ];
 
     public function items()

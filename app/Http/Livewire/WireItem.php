@@ -34,7 +34,7 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->allitems = Item::all();
+        $this->allitems = Item::select('id', 'item_name', 'unit_name', 'category', 'pieces_perUnit', 'reorder_level')->get();
     }
 
     public function render()
@@ -43,7 +43,7 @@ class WireItem extends Component implements FieldValidationMessage
 
         return view('livewire.item', [
             'listItems' =>
-            Item::where('item_name', 'like', $this->search.'%')
+            Item::where('item_name', 'like', $this->search . '%')
                 ->paginate($page),
         ]);
     }
