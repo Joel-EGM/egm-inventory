@@ -41,12 +41,19 @@
                             <div class="flex flex-row mt-0 sm:mb-0">
 
                                 <div class="relative">
-
-                                    <a href="javascript:" wire:click="batchcomplete"
-                                        class="inline-flex items-center px-4 py-2 border border-gray-300 
+                                    @if (Auth()->user()->role === 'admin')
+                                        <a href="javascript:" wire:click="batchcomplete"
+                                            class="inline-flex items-center px-4 py-2 border border-gray-300 
                                         rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white 
                                         hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                        Batch Order Complete</a>
+                                            Batch Order Complete</a>
+                                    @else
+                                        <a href="javascript:" wire:click="batchreceive"
+                                            class="inline-flex items-center px-4 py-2 border border-gray-300 
+                                rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white 
+                                hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Batch Order Receive</a>
+                                    @endif
                                 </div>
 
                             </div>
@@ -92,21 +99,23 @@
 
                 <div class="flex flex-wrap">
                     <div class="w-full px-3 py-1 xl:w">
-                        <div>
-                            <input type="checkbox" wire:model="selectALLOrders" />
-                            Select All
-                        </div>
+
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table class="min-w-full divide-y divide-gray-200 table-fixed">
                                 <thead>
                                     <tr>
                                         <th
-                                            class="w-1/8 px-6 py-3 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            &nbsp;
+                                            class="w-1/8 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            <input type="checkbox" wire:model="selectALLOrders" />
+
                                         </th>
                                         <th
-                                            class="w-1/3 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            class="w-1/4 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Branch Name
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            OR Number
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -114,7 +123,7 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
+                                            Order List
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -137,14 +146,23 @@
                                     @foreach ($allorders as $order)
                                         @if ($order->order_completed === 1)
                                             <tr
-                                                class="bg-green-500 border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                <td class="px-1 py-1 whitespace-no-wrap">&nbsp;
+                                                class="bg-green-500 border-b transition duration-300 ease-in-out hover:bg-green-300">
+                                                <td class="px-6 py-1 whitespace-no-wrap">
+                                                    @if (Auth()->user()->role === 'user' || $order->or_number === 0)
+                                                        <input type="checkbox" wire:model="selectedOrders"
+                                                            value="{{ $order->id }}" />
+                                                    @endif
                                                 </td>
                                             @else
                                             <tr
                                                 class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                <td class="px-1 py-1 whitespace-no-wrap"><input type="checkbox"
-                                                        wire:model="selectedOrders" value="{{ $order->id }}" />
+                                                <td class="px-6 py-1 whitespace-no-wrap">
+
+                                                    @if (Auth()->user()->role === 'admin' || $order->or_number != 0)
+                                                        <input type="checkbox" wire:model="selectedOrders"
+                                                            value="{{ $order->id }}" />
+                                                    @endif
+
                                                 </td>
                                         @endif
 
@@ -152,13 +170,21 @@
 
                                         <td class="px-6 py-4 whitespace-no-wrap">{{ $order->branches->branch_name }}
                                         </td>
+                                        @if ($order->or_number === 0)
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                &nbsp;</td>
+                                            </td>
+                                        @else
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {{ sprintf('%08d', $order->or_number) }}</td>
+                                            </td>
+                                        @endif
                                         <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
                                         <td class="px-6 py-4 whitespace-no-wrap">
-                                            @if ($order->order_status === 'pending' || $order->order_status === 'incomplete')
-                                                <a href="javascript:" title="Details"
-                                                    wire:click="viewOrderDetails({{ $order->id }})"
-                                                    class="no-underline hover:underline font-mono text-blue-500">{{ $order->order_status }}</a>
-                                            @endif
+                                            <a href="javascript:" title="Details"
+                                                wire:click="viewOrderDetails({{ $order->id }})"
+                                                class="no-underline hover:underline font-mono text-blue-500">View
+                                                Order</a>
                                         </td>
 
 
@@ -177,11 +203,10 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                     fill="red" class="h-4 w-4">
                                                     <path fill-rule="evenodd" d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0
-                                                                 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
-                                                                  0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0
-                                                                   011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0
-                                                                    111.114-1.004l.943 1.048V8.75z"
-                                                        clip-rule="evenodd" />
+                                                         001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0
+                                                          0011.378 2H4.5zm4.75 6.75a.75.75 0 011.5 0v2.546l.943-1.048a.75.75 0
+                                                           011.114 1.004l-2.25 2.5a.75.75 0 01-1.114 0l-2.25-2.5a.75.75 0
+                                                            111.114-1.004l.943 1.048V8.75z" clip-rule="evenodd" />
                                                 </svg>
                                                 </a>
                                                 &nbsp;

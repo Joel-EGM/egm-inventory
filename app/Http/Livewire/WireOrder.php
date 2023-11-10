@@ -41,7 +41,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $selectALLOrders = false;
     public $selectedOrders = [];
     public $batchcomplete;
-    public $filteredHasInventory;
+    public $filteredHOsupplier;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -64,13 +64,11 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->items = Item::select('id', 'item_name', 'unit_name', 'pieces_perUnit', 'fixed_unit')->get();
 
-        $this->suppliers = Supplier::select('id', 'suppliers_name')->get();
+        $this->suppliers = Supplier::select('id', 'suppliers_name', 'is_ho', 'branch_id')->get();
 
-        $this->branches = Branch::select('id', 'branch_name', 'status', 'has_inventory', 'can_createall')->where('status', '=', '1')->get();
+        $this->branches = Branch::select('id', 'branch_name', 'status', 'has_inventory', 'can_createall', 'area_number')->where('status', '=', '1')->get();
 
-        $this->filteredHasInventory = $this->branches->map->only(['id','branch_name','has_inventory'])->where('has_inventory', '=', '1');
-
-        // dd($this->filteredHasInventory);
+        $this->filteredHOsupplier = $this->suppliers->map->only(['id','suppliers_name','is_ho','branch_id'])->where('is_ho', '=', '1');
 
         $this->order_details = OrderDetail::all();
 
@@ -115,7 +113,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
         if($this->has_inventory != 1) {
 
-            $this->updatedSupplierId();
+            // $this->updatedSupplierId();
 
             $allorders = Order::whereHas('branches', function ($query) {
                 $query->where('order_date', 'like', $this->search . '%');
@@ -280,8 +278,8 @@ class WireOrder extends Component implements FieldValidationMessage
 
                 if($this->formTitle === 'Edit Order') {
                     $id = $value['id'];
-                    $convert = (string)$value['item_id'];
-                    $quantityConvert = (string)$value['quantity'];
+                    $convert = (string) $value['item_id'];
+                    $quantityConvert = (string) $value['quantity'];
                     if($convert === $this->item_id) {
                         $this->orderArrays[$key]['quantity'] += $this->quantity;
                         $itemExists = true;
@@ -436,7 +434,6 @@ class WireOrder extends Component implements FieldValidationMessage
             $this->formTitle = 'Edit Order';
             $this->isFormOpen = true;
         }
-        // $this->updatedBranchId();
 
     }
 
@@ -492,223 +489,228 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
-    public function saveMethod()
-    {
+    // public function saveMethod()
+    // {
 
-        $this->checkStatus = $this->details
-            ->pluck('order_status')
-            ->toArray();
+    //     $this->checkStatus = $this->details
+    //         ->pluck('order_status')
+    //         ->toArray();
 
-        if(in_array("pending", $this->checkStatus)) {
-            $validatedData = $this->validate([
-                'selectedRecord' => 'required',
-               ]);
-        }
+    //     if(in_array("pending", $this->checkStatus)) {
+    //         $validatedData = $this->validate([
+    //             'selectedRecord' => 'required',
+    //            ]);
+    //     }
 
-        $hasInventory = $this->branches->where('id', $this->getBranchID)->pluck('has_inventory')->first();
+    //     $hasInventory = $this->branches->where('id', $this->getBranchID)->pluck('has_inventory')->first();
 
-        if ($hasInventory != 1) {
-            $this->substractBranchOrder();
-        } else {
-            $this->saveCheckedItems();
-        }
+    //     if ($hasInventory != 1) {
+    //         $this->substractBranchOrder();
+    //     } else {
+    //         $this->saveCheckedItems();
+    //     }
 
-        // $converted = $this->getOrderID->first();
+    //     $converted = $this->getOrderID->first();
 
-        // $OR = $this->orders->where('id', $converted)
-        //     ->pluck('or_number')
-        //     ->first();
+    //     $OR = $this->orders->where('id', $converted)
+    //         ->pluck('or_number')
+    //         ->first();
 
-        // if($OR === 0) {
-        //     Order::where('id', $converted)->update([
-        //         'or_number' => $converted,
-        //         'or_date' => Carbon::now()->format('Y-m-d')
-        //     ]);
-        // }
-        $this->reset(['selectedRecord']);
-    }
+    //     if($OR === 0) {
+    //         Order::where('id', $converted)->update([
+    //             'or_number' => $converted,
+    //             'or_date' => Carbon::now()->format('Y-m-d')
+    //         ]);
+    //     }
+    //     $this->reset(['selectedRecord']);
+    // }
 
-    private function saveCheckedItems()
-    {
-        if(in_array("pending", $this->checkStatus)) {
-            $validatedData = $this->validate([
-                'selectedRecord' => 'required',
-               ]);
-        }
+    // private function saveCheckedItems()
+    // {
+    //     if(in_array("pending", $this->checkStatus)) {
+    //         $validatedData = $this->validate([
+    //             'selectedRecord' => 'required',
+    //            ]);
+    //     }
 
-        $getid = OrderDetail::whereIn('id', $this->selectedRecord)
-            ->get()
-            ->toArray();
+    //     $getid = OrderDetail::whereIn('id', $this->selectedRecord)
+    //         ->get()
+    //         ->toArray();
 
-        $getDataArray = collect($getid);
+    //     $getDataArray = collect($getid);
 
-        $getSelectedItem = $getDataArray
-            ->pluck('item_id')
-            ->first();
+    //     $getSelectedItem = $getDataArray
+    //         ->pluck('item_id')
+    //         ->first();
 
-        $getQuantity = $this->items
-            ->where('id', $getSelectedItem)
-            ->pluck('pieces_perUnit')
-            ->first();
+    //     $getQuantity = $this->items
+    //         ->where('id', $getSelectedItem)
+    //         ->pluck('pieces_perUnit')
+    //         ->first();
 
-        $checkFixedUnit = $this->items
-            ->where('id', $getSelectedItem)
-            ->pluck('fixed_unit')
-            ->first();
+    //     $checkFixedUnit = $this->items
+    //         ->where('id', $getSelectedItem)
+    //         ->pluck('fixed_unit')
+    //         ->first();
 
-        if($this->getBranchID != 1) {
-            $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
+    //     if($this->getBranchID != 1) {
+    //         $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
 
-            foreach ($orderItems as $orderItem) {
+    //         foreach ($orderItems as $orderItem) {
 
-                $orderType = $orderItem->order_type;
+    //             $orderType = $orderItem->order_type;
 
-                $itemPieces = Item::where('id', $orderItem->item_id)
-                    ->pluck('pieces_perUnit')
-                    ->first();
+    //             $itemPieces = Item::where('id', $orderItem->item_id)
+    //                 ->pluck('pieces_perUnit')
+    //                 ->first();
 
-                (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
+    //             (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
 
-                $stockItems = Stock::where('item_id', $orderItem->item_id)
-                    ->where('quantity', '>', 0)
-                    ->orderBy('created_at')
-                    ->get();
+    //             $stockItems = Stock::where('item_id', $orderItem->item_id)
+    //                 ->where('quantity', '>', 0)
+    //                 ->orderBy('created_at')
+    //                 ->get();
 
-                foreach ($stockItems as $stockItem) {
-                    if ($itemQty > (int)$stockItem->quantity) {
+    //             foreach ($stockItems as $stockItem) {
+    //                 if ($itemQty > (int)$stockItem->quantity) {
 
-                        Stock::where('id', (int)$stockItem->id)->update([
-                             'quantity' => 0
-                         ]);
+    //                     Stock::where('id', (int)$stockItem->id)->update([
+    //                          'quantity' => 0
+    //                      ]);
 
-                        $itemQty -= $stockItem->quantity;
+    //                     $itemQty -= $stockItem->quantity;
 
-                    } else {
+    //                 } else {
 
-                        Stock::where('id', $stockItem->id)->decrement('quantity', $itemQty);
-                        break;
-                    }
-                }
-            }
+    //                     Stock::where('id', $stockItem->id)->decrement('quantity', $itemQty);
+    //                     break;
+    //                 }
+    //             }
+    //         }
 
-            foreach ($getid as $detail) {
-                Stock::create([
-                    'branch_id' => $this->getBranchID,
+    //         foreach ($getid as $detail) {
+    //             Stock::create([
+    //                 'branch_id' => $this->getBranchID,
 
-                    'order_id' => $detail['order_id'],
+    //                 'order_id' => $detail['order_id'],
 
-                    'item_id' => $detail['item_id'],
+    //                 'item_id' => $detail['item_id'],
 
-                    'quantity' => $orderType === 'Unit' ? $detail['quantity'] * $getQuantity : $detail['quantity'],
+    //                 'category_id' => $detail['item_id'],
 
-                    'price' => $detail['price'],
-                ]);
-            }
+    //                 'quantity' => $orderType === 'Unit' ? $detail['quantity'] * $getQuantity : $detail['quantity'],
 
-        } else {
+    //                 'price' => $detail['price'],
+    //             ]);
+    //         }
 
-            foreach ($getid as $detail) {
-                Stock::create([
-                    'branch_id' => $this->getBranchID,
+    //     } else {
 
-                    'order_id' => $detail['order_id'],
+    //         foreach ($getid as $detail) {
+    //             Stock::create([
+    //                 'branch_id' => $this->getBranchID,
 
-                    'item_id' => $detail['item_id'],
+    //                 'order_id' => $detail['order_id'],
 
-                    'quantity' => $checkFixedUnit === 1 ? $detail['quantity'] * $getQuantity : $detail['quantity'],
+    //                 'item_id' => $detail['item_id'],
 
-                    'price' => $detail['price'],
-                ]);
-            }
-        }
+    //                 'category_id' => $detail['item_id'],
 
+    //                 'quantity' => $checkFixedUnit === 1 ? $detail['quantity'] * $getQuantity : $detail['quantity'],
 
-        OrderDetail::whereIn('id', $this->selectedRecord)->update([
-            'order_status' => 'received',
-            'is_received' => 1
-        ]);
-
-        $statusUpdate = Order::where('id', $this->getOrderID);
-
-        if ($this->completedOrder === true) {
-            $statusUpdate->update([
-                             'order_status' => 'received',
-                         ]);
-        } else {
-            $statusUpdate->update([
-                'order_status' => 'incomplete',
-            ]);
-        }
-
-        $this->modalToggle();
-        $this->mount();
-        $notificationMessage = 'Items has been received.';
-
-        $this->dispatchBrowserEvent('show-message', [
-            'notificationType' => 'success',
-            'messagePrimary'   => $notificationMessage
-        ]);
-    }
-
-    private function substractBranchOrder()
-    {
+    //                 'price' => $detail['price'],
+    //             ]);
+    //         }
+    //     }
 
 
-        if(in_array("pending", $this->checkStatus)) {
-            $validatedData = $this->validate([
-                'selectedRecord' => 'required',
-               ]);
-        }
+    //     OrderDetail::whereIn('id', $this->selectedRecord)->update([
+    //         'order_status' => 'received',
+    //         'is_received' => 1
+    //     ]);
+
+    //     $statusUpdate = Order::where('id', $this->getOrderID);
+
+    //     if ($this->completedOrder === true) {
+    //         $statusUpdate->update([
+    //                          'order_status' => 'received',
+    //                          'received_by' => Auth()->user()->branch_id
+    //                      ]);
+    //     } else {
+    //         $statusUpdate->update([
+    //             'order_status' => 'incomplete',
+    //         ]);
+    //     }
+
+    //     $this->modalToggle();
+    //     $this->mount();
+    //     $notificationMessage = 'Items has been received.';
+
+    //     $this->dispatchBrowserEvent('show-message', [
+    //         'notificationType' => 'success',
+    //         'messagePrimary'   => $notificationMessage
+    //     ]);
+    // }
+
+    // private function substractBranchOrder()
+    // {
 
 
-        $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
-        foreach ($orderItems as $orderItem) {
-            $orderType = $orderItem->order_type;
+    //     if(in_array("pending", $this->checkStatus)) {
+    //         $validatedData = $this->validate([
+    //             'selectedRecord' => 'required',
+    //            ]);
+    //     }
 
-            $itemPieces = Item::where('id', $orderItem->item_id)
-                ->pluck('pieces_perUnit')
-                ->first();
 
-            (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
+    //     $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
+    //     foreach ($orderItems as $orderItem) {
+    //         $orderType = $orderItem->order_type;
 
-            $stockItems = Stock::where('item_id', $orderItem->item_id)
-                ->where('quantity', '>', 0)
-                ->where('branch_id', $orderItem->supplier_id)
-                ->orderBy('created_at')
-                ->get();
+    //         $itemPieces = Item::where('id', $orderItem->item_id)
+    //             ->pluck('pieces_perUnit')
+    //             ->first();
 
-            foreach ($stockItems as $stockItem) {
+    //         (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
 
-                Stock::where('id', $stockItem->id)
-                    ->where('branch_id', $orderItem->supplier_id)
-                    ->update([
-                        'qty_out' => $stockItem->qty_out - $itemQty
-                    ]);
+    //         $stockItems = Stock::where('item_id', $orderItem->item_id)
+    //             ->where('quantity', '>', 0)
+    //             ->where('branch_id', $orderItem->supplier_id)
+    //             ->orderBy('created_at')
+    //             ->get();
 
-            }
-        }
+    //         foreach ($stockItems as $stockItem) {
 
-        OrderDetail::whereIn('id', $this->selectedRecord)->update([
-            'order_status' => 'received',
-            'is_received' => 1
-        ]);
+    //             Stock::where('id', $stockItem->id)
+    //                 ->where('branch_id', $orderItem->supplier_id)
+    //                 ->update([
+    //                     'qty_out' => $stockItem->qty_out - $itemQty
+    //                 ]);
 
-        $statusUpdate = Order::where('id', $this->getOrderID);
+    //         }
+    //     }
 
-        if ($this->completedOrder === true) {
-            $statusUpdate->update([
-                             'order_status' => 'received',
-                         ]);
-        } else {
-            $statusUpdate->update([
-                'order_status' => 'incomplete',
-            ]);
-        }
+    //     OrderDetail::whereIn('id', $this->selectedRecord)->update([
+    //         'order_status' => 'received',
+    //         'is_received' => 1
+    //     ]);
 
-        $this->modalToggle();
-        $this->reset(['selectedRecord']);
-        $this->mount();
-    }
+    //     $statusUpdate = Order::where('id', $this->getOrderID);
+
+    //     if ($this->completedOrder === true) {
+    //         $statusUpdate->update([
+    //                          'order_status' => 'received',
+    //                      ]);
+    //     } else {
+    //         $statusUpdate->update([
+    //             'order_status' => 'incomplete',
+    //         ]);
+    //     }
+
+    //     $this->modalToggle();
+    //     $this->reset(['selectedRecord']);
+    //     $this->mount();
+    // }
 
     public function modalDelete($id, $formAction = null)
     {
@@ -789,12 +791,26 @@ class WireOrder extends Component implements FieldValidationMessage
             'total_amount',
         ]);
 
-        $this->createTag = $this->branches->where('id', $this->branch_id)->pluck('can_createall')->first();
+        $area_id = $this->branches
+            ->where('id', $this->branch_id)
+            ->pluck('area_number')
+            ->first();
+
 
         if($this->branch_id != 1) {
-            $this->supplier_id = 1;
-            $this->updatedSupplierId();
+            if($area_id === 0) {
+                $this->supplier_id = 1;
+            }
+
+            if($area_id != 0) {
+                $this->supplier_id = 7;
+            }
+            $this->filteredSuppliers = $this->suppliers->whereIn('id', $this->supplier_id);
+        } else {
+            $this->filteredSuppliers = $this->suppliers->whereIn('id', [4,5,6]);
         }
+
+        $this->updatedSupplierId();
 
     }
 
@@ -954,7 +970,21 @@ class WireOrder extends Component implements FieldValidationMessage
     public function updatedSelectAllOrders($value)
     {
         if($value) {
-            $this->selectedOrders = $this->orders->where('order_status', '!=', 'received')->where('order_completed', '!=', '1')->pluck('id');
+            if(Auth()->user()->role === 'admin') {
+                $this->selectedOrders =
+                $this->orders
+                    ->where('order_status', '!=', 'received')
+                    ->where('order_completed', '!=', '1')
+                    ->where('deleted_at', null)
+                    ->pluck('id');
+            } else {
+                $this->selectedOrders =
+                $this->orders
+                    ->where('order_status', '!=', 'received')
+                    ->where('order_completed', '=', '1')
+                    ->where('branch_id', Auth()->user()->branch_id)
+                    ->pluck('id');
+            }
         } else {
             $this->selectedOrders = [];
         }
@@ -962,49 +992,186 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function batchcomplete()
     {
+        // dd(Auth()->user());
         $auth_branch = Auth()->user()->branch_id;
+
         $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)->get();
+        $branch_id = Order::whereIn('id', $this->selectedOrders)
+        ->pluck('branch_id')
+        ->first();
 
-        foreach ($orderItems as $orderItem) {
+        $hasInventory = $this->branches->where('id', $branch_id)->pluck('has_inventory')->first();
+        // dd($hasInventory);
 
-            $orderType = $orderItem->order_type;
+        if ($hasInventory != 1) {
+            foreach ($orderItems as $orderItem) {
 
-            OrderDetail::where('order_id', $orderItem->order_id)->update([
-                'order_status' => 'completed'
-            ]);
-            $itemPieces = Item::where('id', $orderItem->item_id)
+                $orderType = $orderItem->order_type;
+
+                OrderDetail::where('order_id', $orderItem->order_id)->update([
+                    'order_status' => 'completed'
+                ]);
+                $itemPieces = Item::where('id', $orderItem->item_id)
+                    ->pluck('pieces_perUnit')
+                    ->first();
+
+                (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
+
+                $stockItems = Stock::where('item_id', $orderItem->item_id)
+                    ->where('quantity', '>', 0)
+                    ->where('branch_id', $auth_branch)
+                    ->orderBy('created_at')
+                    ->get();
+
+                foreach ($stockItems as $stockItem) {
+                    if ($itemQty > (int)$stockItem->quantity) {
+
+                        Stock::where('id', (int)$stockItem->id)->update([
+                             'quantity' => 0,
+                             'qty_out' => $itemQty
+                         ]);
+
+                        $itemQty -= $stockItem->quantity;
+
+                    } else {
+
+                        Stock::where('id', $stockItem->id)
+                            ->where('branch_id', $auth_branch)
+                            ->update([
+                                'quantity' => $stockItem->quantity - $itemQty,
+                                'qty_out' => $itemQty
+                            ]);
+
+                        break;
+                    }
+                }
+
+                foreach($this->selectedOrders as $selectedOrder) {
+
+                    DB::table('orders')
+                        ->where('id', $selectedOrder)
+                        ->update([
+                            'received_by' => Auth()->user()->branch_id,
+                            'order_completed' => 1,
+                            'or_date' => Carbon::now()->format('Y-m-d'),
+                            'or_number' => $selectedOrder
+                        ]);
+                }
+
+                $this->reset([
+                    'selectedOrders',
+                    'selectALLOrders'
+                ]);
+
+                $notificationMessage = 'Order Completed.';
+
+                $this->dispatchBrowserEvent('show-message', [
+                    'notificationType' => 'success',
+                    'messagePrimary'   => $notificationMessage
+                ]);
+
+            }
+
+        } else {
+
+            $getid = OrderDetail::whereIn('order_id', $this->selectedOrders)
+                ->get()
+                ->toArray();
+            $getDataArray = collect($getid);
+
+            $getSelectedItem = $getDataArray
+                ->pluck('item_id')
+                ->first();
+
+            $getQuantity = $this->items
+                ->where('id', $getSelectedItem)
                 ->pluck('pieces_perUnit')
                 ->first();
 
-            (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
+            $checkFixedUnit = $this->items
+                ->where('id', $getSelectedItem)
+                ->pluck('fixed_unit')
+                ->first();
 
-            $stockItems = Stock::where('item_id', $orderItem->item_id)
-                ->where('quantity', '>', 0)
-                ->where('branch_id', $auth_branch)
-                ->orderBy('created_at')
-                ->get();
+            if($branch_id != 1) {
+                $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)->get();
 
-            foreach ($stockItems as $stockItem) {
-                if ($itemQty > (int)$stockItem->quantity) {
+                foreach ($orderItems as $orderItem) {
 
-                    Stock::where('id', (int)$stockItem->id)->update([
-                         'quantity' => 0,
-                         'qty_out' => $itemQty
-                     ]);
+                    $orderType = $orderItem->order_type;
 
-                    $itemQty -= $stockItem->quantity;
+                    $itemPieces = Item::where('id', $orderItem->item_id)
+                        ->pluck('pieces_perUnit')
+                        ->first();
 
-                } else {
+                    (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
 
-                    Stock::where('id', $stockItem->id)
-                        ->where('branch_id', $auth_branch)
-                        ->update([
-                            'quantity' => $stockItem->quantity - $itemQty,
-                            'qty_out' => $itemQty
-                        ]);
+                    $stockItems = Stock::where('item_id', $orderItem->item_id)
+                        ->where('quantity', '>', 0)
+                        ->orderBy('created_at')
+                        ->get();
 
-                    break;
+                    foreach ($stockItems as $stockItem) {
+                        if ($itemQty > (int)$stockItem->quantity) {
+
+                            Stock::where('id', (int)$stockItem->id)->update([
+                                 'quantity' => 0
+                             ]);
+
+                            $itemQty -= $stockItem->quantity;
+
+                        } else {
+
+                            Stock::where('id', $stockItem->id)->decrement('quantity', $itemQty);
+                            break;
+                        }
+                    }
                 }
+
+                foreach ($getid as $detail) {
+                    Stock::create([
+                        'branch_id' => $branch_id,
+
+                        'order_id' => $detail['order_id'],
+
+                        'item_id' => $detail['item_id'],
+
+                        'category_id' => $detail['item_id'],
+
+                        'quantity' => $orderType === 'Unit' ? $detail['quantity'] * $getQuantity : $detail['quantity'],
+
+                        'price' => $detail['price'],
+                    ]);
+                }
+
+            } else {
+
+                foreach ($getid as $detail) {
+                    Stock::create([
+                        'branch_id' => $branch_id,
+
+                        'order_id' => $detail['order_id'],
+
+                        'item_id' => $detail['item_id'],
+
+                        'category_id' => $detail['item_id'],
+
+                        'quantity' => $checkFixedUnit === 1 ? $detail['quantity'] * $getQuantity : $detail['quantity'],
+
+                        'price' => $detail['price'],
+                    ]);
+                }
+            }
+
+
+            foreach($this->selectedOrders as $selectedOrder) {
+
+                DB::table('order_details')
+                    ->where('order_id', $selectedOrder)
+                    ->update([
+                        'order_status' => 'received',
+                        'is_received' => 1
+                    ]);
             }
 
             foreach($this->selectedOrders as $selectedOrder) {
@@ -1012,6 +1179,7 @@ class WireOrder extends Component implements FieldValidationMessage
                 DB::table('orders')
                     ->where('id', $selectedOrder)
                     ->update([
+                        'order_status' => 'received',
                         'received_by' => Auth()->user()->branch_id,
                         'order_completed' => 1,
                         'or_date' => Carbon::now()->format('Y-m-d'),
@@ -1019,6 +1187,46 @@ class WireOrder extends Component implements FieldValidationMessage
                     ]);
             }
 
+            $this->reset([
+                'selectedOrders',
+                'selectALLOrders'
+            ]);
+
+            $notificationMessage = 'Items has been added to Stocks.';
+
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
         }
+
+    }
+
+    public function batchreceive()
+    {
+        foreach($this->selectedOrders as $selectedOrder) {
+
+            DB::table('orders')
+            ->select('orders.id', 'order_details.order_id', 'orders.order_status', 'order_details.order_status')
+                ->join('order_details', 'order_details.order_id', '=', 'orders.id')
+                ->where('orders.id', $selectedOrder)
+                ->update([
+                    'orders.order_status' => 'received',
+                    'order_details.order_status' => 'received'
+                ]);
+        }
+
+        $this->reset([
+            'selectedOrders',
+            'selectALLOrders'
+        ]);
+
+        $notificationMessage = 'Items has been received';
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
+
     }
 }

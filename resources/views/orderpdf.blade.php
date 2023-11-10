@@ -45,7 +45,7 @@
                                         {{ sprintf('%08d', $orderDetails[0]->or_number) }}<br />
                                         OR Date: {{ $orderDetails[0]->or_date }}<br />
                                     @else
-                                        Ref #: {{ $orderDetails[0]->order_id }}<br />
+                                        Ref #: {{ sprintf('%08d', $orderDetails[0]->order_id) }}<br />
                                     @endif
                                     Branch: {{ $orderDetails[0]->branch_name }}<br />
 

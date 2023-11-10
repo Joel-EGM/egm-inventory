@@ -8,11 +8,10 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mt-4 grid grid-cols-1 bg-white">
             <div class="border-b border-t border-gray-200 sm:border sm:rounded-lg overflow-hidden">
-                @can('isAdmin')
-
-                    <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
-                        <div class="grid grid-cols-4 gap-1
+                <div class="bg-white px-4 py-3 flex items-center justify-between border-gray-200 sm:px-4 border-b">
+                    <div class="grid grid-cols-4 gap-1
                     content-start">
+                        @can('isAdmin')
                             <input type="month" wire:model="order_date" min="2023-01"
                                 class="block appearance-none bg-white border border-gray-400
                             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
@@ -32,30 +31,31 @@
                             focus:outline-none focus:border-gray-900 focus:ring 
                             focus:ring-gray-300 disabled:opacity-25 transition">EXPORT
                                 EXCEL</a>
-                            <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
-
-                                <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
-
-                                    @if ($formTitle === 'View Details')
-                                        @include('partials.order-view')
-                                    @endif
-                                </x-modals.modal-form>
-
-                                <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
-                            </div>
-                        </div>
-
-                        <div class="flex flex-row mb-0 sm:mb-0">
-
-                            <div class="relative">
-                                <select wire:model="paginatePage"
-                                    class="appearance-none h-full rounded-l border block appearance-none w-fullj bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
-                                    <option value=5>5</option>
-                                    <option value=10>10</option>
-                                    <option value=20>20</option>
-                                </select>
-                            </div>
                         @endcan
+
+                        <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">
+
+                            <x-modals.modal-form :formTitle="$formTitle" wire:model="isFormOpen" maxWidth="5xl">
+
+                                @if ($formTitle === 'View Details')
+                                    @include('partials.order-view')
+                                @endif
+                            </x-modals.modal-form>
+
+                            <x-modals.modal-deletion :formTitle="$formTitle" wire:model="isDeleteOpen" />
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row mb-0 sm:mb-0">
+
+                        <div class="relative">
+                            <select wire:model="paginatePage"
+                                class="appearance-none h-full rounded-l border block appearance-none w-fullj bg-white border-gray-300 text-gray-600 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-300">
+                                <option value=5>5</option>
+                                <option value=10>10</option>
+                                <option value=20>20</option>
+                            </select>
+                        </div>
 
                         @if (Auth()->user()->branch_id === 1)
                             <div class="relative">

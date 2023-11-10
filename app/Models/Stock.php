@@ -15,6 +15,7 @@ class Stock extends Model
         'branch_id',
         'order_id',
         'item_id',
+        'category_id',
         'quantity',
         'price',
         'qty_out'

@@ -43,19 +43,12 @@
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
-            @if (is_null($branch_id))
-                <option value="None" class="text-center text-gray-400">--select supplier--</option>
-            @elseif($createTag != 1)
-                <option value="None" class="text-center text-gray-400">--select supplier--</option>
-                @foreach ($filteredHasInventory as $HOsupplier)
-                    <option value="{{ $HOsupplier['id'] }}">{{ $HOsupplier['branch_name'] }}</option>
-                @endforeach
-            @else
-                <option value="None" class="text-center text-gray-400">--select supplier--</option>
-                @foreach ($filteredSuppliers as $supplier)
-                    <option value="{{ $supplier->id }}">{{ $supplier->suppliers_name }}</option>
-                @endforeach
-            @endif
+
+            <option value="None" class="text-center text-gray-400">--select supplier--</option>
+            @foreach ($filteredSuppliers as $supplier)
+                <option value="{{ $supplier->id }}">{{ $supplier->suppliers_name }}</option>
+            @endforeach
+
         </select>
         <x-jet-input-error for="supplier_id" class="mt-2" />
     </div>

@@ -15,6 +15,7 @@ class Branch extends Model
         'branch_address',
         'branch_contactNo',
         'status',
+        'area_number',
         'has_inventory',
         'can_createall',
         'acc_number',

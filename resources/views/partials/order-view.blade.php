@@ -37,7 +37,7 @@
                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                             Status
                         </th>
-                        @if ($formTitle === 'Order Details')
+                        {{-- @if ($formTitle === 'Order Details')
                             <th
                                 class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                 Received
@@ -48,7 +48,7 @@
                                     Select All
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -71,7 +71,7 @@
                                 &#8369;{{ number_format($detail->total_amount, 2) }}</td>
 
                             <td class="px-6 py-4 whitespace-no-wrap">{{ $detail->order_status }}</td>
-                            @if ($formTitle === 'Order Details')
+                            {{-- @if ($formTitle === 'Order Details')
                                 <td class="px-6 py-4 whitespace-no-wrap">
                                     @if ($detail->order_status === 'pending' || $detail->order_status === 'completed')
                                         <input type="checkbox" wire:model="selectedRecord"
@@ -84,14 +84,14 @@
                                         </svg>
                                     @endif
                                 </td>
-                            @endif
+                            @endif --}}
                         </tr>
                     @endforeach
             </table>
         </div>
     </div>
 </div>
-@if ($formTitle === 'Order Details')
+{{-- @if ($formTitle === 'Order Details')
     <input name="completedOrder" type="checkbox" wire:model="completedOrder">Order Complete
 
     <div class="flex flex-row-reverse">
@@ -99,4 +99,4 @@
             SAVE</x-jet-button>
         <x-jet-input-error for="selectedRecord" class="mt-2" />
     </div>
-@endif
+@endif --}}

@@ -14,6 +14,8 @@ class Supplier extends Model
         'suppliers_name',
         'suppliers_email',
         'suppliers_contact',
+        'is_ho',
+        'branch_id'
     ];
 
     public function items()
