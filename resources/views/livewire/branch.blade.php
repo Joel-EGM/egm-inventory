@@ -86,12 +86,17 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            AREA No
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Contact No
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             STATUS
                                         </th>
+
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Action
@@ -115,10 +120,10 @@
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_address }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->acc_number }}</td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->area_number }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $branch->branch_contactNo }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
-                                                {{-- {{ $branch->status != 1 ? 'Inactive' : 'Active' }} --}}
                                                 <select class="mt-1 block"
                                                     wire:change="changeStatus({{ $branch }},$event.target.value)">
 

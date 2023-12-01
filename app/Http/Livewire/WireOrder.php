@@ -62,30 +62,99 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->items = Item::select('id', 'item_name', 'unit_name', 'pieces_perUnit', 'fixed_unit')->get();
+        $this->items = Item::select(
+            'id',
+            'item_name',
+            'unit_name',
+            'pieces_perUnit',
+            'fixed_unit'
+        )
+                            ->get();
 
-        $this->suppliers = Supplier::select('id', 'suppliers_name', 'is_ho', 'branch_id')->get();
+        $this->suppliers = Supplier::select(
+            'id',
+            'suppliers_name',
+            'is_ho',
+        )
+                            ->get();
 
-        $this->branches = Branch::select('id', 'branch_name', 'status', 'has_inventory', 'can_createall', 'area_number')->where('status', '=', '1')->get();
+        $this->branches = Branch::select(
+            'id',
+            'branch_name',
+            'status',
+            'has_inventory',
+            'can_createall',
+            'area_number'
+        )
+        ->where(
+            'status',
+            '=',
+            '1'
+        )
+        ->get();
 
-        $this->filteredHOsupplier = $this->suppliers->map->only(['id','suppliers_name','is_ho','branch_id'])->where('is_ho', '=', '1');
+        $this->filteredHOsupplier = $this->suppliers
+        ->map
+        ->only([
+            'id',
+            'suppliers_name',
+            'is_ho','branch_id'
+            ])
+        ->where(
+            'is_ho',
+            '=',
+            '1'
+        );
 
-        $this->order_details = OrderDetail::all();
+        $this->order_details = OrderDetail::select(
+            'id',
+            'order_id',
+            'item_id',
+            'quantity',
+            'price',
+            'total_amount',
+            'order_status',
+            'is_received',
+            'order_type'
+        )
+        ->get();
 
-        $this->itemPrice = ItemPrice::select('supplier_id', 'item_id', 'price_perUnit', 'price_perPieces')->get();
+        $this->itemPrice = ItemPrice::all();
 
-        $this->stocks = Stock::select('item_id', 'branch_id', 'quantity')->get();
+        $this->stocks = Stock::select(
+            'order_id',
+            'item_id',
+            'category_id',
+            'branch_id',
+            'quantity',
+            'price',
+            'qty_out'
+        )
+        ->get();
 
         $this->order_date = Carbon::now()->format('Y-m-d');
 
 
-        $this->orders = Order::select('id', 'branch_id', 'order_date', 'order_status', 'or_number', 'or_date')->get();
+        $this->orders = Order::select(
+            'id',
+            'branch_id',
+            'order_date',
+            'order_status',
+            'or_number',
+            'or_date'
+        )
+        ->get();
 
         $user = Auth()->user()->branch_id;
 
-        $this->branchFind = Branch::select('id', 'branch_name', 'has_inventory', 'can_createall')
-            ->where('id', $user)
-            ->first();
+        $this->branchFind = Branch::select(
+            'id',
+            'branch_name',
+            'has_inventory',
+            'can_createall'
+        )
+        ->where('id', $user)
+        ->first();
 
         $this->has_inventory = $this->branchFind->has_inventory;
 
@@ -112,8 +181,7 @@ class WireOrder extends Component implements FieldValidationMessage
         $filteredBranchList = $filtered->all();
 
         if($this->has_inventory != 1) {
-
-            // $this->updatedSupplierId();
+            $this->updatedBranchId();
 
             $allorders = Order::whereHas('branches', function ($query) {
                 $query->where('order_date', 'like', $this->search . '%');
@@ -300,8 +368,8 @@ class WireOrder extends Component implements FieldValidationMessage
 
         if(!$itemExists) {
             array_push($this->orderArrays, [
-            'id' => 0,
-            'order_id' => 0,
+            // 'id' => 0,
+            // 'order_id' => 0,
             'order_date' => $this->order_date,
 
             'branch_id'  => $this->branch_id,
@@ -320,20 +388,21 @@ class WireOrder extends Component implements FieldValidationMessage
             'order_type' => $this->unitString,
             ]);
 
-            $id = $this->unitPriceID['id'];
-            $ipq = ItemPrice::whereId($id);
+            // $id = $this->unitPriceID['id'];
+            // $ipq = ItemPrice::whereId($id);
 
-            if ($this->unitString === "Unit") {
-                $price = $this->unitPriceID->price_perUnit;
-                if ($this->unitPrice != $price) {
-                    $ipq->update(['price_perUnit' => $this->unitPrice,]);
-                }
-            } else {
-                $price = $this->unitPriceID->price_perPieces;
-                if ($this->unitPrice != $price) {
-                    $ipq->update(['price_perPieces' => $this->unitPrice,]);
-                }
-            }
+            // if ($this->unitString === "Unit") {
+            //     dd('ey');
+            //     $price = $this->unitPriceID->price_perUnit;
+            //     if ($this->unitPrice != $price) {
+            //         $ipq->update(['price_perUnit' => $this->unitPrice,]);
+            //     }
+            // } else {
+            //     $price = $this->unitPriceID->price_perPieces;
+            //     if ($this->unitPrice != $price) {
+            //         $ipq->update(['price_perPieces' => $this->unitPrice,]);
+            //     }
+            // }
         }
 
         $this->reset([
@@ -344,6 +413,7 @@ class WireOrder extends Component implements FieldValidationMessage
             'unitPrice',
             'total_amount',
         ]);
+
     }
 
     public function removeItem($index)
@@ -410,7 +480,7 @@ class WireOrder extends Component implements FieldValidationMessage
         ->select(
             'order_details.id',
             'order_id',
-            'branch_id',
+            // 'order_details.branch_id',
             'branch_name',
             'order_date',
             'supplier_id',
@@ -489,228 +559,6 @@ class WireOrder extends Component implements FieldValidationMessage
         }
     }
 
-    // public function saveMethod()
-    // {
-
-    //     $this->checkStatus = $this->details
-    //         ->pluck('order_status')
-    //         ->toArray();
-
-    //     if(in_array("pending", $this->checkStatus)) {
-    //         $validatedData = $this->validate([
-    //             'selectedRecord' => 'required',
-    //            ]);
-    //     }
-
-    //     $hasInventory = $this->branches->where('id', $this->getBranchID)->pluck('has_inventory')->first();
-
-    //     if ($hasInventory != 1) {
-    //         $this->substractBranchOrder();
-    //     } else {
-    //         $this->saveCheckedItems();
-    //     }
-
-    //     $converted = $this->getOrderID->first();
-
-    //     $OR = $this->orders->where('id', $converted)
-    //         ->pluck('or_number')
-    //         ->first();
-
-    //     if($OR === 0) {
-    //         Order::where('id', $converted)->update([
-    //             'or_number' => $converted,
-    //             'or_date' => Carbon::now()->format('Y-m-d')
-    //         ]);
-    //     }
-    //     $this->reset(['selectedRecord']);
-    // }
-
-    // private function saveCheckedItems()
-    // {
-    //     if(in_array("pending", $this->checkStatus)) {
-    //         $validatedData = $this->validate([
-    //             'selectedRecord' => 'required',
-    //            ]);
-    //     }
-
-    //     $getid = OrderDetail::whereIn('id', $this->selectedRecord)
-    //         ->get()
-    //         ->toArray();
-
-    //     $getDataArray = collect($getid);
-
-    //     $getSelectedItem = $getDataArray
-    //         ->pluck('item_id')
-    //         ->first();
-
-    //     $getQuantity = $this->items
-    //         ->where('id', $getSelectedItem)
-    //         ->pluck('pieces_perUnit')
-    //         ->first();
-
-    //     $checkFixedUnit = $this->items
-    //         ->where('id', $getSelectedItem)
-    //         ->pluck('fixed_unit')
-    //         ->first();
-
-    //     if($this->getBranchID != 1) {
-    //         $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
-
-    //         foreach ($orderItems as $orderItem) {
-
-    //             $orderType = $orderItem->order_type;
-
-    //             $itemPieces = Item::where('id', $orderItem->item_id)
-    //                 ->pluck('pieces_perUnit')
-    //                 ->first();
-
-    //             (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
-
-    //             $stockItems = Stock::where('item_id', $orderItem->item_id)
-    //                 ->where('quantity', '>', 0)
-    //                 ->orderBy('created_at')
-    //                 ->get();
-
-    //             foreach ($stockItems as $stockItem) {
-    //                 if ($itemQty > (int)$stockItem->quantity) {
-
-    //                     Stock::where('id', (int)$stockItem->id)->update([
-    //                          'quantity' => 0
-    //                      ]);
-
-    //                     $itemQty -= $stockItem->quantity;
-
-    //                 } else {
-
-    //                     Stock::where('id', $stockItem->id)->decrement('quantity', $itemQty);
-    //                     break;
-    //                 }
-    //             }
-    //         }
-
-    //         foreach ($getid as $detail) {
-    //             Stock::create([
-    //                 'branch_id' => $this->getBranchID,
-
-    //                 'order_id' => $detail['order_id'],
-
-    //                 'item_id' => $detail['item_id'],
-
-    //                 'category_id' => $detail['item_id'],
-
-    //                 'quantity' => $orderType === 'Unit' ? $detail['quantity'] * $getQuantity : $detail['quantity'],
-
-    //                 'price' => $detail['price'],
-    //             ]);
-    //         }
-
-    //     } else {
-
-    //         foreach ($getid as $detail) {
-    //             Stock::create([
-    //                 'branch_id' => $this->getBranchID,
-
-    //                 'order_id' => $detail['order_id'],
-
-    //                 'item_id' => $detail['item_id'],
-
-    //                 'category_id' => $detail['item_id'],
-
-    //                 'quantity' => $checkFixedUnit === 1 ? $detail['quantity'] * $getQuantity : $detail['quantity'],
-
-    //                 'price' => $detail['price'],
-    //             ]);
-    //         }
-    //     }
-
-
-    //     OrderDetail::whereIn('id', $this->selectedRecord)->update([
-    //         'order_status' => 'received',
-    //         'is_received' => 1
-    //     ]);
-
-    //     $statusUpdate = Order::where('id', $this->getOrderID);
-
-    //     if ($this->completedOrder === true) {
-    //         $statusUpdate->update([
-    //                          'order_status' => 'received',
-    //                          'received_by' => Auth()->user()->branch_id
-    //                      ]);
-    //     } else {
-    //         $statusUpdate->update([
-    //             'order_status' => 'incomplete',
-    //         ]);
-    //     }
-
-    //     $this->modalToggle();
-    //     $this->mount();
-    //     $notificationMessage = 'Items has been received.';
-
-    //     $this->dispatchBrowserEvent('show-message', [
-    //         'notificationType' => 'success',
-    //         'messagePrimary'   => $notificationMessage
-    //     ]);
-    // }
-
-    // private function substractBranchOrder()
-    // {
-
-
-    //     if(in_array("pending", $this->checkStatus)) {
-    //         $validatedData = $this->validate([
-    //             'selectedRecord' => 'required',
-    //            ]);
-    //     }
-
-
-    //     $orderItems = OrderDetail::whereIn('id', $this->selectedRecord)->get();
-    //     foreach ($orderItems as $orderItem) {
-    //         $orderType = $orderItem->order_type;
-
-    //         $itemPieces = Item::where('id', $orderItem->item_id)
-    //             ->pluck('pieces_perUnit')
-    //             ->first();
-
-    //         (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
-
-    //         $stockItems = Stock::where('item_id', $orderItem->item_id)
-    //             ->where('quantity', '>', 0)
-    //             ->where('branch_id', $orderItem->supplier_id)
-    //             ->orderBy('created_at')
-    //             ->get();
-
-    //         foreach ($stockItems as $stockItem) {
-
-    //             Stock::where('id', $stockItem->id)
-    //                 ->where('branch_id', $orderItem->supplier_id)
-    //                 ->update([
-    //                     'qty_out' => $stockItem->qty_out - $itemQty
-    //                 ]);
-
-    //         }
-    //     }
-
-    //     OrderDetail::whereIn('id', $this->selectedRecord)->update([
-    //         'order_status' => 'received',
-    //         'is_received' => 1
-    //     ]);
-
-    //     $statusUpdate = Order::where('id', $this->getOrderID);
-
-    //     if ($this->completedOrder === true) {
-    //         $statusUpdate->update([
-    //                          'order_status' => 'received',
-    //                      ]);
-    //     } else {
-    //         $statusUpdate->update([
-    //             'order_status' => 'incomplete',
-    //         ]);
-    //     }
-
-    //     $this->modalToggle();
-    //     $this->reset(['selectedRecord']);
-    //     $this->mount();
-    // }
 
     public function modalDelete($id, $formAction = null)
     {
@@ -831,19 +679,19 @@ class WireOrder extends Component implements FieldValidationMessage
             return;
         }
         if ($this->branch_id != 1) {
-            $items = Item::with('itemprices')->get();
 
+            // dd($this->items);
             $branch = $this->branches
                 ->where('id', $this->branch_id)
                 ->pluck('branch_name')
                 ->first();
 
-            $branchForm = $items->filter(function ($value) use ($branch) {
+            $branchForm = $this->items->filter(function ($value) use ($branch) {
                 return str_contains($value->item_name, $branch)
                 && $value->itemprices->count() > 0;
             })->all();
 
-            $universalForm = $items->filter(function ($value) use ($branch) {
+            $universalForm = $this->items->filter(function ($value) use ($branch) {
                 return (!str_starts_with($value->item_name, "Or ")
                 && !str_starts_with($value->item_name, "Check Voucher"))
                 && $value->itemprices->count() > 0;
@@ -869,22 +717,24 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->reset([
                 'quantity',
                 'total_amount',
+                'unitPrice',
                 'inStocks',
         ]);
         $this->unitName = $this->items->where('id', (int) $this->item_id);
-        $auth_branch = Auth()->user()->branch_id;
 
-        $this->inStocks = $this->stocks->where('item_id', $this->item_id)->where('branch_id', $auth_branch)->sum('quantity');
+
+        $this->inStocks = $this->stocks->where('item_id', (int)$this->item_id)->where('branch_id', $this->supplier_id)->sum('quantity');
+
         if ($this->unitName->pluck('fixed_unit')->first() === 1) {
 
             $this->unitString = "Unit";
 
-            $this->inStocks = $this->stocks->where('item_id', $this->item_id)->where('branch_id', $auth_branch)->sum('quantity');
+            $this->inStocks = $this->stocks->where('item_id', $this->item_id)->where('branch_id', $this->supplier_id)->sum('quantity');
 
 
-            $this->unitPriceID = $this->userBranch != 1 ?
-                    ItemPrice::where('item_id', $this->item_id)->first() :
-                    ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();
+            // $this->unitPriceID = $this->userBranch != 1 ?
+            //         ItemPrice::where('item_id', $this->item_id)->first() :
+            //         ItemPrice::where('item_id', $this->item_id)->where('supplier_id', $this->supplier_id)->first();
 
             $this->loadPrice();
         }
@@ -908,23 +758,33 @@ class WireOrder extends Component implements FieldValidationMessage
         $this->unitString = $explodeResult[1];
 
         if($this->userBranch != 1) {
-            $this->unitPriceID = ItemPrice::select('price_perUnit', 'price_perPieces')
-                ->where('item_id', (int) $unitId)
-                ->orderby('created_at', 'ASC')
+
+            $this->unitPriceID = $this->itemPrice->map->only([
+                'item_id',
+                'price_perUnit',
+                'price_perPieces'
+                ])
+                ->where('item_id', '=', $unitId)
+                ->sortBy('created_at')
                 ->first();
 
-            $this->unitPrice = $this->unitPriceID->price_perPieces;
+            $this->unitPrice = $this->unitPriceID['price_perPieces'];
 
         } else {
-            $this->unitPriceID = ItemPrice::where('item_id', (int) $unitId)
+            $this->unitPriceID = $this->itemPrice->map->only([
+                'item_id',
+                'price_perUnit',
+                'price_perPieces'
+                ])
+                ->where('item_id', '=', $unitId)
                 ->where('supplier_id', $this->supplier_id)
                 ->first();
 
-            $this->unitPrice = $this->unitPriceID->price_perPieces;
+            $this->unitPrice = $this->unitPriceID['price_perPieces'];
         }
 
         if ($this->unitString === "Unit") {
-            $this->unitPrice = $this->unitPriceID->price_perUnit;
+            $this->unitPrice = $this->unitPriceID['price_perUnit'];
         }
 
         if ($this->quantity > 0) {
@@ -935,11 +795,19 @@ class WireOrder extends Component implements FieldValidationMessage
     public function loadPrice()
     {
         if($this->userBranch != 1) {
-            $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)->min('price_perUnit');
+            $unitPrice = $this->itemPrice->map->only([
+                'item_id',
+                'price_perUnit',])
+                ->where('item_id', '=', (int) $this->item_id)
+                ->min('price_perUnit');
+
             $this->unitPrice = $unitPrice;
 
         } else {
-            $unitPrice = ItemPrice::where('item_id', (int) $this->item_id)
+            $unitPrice = $this->itemPrice->map->only([
+                'item_id',
+                'price_perUnit',])
+                ->where('item_id', '=', (int) $this->item_id)
                 ->where('supplier_id', $this->supplier_id)
                 ->first();
 
@@ -956,6 +824,9 @@ class WireOrder extends Component implements FieldValidationMessage
     private function computeTotalAmount()
     {
         $this->total_amount = number_format((int) $this->quantity * $this->unitPrice, 2, '.', '');
+
+        // dd($this->total_amount);
+
     }
 
     public function updatedSelectAll($value)
@@ -992,7 +863,6 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function batchcomplete()
     {
-        // dd(Auth()->user());
         $auth_branch = Auth()->user()->branch_id;
 
         $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)->get();
@@ -1001,7 +871,6 @@ class WireOrder extends Component implements FieldValidationMessage
         ->first();
 
         $hasInventory = $this->branches->where('id', $branch_id)->pluck('has_inventory')->first();
-        // dd($hasInventory);
 
         if ($hasInventory != 1) {
             foreach ($orderItems as $orderItem) {
@@ -1028,7 +897,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
                         Stock::where('id', (int)$stockItem->id)->update([
                              'quantity' => 0,
-                             'qty_out' => $itemQty
+                             'qty_out' => $stockItem->qty_out + $itemQty
                          ]);
 
                         $itemQty -= $stockItem->quantity;
@@ -1039,7 +908,7 @@ class WireOrder extends Component implements FieldValidationMessage
                             ->where('branch_id', $auth_branch)
                             ->update([
                                 'quantity' => $stockItem->quantity - $itemQty,
-                                'qty_out' => $itemQty
+                                'qty_out' => $stockItem->qty_out + $itemQty
                             ]);
 
                         break;
@@ -1204,29 +1073,92 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function batchreceive()
     {
-        foreach($this->selectedOrders as $selectedOrder) {
 
-            DB::table('orders')
-            ->select('orders.id', 'order_details.order_id', 'orders.order_status', 'order_details.order_status')
-                ->join('order_details', 'order_details.order_id', '=', 'orders.id')
-                ->where('orders.id', $selectedOrder)
-                ->update([
-                    'orders.order_status' => 'received',
-                    'order_details.order_status' => 'received'
-                ]);
+        $item_ids = $this->order_details->whereIn('order_id', $this->selectedOrders)->pluck('item_id')->toArray();
+        $sup_ids = $this->order_details->whereIn('order_id', $this->selectedOrders)->pluck('supplier_id')->first();
+        $orderItems = $this->order_details->whereIn('order_id', $this->selectedOrders)->all();
+
+        $stocks = Stock::whereIn('item_id', $item_ids)->where('branch_id', $sup_ids)->where('qty_out', '>', 0)->get();
+        $forUpdate = [];
+        // dd($item_id);
+        $filtered = $stocks->filter(function ($value) use ($item_ids) {
+            return in_array($value->item_id, $item_ids);
+        })->map(function ($stock) use ($orderItems) {
+
+            foreach($orderItems as $orderItem) {
+                if($orderItem->item_id === $stock->item_id) {
+                    return[
+                        'id' => $stock['id'],
+                        'branch_id' => $stock['branch_id'],
+                        'order_id' => $stock['order_id'],
+                        'item_id' => $stock['item_id'],
+                        'category_id' => $stock['category_id'],
+                        'quantity' => $stock['quantity'],
+                        'price' => $stock['price'],
+                        'qty_out' => $stock['qty_out'] - $orderItem->quantity
+                    ];
+                }
+            }
+
+
+        })
+        ->all();
+
+        array_push($forUpdate, $filtered);
+
+
+        Stock::upsert(
+            $forUpdate[0],
+            [
+            'id',
+            'branch_id',
+            'order_id',
+            'item_id',
+            'category_id',
+
+        ],
+            [
+        'qty_out'
+        ]
+        );
+
+        if($stocks->count() < 1) {
+            $notificationMessage = 'No Existing Stocks';
+
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'error',
+                'messagePrimary'   => $notificationMessage
+            ]);
+        } else {
+            foreach($this->selectedOrders as $selectedOrder) {
+                DB::table('orders')
+                ->select('orders.id', 'order_details.order_id', 'orders.order_status', 'order_details.order_status')
+                    ->join('order_details', 'order_details.order_id', '=', 'orders.id')
+                    ->where('orders.id', $selectedOrder)
+                    ->update([
+                        'orders.order_status' => 'received',
+                        'order_details.order_status' => 'received'
+                    ]);
+            }
+
+
+            $notificationMessage = 'Items has been received';
+
+            $this->dispatchBrowserEvent('show-message', [
+                'notificationType' => 'success',
+                'messagePrimary'   => $notificationMessage
+            ]);
         }
+
+
+
 
         $this->reset([
             'selectedOrders',
             'selectALLOrders'
         ]);
 
-        $notificationMessage = 'Items has been received';
 
-        $this->dispatchBrowserEvent('show-message', [
-            'notificationType' => 'success',
-            'messagePrimary'   => $notificationMessage
-        ]);
 
     }
 }

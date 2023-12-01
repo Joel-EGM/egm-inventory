@@ -20,4 +20,8 @@
             type="text" maxlength="50" class="mt-1 block w-full" autocomplete="getsupplierContactNo" />
         <x-jet-input-error for="getsupplierContactNo" class="mt-2" />
     </div>
+
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <input name="is_ho" type="checkbox" wire:model.defer="is_ho">Head Office
+    </div>
 </div>

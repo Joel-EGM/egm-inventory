@@ -13,7 +13,7 @@
                     <div class="flex flex-row mt-0 sm:mb-0">
                         <div class="relative">
                             <div x-data="{ isFormOpen: @entangle('isFormOpen'), isDeleteOpen: @entangle('isDeleteOpen') }" class="px-2 py-4">
-                                <a href="javascript:" wire:click.prevent="modalToggle"
+                                <a href="javascript:" wire:click="modalToggle"
                                     class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500">
                                         <path fill-rule="evenodd"

@@ -20,6 +20,7 @@ class WireSupplier extends Component implements FieldValidationMessage
 
     public $layoutTitle = 'New Supplier';
     public $supplierID;
+    public $is_ho;
 
     protected $rules = [
         'getsupplierName' => 'bail|required|regex:/^[A-Za-z0-9 .\,\-\#\(\)\[\]\Ñ\ñ]+$/i|min:2|max:50',
@@ -74,6 +75,8 @@ class WireSupplier extends Component implements FieldValidationMessage
 
                 'suppliers_contact' => $this->getsupplierContactNo,
 
+                'is_ho' => $this->is_ho === false ? 0 : 1,
+
             ]);
 
             $this->getsuppliers->push($supplier);
@@ -98,6 +101,8 @@ class WireSupplier extends Component implements FieldValidationMessage
 
                     'suppliers_contact' => $this->getsupplierContactNo,
 
+                    'is_ho' => $this->is_ho === false ? 0 : 1,
+
                 ]);
 
                 $this->getsuppliers[$this->Index]['suppliers_name'] = $this->getsupplierName;
@@ -105,6 +110,9 @@ class WireSupplier extends Component implements FieldValidationMessage
                 $this->getsuppliers[$this->Index]['suppliers_email'] = $this->getsupplierEmail;
 
                 $this->getsuppliers[$this->Index]['suppliers_contact'] = $this->getsupplierContactNo;
+
+                $this->getsuppliers[$this->Index]['suppliers_contact'] = $this->is_ho;
+
 
                 $this->Index = null;
                 $this->clearForm();
@@ -156,6 +164,9 @@ class WireSupplier extends Component implements FieldValidationMessage
         $this->getsupplierEmail = $this->getsuppliers[$this->Index]['suppliers_email'];
 
         $this->getsupplierContactNo = $this->getsuppliers[$this->Index]['suppliers_contact'];
+
+        $this->is_ho = $this->getsuppliers[$this->Index]['is_ho'];
+
 
         if (isset($this->getsuppliers[$this->Index]['dirty_fields'])) {
             $this->dirtyProperties = $this->getsuppliers[$this->Index]['dirty_fields'];

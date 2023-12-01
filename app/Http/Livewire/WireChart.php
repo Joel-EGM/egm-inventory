@@ -21,7 +21,7 @@ class WireChart extends Component
         ->pluck('total', 'branch_name')
         ->all();
 
-        for ($i=0; $i<=count($groups); $i++) {
+        for ($i = 0; $i <= count($groups); $i++) {
             $colours[] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
         }
 
@@ -32,4 +32,5 @@ class WireChart extends Component
 
         return view('livewire.chart', compact('charts'));
     }
+
 }

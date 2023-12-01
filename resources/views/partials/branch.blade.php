@@ -30,7 +30,12 @@
             class="mt-1 block w-full" autocomplete="acc_number" />
         <x-jet-input-error for="acc_number" class="mt-2" />
     </div>
-
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <x-jet-label for="area_number" value="{{ __('Branch Area Number') }}" />
+        <x-jet-input wire:model.defer="area_number" x-ref="area_number" id="area_number" type="text" maxlength="50"
+            class="mt-1 block w-full" autocomplete="area_number" />
+        <x-jet-input-error for="area_number" class="mt-2" />
+    </div>
     <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
         <input name="has_inventory" type="checkbox" wire:model.defer="has_inventory">Has Inventory
     </div>
