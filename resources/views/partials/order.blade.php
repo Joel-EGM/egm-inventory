@@ -2,20 +2,20 @@
 <div class="flex flex-row -mx-3 mb-6 space-x-4">
 
     <div class="w-full px-3">
-        <x-jet-label for="order_date" value="{{ __('Order Date') }}" />
-        <input type="date" wire:model.prefetch="order_date" maxlength="50"
+        <x-jet-label value="{{ __('Order Date') }}" />
+        <input type="date" wire:model="order_date" maxlength="50"
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline"
             value="None" min="<?= date('Y-m-d', strtotime('-7 days')) ?>"
             max="<?= date('Y-m-d', strtotime('+0 days')) ?>" />
-        <x-jet-input-error for="order_date" class="mt-2" />
+
     </div>
 
     <div class="w-full">
-        <x-jet-label for="branch_id" value="{{ __('Branch') }}" />
+        <x-jet-label value="{{ __('Branch') }}" />
         @if ($has_inventory != 1)
-            <select name="branch_id" wire:model.prefetch="branch_id"
+            <select name="branch_id" wire:model="branch_id"
                 class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline"
@@ -23,7 +23,7 @@
                 <option value="{{ $branchFind->id }}" class="text-center">{{ $branchFind->branch_name }}
                 </option>
             @else
-                <select name="branch_id" wire:model.prefetch="branch_id"
+                <select name="branch_id" wire:model="branch_id"
                     class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
@@ -34,12 +34,12 @@
                     @endforeach
         @endif
         </select>
-        <x-jet-input-error for="branch_id" class="mt-2" />
+
     </div>
 
     <div class="w-full px-3">
-        <x-jet-label for="supplier_id" value="{{ __('Supplier') }}" />
-        <select name="supplier_id" wire:model.prefetch="supplier_id"
+        <x-jet-label value="{{ __('Supplier') }}" />
+        <select name="supplier_id" wire:model="supplier_id"
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
@@ -50,16 +50,16 @@
             @endforeach
 
         </select>
-        <x-jet-input-error for="supplier_id" class="mt-2" />
+
     </div>
 
 </div>
 
 <div class="flex flex-row -mx-3 mb-6 space-x-4">
     <div class="w-full px-3">
-        <x-jet-label for="item_id" value="{{ __('Item') }}" />
+        <x-jet-label value="{{ __('Item') }}" />
 
-        <select name="item_id" wire:model.prefetch="item_id"
+        <select name="item_id" wire:model="item_id"
             class="block appearance-none w-full bg-white border border-gray-400
                 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
                 leading-tight focus:outline-none focus:shadow-outline">
@@ -77,14 +77,14 @@
             @endif
         </select>
 
-        <x-jet-input-error for="item_id" class="mt-2" />
+
 
     </div>
     @can('isAdmin')
         <div class="w-full">
-            <x-jet-label for="inStocks" value="{{ __('Available') }}" />
+            <x-jet-label value="{{ __('Available') }}" />
 
-            <x-jet-input wire:model="inStocks" x-ref="inStocks" id="inStocks" type="text" maxlength="50"
+            <x-jet-input wire:model="inStocks" id="inStocks" type="text" maxlength="50"
                 class="block appearance-none w-full bg-gray-300 border border-gray-400
         hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
         leading-tight focus:outline-none focus:shadow-outline"
@@ -96,10 +96,10 @@
             {{-- <img src="{{ asset('/images/egmlogo.png') }}" alt="Image" width="90" height="70" /> --}}
 
             {{-- <p class="text-center">EGM-GABAY ALAY</p> --}}
-            <x-jet-label for="inStocks" value="{{ __('Availability') }}" />
+            <x-jet-label value="{{ __('Availability') }}" />
 
             @if ($inStocks > 0)
-                <x-jet-input wire:model="inStocks" x-ref="inStocks" id="inStocks" type="text" maxlength="50"
+                <x-jet-input wire:model="inStocks" id="inStocks" type="text" maxlength="50"
                     class="block appearance-none w-full bg-gray-300 border border-gray-400
     hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
     leading-tight focus:outline-none focus:shadow-outline"
@@ -109,7 +109,7 @@
         </div>
     @endcan
     <div class="w-full px-3">
-        <x-jet-label for="unitPrice" value="{{ __('Pricing') }}" />
+        <x-jet-label value="{{ __('Pricing') }}" />
         <select name="unit_id" wire:model="unit_id"
             class="block appearance-none w-full bg-white border border-gray-400
              hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
@@ -125,24 +125,24 @@
                 @endif
             @endforeach
         </select>
-        <x-jet-input-error for="unitPrice" class="mt-2" />
+
     </div>
 
 </div>
 <br />
 <div class="flex flex-row space-x-4">
 
-    <x-jet-input wire:model.debounce.1000ms="quantity" x-ref="quantity" id="quantity" type="number" maxlength="50"
+    <x-jet-input wire:model.debounce.500ms="quantity" id="quantity" type="number" maxlength="50"
         class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
-    <x-jet-input-error for="quantity" class="mt-2" />
 
-    <x-jet-input wire:model.debounce.1000ms="unitPrice" x-ref="unitPrice" id="unitPrice" type="text"
-        maxlength="50" class="mt-1 block w-full text-center" placeholder="Price" autocomplete="unitPrice" />
-    <x-jet-input-error for="unitPrice" class="mt-2" />
 
-    <x-jet-input wire:model.debounce.1000ms="total_amount" x-ref="total_amount" id="total_amount" type="text"
-        maxlength="50" class="mt-1 block w-full text-center bg-gray-300" placeholder="Total Amount"
-        autocomplete="total_amount" readonly />
+    <x-jet-input wire:model="unitPrice" id="unitPrice" type="text" maxlength="50"
+        class="mt-1 block w-full text-center" placeholder="Price" autocomplete="unitPrice" />
+
+
+    <x-jet-input wire:model="total_amount" id="total_amount" type="text" maxlength="50"
+        class="mt-1 block w-full text-center bg-gray-300" placeholder="Total Amount" autocomplete="total_amount"
+        readonly />
 
 </div>
 

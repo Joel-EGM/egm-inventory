@@ -63,11 +63,12 @@ class WireItemPrice extends Component implements FieldValidationMessage
             return $value->supplier_id === (int)$this->sortList;
         });
         $filteredSupplierList = $filtered->all();
+        logger('a');
 
         if($this->sortList === 'all') {
             return view('livewire.item-price', [     'listItemPrices' =>
             ItemPrice::whereHas('items', function ($query) {
-                $query->where('item_name', 'like', '%'.$this->search.'%');
+                $query->where('item_name', 'like', '%' . $this->search . '%');
             })->paginate($page),]);
         } else {
             return view('livewire.item-price', [
@@ -75,6 +76,7 @@ class WireItemPrice extends Component implements FieldValidationMessage
                 collect($filteredSupplierList)->paginateArray($page),
             ]);
         }
+
     }
 
     public function updated($propertyName)
