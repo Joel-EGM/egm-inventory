@@ -12,17 +12,20 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\TrackDirtyProperties;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Livewire\WithPagination;
 
 class WireUser extends Component implements FieldValidationMessage
 {
     use ModalVariables;
     use WireVariables;
     use TrackDirtyProperties;
+    use WithPagination;
 
     public $layoutTitle = 'New User';
     public $userID;
     public $name;
     public $email;
+    public $ID;
 
 
     public function mount()
@@ -33,7 +36,7 @@ class WireUser extends Component implements FieldValidationMessage
 
     public function render()
     {
-        $page = (int)$this->paginatePage;
+        $page = (int) $this->paginatePage;
 
         return view('livewire.user', [
             'listUsers' =>
@@ -214,6 +217,75 @@ class WireUser extends Component implements FieldValidationMessage
             $this->formTitle = 'Delete User';
             $this->isDeleteOpen = true;
         }
+    }
+
+    public function modalEdit($id, $formAction = null)
+    {
+        $this->ID = $id;
+
+        $this->name = $this->allusers
+            ->where('id', $this->ID)
+            ->pluck('name')
+            ->first();
+
+        $this->email = $this->allusers
+            ->where('id', $this->ID)
+            ->pluck('email')
+            ->first();
+
+        $this->userRole = $this->allusers
+            ->where('id', $this->ID)
+            ->pluck('role')
+            ->first();
+
+        $this->branch_id = $this->allusers
+            ->where('id', $this->ID)
+            ->pluck('branch_id')
+            ->first();
+
+        if (isset($this->allusers[$this->ID]['dirty_fields'])) {
+            $this->dirtyProperties = $this->allusers[$this->ID]['dirty_fields'];
+        }
+
+        if ($formAction) {
+            $this->formTitle = 'Edit Branch';
+            $this->isFormOpen = true;
+        }
+    }
+
+    public function itemUpdate()
+    {
+        if($this->isDirty) {
+            User::where('id', $this->ID)->update([
+
+                'name' => $this->name,
+
+                'email' => $this->email,
+
+                'branch_id' => $this->branch_id,
+
+                'role' => $this->userRole,
+
+                'password' => Hash::make($this->password),
+            ]);
+
+
+            $this->allusers->push();
+            $this->Index = null;
+            $this->clearForm();
+
+            $notificationMessage = 'Record successfully updated.';
+        } else {
+            $notificationMessage = 'No changes were detected';
+        }
+
+
+        $this->modalToggle();
+
+        $this->dispatchBrowserEvent('show-message', [
+            'notificationType' => 'success',
+            'messagePrimary'   => $notificationMessage
+        ]);
     }
 
     public function deleteArrayItem()

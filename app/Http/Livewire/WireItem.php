@@ -23,7 +23,7 @@ class WireItem extends Component implements FieldValidationMessage
     public $layoutTitle = 'New Item';
     public $search = '';
     public $updateID;
-    public $itemCategory;
+    public $itemCategory = 'Forms';
 
 
     protected $rules = [
@@ -39,7 +39,7 @@ class WireItem extends Component implements FieldValidationMessage
 
     public function render()
     {
-        $page = (int)$this->paginatePage;
+        $page = (int) $this->paginatePage;
 
         return view('livewire.item', [
             'listItems' =>

@@ -63,7 +63,6 @@ class WireItemPrice extends Component implements FieldValidationMessage
             return $value->supplier_id === (int)$this->sortList;
         });
         $filteredSupplierList = $filtered->all();
-        logger('a');
 
         if($this->sortList === 'all') {
             return view('livewire.item-price', [     'listItemPrices' =>

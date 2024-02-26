@@ -43,53 +43,69 @@ class WireHistory extends Component
     public function render()
     {
         $user = Auth()->user()->branch_id;
-        $page = (int)$this->paginatePage;
+        $page = (int) $this->paginatePage;
         $filtered = $this->orders->filter(function ($value) {
-            if(Auth()->user()->branch_id != 1) {
-                return $value->branch_id === Auth()->user()->branch_id;
+            if(Auth()->user()->branch_id === 1 || Auth()->user()->branch_id === 41) {
+                return $value->branch_id === (int) $this->sortList;
 
             } else {
-                return $value->branch_id === (int)$this->sortList;
+                return $value->branch_id === Auth()->user()->branch_id;
             }
         });
         $gg = $filtered->all();
-        if($user != 1) {
-            return view('livewire.history', [
-                'orderHistory' =>
-                collect($gg)
-                    ->where('order_status', '=', 'received')
-                    ->sortBy(
-                        [
-                        ['order_date','DESC'],
-                        ['updated_at','DESC']
-                        ]
-                    )
-                    ->paginateArray($page),
-            ]);
-        } else {
+        if(Auth()->user()->branch_id === 1 || Auth()->user()->branch_id === 41) {
             if($this->sortList === 'all') {
-                return view('livewire.history', [
-                    'orderHistory' =>
-                    Order::whereHas('branches', function ($query) {
-                        $query->where('branch_name', 'like', '%' . $this->search . '%');
-                    })->where('order_status', '=', 'received')
+
+                if(Auth()->user()->branch_id === 1) {
+                    $orderHistory = Order::whereHas('branches', function ($query) {
+                        $query->where('branch_name', 'like', '%' . $this->search . '%')
+                        ->where('area_number', '=', 0);
+                    })
+                    ->where('order_status', '=', 'received')
                     ->orderBy('order_date', 'DESC')
                     ->orderBy('updated_at', 'DESC')
-                    ->paginate($page),
-                ]);
+                    ->paginate($page);
+
+                }
+                if(Auth()->user()->branch_id === 41) {
+
+                    $orderHistory = Order::whereHas('branches', function ($query) {
+                        $query->where('branch_name', 'like', '%' . $this->search . '%')
+                        ->whereRaw('area_number IN (4,5,6) OR branch_id = 41');
+                    })
+                    ->where('order_status', '=', 'received')
+                    ->orderBy('order_date', 'DESC')
+                    ->orderBy('updated_at', 'DESC')
+                    ->paginate($page);
+                }
             } else {
-                return view('livewire.history', [
-                    'orderHistory' =>
-                    collect($gg)->where('order_status', '=', 'received')
+
+                $orderHistory = collect($gg)->where('order_status', '=', 'received')
                     ->sortBy(
                         [
                     ['order_date','DESC'],
                     ['updated_at','DESC']]
                     )
-                    ->paginateArray($page),
-                ]);
+                    ->paginateArray($page);
             }
+
+        } else {
+            $orderHistory =
+            collect($gg)
+                ->where('order_status', '=', 'received')
+                ->sortBy(
+                    [
+                    ['order_date','DESC'],
+                    ['updated_at','DESC']
+                    ]
+                )
+                ->paginateArray($page);
         }
+
+        return view('livewire.history', [
+            'orderHistory' => $orderHistory,
+        ]);
+
     }
 
     private function getOrderInfo($id)

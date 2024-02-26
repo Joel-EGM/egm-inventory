@@ -95,9 +95,9 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function render()
     {
-        $page = (int)$this->paginatePage;
+        $page = (int) $this->paginatePage;
         $filtered = $this->allbranches->filter(function ($value) {
-            return $value->status === (int)$this->sortList;
+            return $value->status === (int) $this->sortList;
         });
         $filteredBranches = $filtered->all();
 
