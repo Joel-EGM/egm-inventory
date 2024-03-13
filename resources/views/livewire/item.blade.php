@@ -77,6 +77,10 @@
                                             Category
                                         </th>
                                         <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider text-center">
+                                            Ordered By
+                                        </th>
+                                        <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             PiecesPerUnit
                                         </th>
@@ -109,6 +113,21 @@
                                                 {{ ucfirst(trans($item->item_name)) }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->unit_name }}</td>
                                             <td class="px-6 py-4 whitespace-no-wrap">{{ $item->category }}</td>
+                                            @if ($item->fixed_unit === 1)
+                                                <td
+                                                    class="px-6 py-4 whitespace-no-wrap bg-red-700 text-center text-white">
+                                                    Per Unit
+                                                </td>
+                                            @elseif ($item->fixed_pieces === 1)
+                                                <td
+                                                    class="px-6 py-4 whitespace-no-wrap bg-green-700 text-center text-white">
+                                                    Per
+                                                    Pieces</td>
+                                            @else
+                                                <td
+                                                    class="px-6 py-4 whitespace-no-wrap bg-yellow-500 text-center text-white">
+                                                    Unit/Pieces</td>
+                                            @endif
                                             <td class="text-right px-6 py-4 whitespace-no-wrap">
                                                 {{ $item->pieces_perUnit }}</td>
                                             <td class="text-right px-6 py-4 whitespace-no-wrap">

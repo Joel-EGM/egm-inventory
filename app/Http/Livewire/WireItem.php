@@ -43,9 +43,11 @@ class WireItem extends Component implements FieldValidationMessage
 
         return view('livewire.item', [
             'listItems' =>
-            Item::where('item_name', 'like', $this->search . '%')
+            $try = Item::where('item_name', 'like', $this->search . '%')
                 ->paginate($page),
         ]);
+
+
     }
 
     public function updated($propertyName)
@@ -85,6 +87,11 @@ class WireItem extends Component implements FieldValidationMessage
                 'reorder_level' => $this->reorder_level,
 
                 'fixed_unit' => !$this->fixedUnit ? 0 : 1,
+
+                'fixed_pieces' => !$this->fixedPieces ? 0 : 1,
+
+                'ho_only' => !$this->HOonly ? 0 : 1,
+
             ]);
 
 
@@ -133,6 +140,8 @@ class WireItem extends Component implements FieldValidationMessage
         $this->piecesPerUnit = $this->allitems[$this->Index]['pieces_perUnit'];
         $this->reorder_level = $this->allitems[$this->Index]['reorder_level'];
         $this->fixedUnit = $this->allitems[$this->Index]['fixed_unit'];
+        $this->fixedPieces = $this->allitems[$this->Index]['fixed_pieces'];
+        $this->HOonly = $this->allitems[$this->Index]['ho_only'];
 
         if (!$formAction) {
             $this->formTitle = 'Edit Item';
@@ -212,6 +221,15 @@ class WireItem extends Component implements FieldValidationMessage
             ->pluck('fixed_unit')
             ->first();
 
+        $this->fixedPieces = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('fixed_pieces')
+            ->first();
+
+        $this->HOonly = $this->allitems
+            ->where('id', $this->updateID)
+            ->pluck('ho_only')
+            ->first();
 
         if (isset($this->allitems[$this->updateID]['dirty_fields'])) {
             $this->dirtyProperties = $this->allitems[$this->updateID]['dirty_fields'];
@@ -238,6 +256,11 @@ class WireItem extends Component implements FieldValidationMessage
                 'reorder_level' => $this->reorder_level,
 
                 'fixed_unit' => $this->fixedUnit,
+
+                'fixed_pieces' => $this->fixedPieces,
+
+                'ho_only' => !$this->HOonly ? 0 : 1,
+
             ]);
 
 

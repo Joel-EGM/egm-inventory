@@ -42,8 +42,17 @@
     </div>
 
     <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
-        <x-jet-label for="reorder_level" value="{{ __('Fixed Unit') }}" />
+        <x-jet-label for="fixedUnit" value="{{ __('Fixed Unit') }}" />
         <input type="checkbox" wire:model.defer="fixedUnit">
     </div>
 
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <x-jet-label for="fixedPieces" value="{{ __('Fixed Pieces') }}" />
+        <input type="checkbox" wire:model.defer="fixedPieces">
+    </div>
+
+    <div class="col-span-6 sm:col-span-6 lg:col-span-6 p-2">
+        <x-jet-label for="HOonly" value="{{ __('HO only item') }}" />
+        <input type="checkbox" wire:model.defer="HOonly">
+    </div>
 </div>

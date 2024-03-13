@@ -56,15 +56,21 @@
                 </tr>
 
                 <tr class="heading">
-                    <td>Item</td>
+                    <td style="text-align: left;">Item</td>
                     <td>Quantity</td>
                     <td style="text-align: right;">Unit Price</td>
                     <td style="text-align: right;">Amount</td>
                 </tr>
                 @foreach ($orderDetails as $detail)
                     <tr class="item">
-                        <td>{{ $detail->item_name }}</td>
-                        <td style="text-align: center;">{{ $detail->quantity }}</td>
+                        @if ($detail->requester != '')
+                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                {{ $detail->item_name }} ({{ $detail->requester }})</td>
+                        @else
+                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                {{ $detail->item_name }}</td>
+                        @endif
+                        <td style="text-align: center;">{{ $detail->quantity }} {{ $detail->unit_name }}</td>
                         <td style="text-align: right;">{{ number_format($detail->price, 2) }}</td>
                         <td style="text-align: right;">{{ number_format($detail->total_amount, 2) }}</td>
                     </tr>

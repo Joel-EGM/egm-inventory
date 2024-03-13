@@ -115,6 +115,7 @@ class WireHistory extends Component
             'suppliers_name',
             'item_id',
             'item_name',
+            'requester',
             'quantity',
             'order_type',
             'price',

@@ -18,6 +18,8 @@ class Item extends Model
         'category',
         'pieces_perUnit',
         'fixed_unit',
+        'fixed_pieces',
+        'ho_only',
         'reorder_level',
     ];
 

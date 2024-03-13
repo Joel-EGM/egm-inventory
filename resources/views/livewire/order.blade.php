@@ -132,6 +132,10 @@
                                         </th>
                                         <th
                                             class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Total Amount
+                                        </th>
+                                        <th
+                                            class="w-1/5 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                             Order List
                                         </th>
                                         <th
@@ -189,6 +193,8 @@
                                             </td>
                                         @endif
                                         <td class="px-6 py-4 whitespace-no-wrap">{{ $order->order_date }}</td>
+                                        <td class="px-6 py-4 whitespace-no-wrap">
+                                            {{ $order->orderDetails->sum('total_amount') }}</td>
                                         <td class="px-6 py-4 whitespace-no-wrap">
                                             <a href="javascript:" title="Details"
                                                 wire:click="viewOrderDetails({{ $order->id }})"

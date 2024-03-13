@@ -59,8 +59,16 @@ Route::middleware([
         $mons = $explode[1];
         $findData = DB::select("CALL getMonthlyReport($yr,$mons)");
 
-        $collect = collect($findData)->where('branch_name', '!=', 'Head Office Emp')->where('branch_name', '!=', 'Head Office Main')->groupby('branch_name');
-        $HOcollect = collect($findData)->where('branch_name', 'Head Office Emp')->groupby('branch_name');
+        $collect = collect($findData)
+        ->where('branch_name', '!=', 'Head Office Emp')
+        ->where('branch_name', '!=', 'Head Office Main')
+        ->where('branch_name', '!=', 'Head Office Sattelite')
+        ->where('branch_name', '!=', 'Head Office Sattelite Emp')
+        ->where('branch_name', '!=', 'Ho Sattelite')
+        ->groupby('branch_name');
+        $HOcollect = collect($findData)->whereIn('branch_name', ['Head Office Emp','Head Office Sattelite Emp','Ho Sattelite Emp','Ho Emp'])
+        ->groupby('branch_name');
+
         $data = [
             'year' => $yr,
             'month' => date('F', mktime(0, 0, 0, $mons, 10)),

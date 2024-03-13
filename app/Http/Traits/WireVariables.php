@@ -6,7 +6,7 @@ trait WireVariables
 {
     //Suppliers Variables
     // ----------------------------------------------------------------
-    public $getsuppliers =[];
+    public $getsuppliers = [];
     public $getsupplierName;
     public $getsupplierEmail;
     public $getsupplierContactNo;
@@ -14,7 +14,7 @@ trait WireVariables
 
     //Branches Variables
     // ----------------------------------------------------------------
-    public $allbranches =[];
+    public $allbranches = [];
     public $branchName;
     public $branchAddress;
     public $branchContactNo;
@@ -28,6 +28,8 @@ trait WireVariables
     public $piecesPerUnit;
     public $reorder_level;
     public $fixedUnit = false;
+    public $fixedPieces = false;
+    public $HOonly = false;
     // ----------------------------------------------------------------
 
     //Items Prices Variables
@@ -41,7 +43,7 @@ trait WireVariables
 
     //Users Variables
     // ----------------------------------------------------------------
-    public $allusers =[];
+    public $allusers = [];
 
     public $userRole;
     public $password;
@@ -80,6 +82,7 @@ trait WireVariables
     public $unitPriceID;
 
     public $users;
+    public $requester = '';
 
     public $completedOrder = false;
     public $unitString;

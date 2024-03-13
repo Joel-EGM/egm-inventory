@@ -77,11 +77,30 @@
             @endif
         </select>
 
+    </div>
+    <div class="w-full">
+        <x-jet-label value="{{ __('Pricing') }}" />
+        <select name="unit_id" wire:model="unit_id"
+            class="block appearance-none w-full bg-white border border-gray-400
+             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+             leading-tight focus:outline-none focus:shadow-outline">
 
+            @foreach ($unitName as $unit)
+                @if ($unit->fixed_unit === 1)
+                    <option class="w-full" value="{{ $unit->id }} Unit" selected>Per Unit</option>
+                @elseif ($unit->fixed_pieces === 1)
+                    <option class="w-full" value="{{ $unit->id }} Unit" selected>Per Pieces</option>
+                @else
+                    <option value="None" class="text-center text-gray-400">--select pricing--</option>
+                    <option class="w-full" value="{{ $unit->id }} Unit">Per Unit</option>
+                    <option class="w-full" value="{{ $unit->id }} Pieces">Per Pieces</option>
+                @endif
+            @endforeach
+        </select>
 
     </div>
     @can('isAdmin')
-        <div class="w-full">
+        <div class="w-full px-3">
             <x-jet-label value="{{ __('Available') }}" />
 
             <x-jet-input wire:model="inStocks" id="inStocks" type="text" maxlength="50"
@@ -92,41 +111,30 @@
         </div>
     @endcan
     @can('isUser')
-        <div class="w-full">
-            {{-- <img src="{{ asset('/images/egmlogo.png') }}" alt="Image" width="90" height="70" /> --}}
+        <div class="w-full px-3">
+            @if ($item_id != 30)
+                <x-jet-label value="{{ __('Feature Not Available') }}" />
 
-            {{-- <p class="text-center">EGM-GABAY ALAY</p> --}}
-            <x-jet-label value="{{ __('Availability') }}" />
-
-            @if ($inStocks > 0)
-                <x-jet-input wire:model="inStocks" id="inStocks" type="text" maxlength="50"
+                <x-jet-input type="text" maxlength="50"
                     class="block appearance-none w-full bg-gray-300 border border-gray-400
-    hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-    leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="" autocomplete="" readonly />
+                    hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                    leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="N/A" readonly />
             @else
+                <x-jet-label value="{{ __('Rain Coat') }}" />
+                <x-jet-input id="requester" type="text" maxlength="50" wire:model="requester"
+                    class="block appearance-none w-full bg-white border border-gray-400
+            hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+            leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Input Name of Requester" autocomplete="requester" />
+
+                <x-jet-input-error for="requester" class="mt-2" />
             @endif
+
         </div>
+
     @endcan
-    <div class="w-full px-3">
-        <x-jet-label value="{{ __('Pricing') }}" />
-        <select name="unit_id" wire:model="unit_id"
-            class="block appearance-none w-full bg-white border border-gray-400
-             hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-             leading-tight focus:outline-none focus:shadow-outline">
 
-            @foreach ($unitName as $unit)
-                @if ($unit->fixed_unit != 1)
-                    <option value="None" class="text-center text-gray-400">--select pricing--</option>
-                    <option class="w-full" value="{{ $unit->id }} Unit">Per Unit</option>
-                    <option class="w-full" value="{{ $unit->id }} Pieces">Per Pieces</option>
-                @else
-                    <option class="w-full" value="{{ $unit->id }} Unit" selected>Per Unit</option>
-                @endif
-            @endforeach
-        </select>
-
-    </div>
 
 </div>
 <br />
@@ -157,25 +165,23 @@
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                 Branch
                             </th>
-                            {{-- <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                Date
-                            </th> --}}
+
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                 Supplier
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                 Item
                             </th>
-                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-center">
                                 Quantity
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                 Order Type
                             </th>
-                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-right">
                                 Price
                             </th>
-                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-right">
                                 Total Amount
                             </th>
                             <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -186,23 +192,24 @@
                     <tbody>
                         @foreach ($orderArrays as $order)
                             <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                {{-- @if ($formTitle === 'Create Order') --}}
+
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ $order['branch_name'] }}</td>
 
-                                {{-- <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['order_date'] }}</td> --}}
 
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ $order['suppliers_name'] }}</td>
-
-                                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    {{ $order['item_name'] }}</td>
-
+                                @if ($order['requester'] != '')
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ $order['item_name'] }} ({{ $order['requester'] }})</td>
+                                @else
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        {{ $order['item_name'] }}</td>
+                                @endif
 
                                 <td class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ $order['quantity'] }}</td>
-                                <td class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                <td class="text-sm text-center text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ $order['order_type'] }}</td>
 
                                 <td class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
@@ -240,49 +247,7 @@
                                         </a>
                                     </td>
                                 @endif
-                                {{-- @else
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['branch_name'] }}</td>
 
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['order_date'] }}</td>
-
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['suppliers_name'] }}</td>
-
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['item_name'] }}</td>
-
-
-                                    <td
-                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['quantity'] }}</td>
-                                    <td
-                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $order['order_type'] }}</td>
-
-                                    <td
-                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        &#8369;{{ $order['price'] }}</td>
-
-                                    <td
-                                        class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        &#8369;{{ $order['total_amount'] }}</td>
-
-                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        <a href="javascript:" title="DeleteArray"
-                                            wire:click="deleteItem({{ $loop->index }})"
-                                            class="text-gray-500 mt-1 ml-2 inline-flex">
-                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2
-                                            2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
-                                            1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                @endif --}}
                             </tr>
                         @endforeach
 
@@ -290,12 +255,7 @@
 
                 </table>
                 <br />
-                {{-- @if (count($orderArrays) != 0) --}}
-                {{-- <table width="90%">
-                    <td style="text-align: right; text-size: sm">Grand Total:
-                        &#8369;{{ array_sum(array_column($orderArrays, 'total_amount')) }}</td>
-                </table> --}}
-                {{-- @endif --}}
+
             </div>
         </div>
     </div>
