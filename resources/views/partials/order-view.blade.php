@@ -53,7 +53,7 @@
                                     {{ ucfirst(trans($detail->items->item_name)) }}
                                 </td>
                             @endif
-                            <td class="text-left px-6 py-4 whitespace-no-wrap">{{ $detail->order_type }}</td>
+                            <td class="text-left px-6 py-4 whitespace-no-wrap">{{ $detail->unit_name }}</td>
 
                             <td class="text-right px-6 py-4 whitespace-no-wrap">
                                 &#8369;{{ number_format($detail->price, 2) }}

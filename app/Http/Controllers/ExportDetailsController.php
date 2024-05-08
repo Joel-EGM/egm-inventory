@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class ExportDetailsController extends Controller
 {
-    public function __invoke(OrderDetail $detail) {}
+    public function __invoke(OrderDetail $detail)
+    {
+    }
 
     public function generatePO()
     {
@@ -17,7 +19,6 @@ class ExportDetailsController extends Controller
         $getID = last(request()->segments());
 
         $findData = DB::select("CALL getOrderDetails($getID)");
-        
 
         $data = [
             'orderDetails' => $findData

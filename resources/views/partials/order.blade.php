@@ -210,7 +210,7 @@
                                 <td class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {{ $order['quantity'] }}</td>
                                 <td class="text-sm text-center text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    {{ $order['order_type'] }}</td>
+                                    {{ $order['unit_name'] }}</td>
 
                                 <td class="text-sm text-right text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     &#8369;{{ $order['price'] }}</td>

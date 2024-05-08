@@ -83,6 +83,11 @@
                     <td style="text-align: right; padding-top: 20px; padding-right: 3px">
                         {{ number_format(array_sum(array_column($orderDetails, 'total_amount')), 2) }}</td>
                 </tr>
+                @if (collect($orderDetails)->where('order_status', 'pending')->count() > 0)
+                    <tr>
+                        <td>*** - Pending Item/s</td>
+                    </tr>
+                @endif
             </table>
             <footer>
                 <table>
