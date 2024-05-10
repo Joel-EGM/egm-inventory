@@ -962,13 +962,24 @@ class WireOrder extends Component implements FieldValidationMessage
     {
 
         $auth_branch = Auth()->user()->branch_id;
-        $item_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)->where('order_status', 'pending')->pluck('item_id')->toArray();
+        $item_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)
+        ->where('order_status', 'pending')
+        ->pluck('item_id')
+        ->toArray();
 
-        $sup_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)->where('order_status', 'pending')->pluck('supplier_id')->first();
+        $sup_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)
+        ->where('order_status', 'pending')
+        ->pluck('supplier_id')
+        ->first();
 
-        $stocks = Stock::whereIn('item_id', $item_ids)->where('branch_id', $sup_ids)->pluck('quantity');
+        $stocks = Stock::whereIn('item_id', $item_ids)
+        ->where('branch_id', $sup_ids)
+        ->pluck('quantity');
 
-        $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)->where('order_status', 'pending')->get();
+        $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)
+        ->where('order_status', 'pending')
+        ->get();
+
         $branch_id = Order::whereIn('id', $this->selectedOrders)
         ->pluck('branch_id')
         ->first();
@@ -1041,7 +1052,7 @@ class WireOrder extends Component implements FieldValidationMessage
                         }
                     }
                 }
-                
+
                 $completedOrderCopy = $completedOrderDetailId;
 
                 foreach($this->selectedOrders as $selectedOrder) {
@@ -1270,55 +1281,64 @@ class WireOrder extends Component implements FieldValidationMessage
 
     }
 
+
+    public function resetCache()
+    {
+        Cache::flush();
+
+        return redirect('/orders/create-order');
+
+    }
+
+
     public function batchreceive()
     {
 
-        $item_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)->pluck('item_id')->toArray();
-        $sup_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)->pluck('supplier_id')->first();
-        $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)->get();
 
-        $stocks = Stock::whereIn('item_id', $item_ids)->where('branch_id', $sup_ids)->where('qty_out', '>', 0)->get();
-        $forUpdate = [];
-        $filtered = $stocks->filter(function ($value) use ($item_ids) {
-            return in_array($value->item_id, $item_ids);
-        })->map(function ($stock) use ($orderItems) {
+        $item_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)
+        ->pluck('item_id')
+        ->toArray();
 
-            foreach($orderItems as $orderItem) {
-                if($orderItem->item_id === $stock->item_id) {
-                    return[
-                        'id' => $stock['id'],
-                        'branch_id' => $stock['branch_id'],
-                        'order_id' => $stock['order_id'],
-                        'item_id' => $stock['item_id'],
-                        'category_id' => $stock['category_id'],
-                        'quantity' => $stock['quantity'],
-                        'price' => $stock['price'],
-                        'qty_out' => $stock['qty_out'] - $orderItem->quantity
-                    ];
+        $sup_ids = OrderDetail::whereIn('order_id', $this->selectedOrders)
+        ->pluck('supplier_id')
+        ->first();
+
+        $orderItems = OrderDetail::whereIn('order_id', $this->selectedOrders)
+        ->where('order_status', 'completed')
+        ->get();
+
+        foreach ($orderItems as $orderItem) {
+
+            $orderType = $orderItem->order_type;
+
+            $itemPieces = Item::where('id', $orderItem->item_id)
+                ->pluck('pieces_perUnit')
+                ->first();
+
+            (int) $itemQty = (($orderType === 'Unit') ? $itemPieces : 1) * (int) $orderItem->quantity;
+
+
+
+            $stockItems = Stock::where('item_id', $orderItem->item_id)
+            ->where('qty_out', '>', 0)
+            ->where('branch_id', $sup_ids)
+            ->orderBy('created_at')
+            ->get();
+
+            foreach ($stockItems as $stockItem) {
+
+                Stock::where('id', (int) $stockItem->id)->update([
+                    'qty_out' => $orderType === 'Pieces' ? $stockItem->qty_out - $orderItem->quantity : $stockItem->qty_out - $itemQty
+                ]);
+
+                $itemQty -= $stockItem->qty_out;
+
+                if($itemQty <= 0) {
+                    break;
                 }
+
             }
-
-
-        })
-        ->all();
-
-        array_push($forUpdate, $filtered);
-
-
-        Stock::upsert(
-            $forUpdate[0],
-            [
-            'id',
-            'branch_id',
-            'order_id',
-            'item_id',
-            'category_id',
-
-        ],
-            [
-        'qty_out'
-        ]
-        );
+        }
 
         foreach($this->selectedOrders as $selectedOrder) {
             DB::table('orders')
@@ -1351,16 +1371,6 @@ class WireOrder extends Component implements FieldValidationMessage
             'selectedOrders',
             'selectALLOrders'
         ]);
-
-
-
-    }
-
-    public function resetCache()
-    {
-        Cache::flush();
-
-        return redirect('/orders/create-order');
 
     }
 }
