@@ -23,6 +23,7 @@ class MonthlyReport implements FromView, WithEvents
         $this->mons = $explode[1];
 
     }
+
     public function view(): View
     {
         $findData = DB::select("CALL getMonthlyReport($this->yr,$this->mons)");

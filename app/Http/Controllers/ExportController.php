@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\StocksExport;
 use App\Exports\MonthlyReport;
+use App\Exports\CSVExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Stock;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -12,7 +13,9 @@ use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
-    public function __invoke(Stock $stock) {}
+    public function __invoke(Stock $stock)
+    {
+    }
 
     public function generatePDF()
     {
@@ -43,5 +46,10 @@ class ExportController extends Controller
         return Excel::download(new MonthlyReport($mos), 'monthlyreport_' . today()->toDateString() . '.xlsx');
     }
 
-    public function generatePO() {}
+
+    public function csv($mos)
+    {
+        return Excel::download(new CSVExport($mos), 'csvreport_' . today()->toDateString() . '.csv');
+    }
+
 }

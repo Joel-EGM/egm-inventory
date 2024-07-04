@@ -24,13 +24,21 @@
                             focus:outline-none focus:border-gray-900 focus:ring 
                             focus:ring-gray-300 disabled:opacity-25 transition">GENERATE
                                 MONTHLY</a>
-                            <a href="{{ route('generate-excel', ['mos' => $order_date]) }}" target="_blank"
+                            {{-- <a href="{{ route('generate-excel', ['mos' => $order_date]) }}" target="_blank"
                                 class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
                             border-transparent rounded-md font-semibold text-sm text-white 
                             uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 
                             focus:outline-none focus:border-gray-900 focus:ring 
                             focus:ring-gray-300 disabled:opacity-25 transition">EXPORT
-                                EXCEL</a>
+                                EXCEL</a> --}}
+
+                            <a href="{{ route('generate-csv', ['mos' => $order_date]) }}" target="_blank"
+                                class="text-center truncate items-center px-4 py-2 bg-gray-800 border 
+                            border-transparent rounded-md font-semibold text-sm text-white 
+                            uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 
+                            focus:outline-none focus:border-gray-900 focus:ring 
+                            focus:ring-gray-300 disabled:opacity-25 transition">GENERATE
+                                CSV</a>
                         @endcan
 
                         <div x-data="{ isFormOpen: @entangle('isFormOpen') }" class="px-2 py-4">

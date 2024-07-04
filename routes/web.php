@@ -85,9 +85,10 @@ Route::middleware([
 
     //EXPORT TO EXCEL
     Route::get('stocks/export/', [ExportController::class, 'export'])->name('generate-export');
-    Route::get('history/export/{mos}', [ExportController::class, 'monthlyreport'])->name('generate-excel');
+    Route::get('history/export-excel/{mos}', [ExportController::class, 'monthlyreport'])->name('generate-excel');
     Route::get('orders/generate-PO/{detail}', [ExportDetailsController::class, 'generatePO'])->name('generatePO');
 
-
+    //EXPORT TO CSV
+    Route::get('history/export-csv/{mos}', [ExportController::class, 'csv'])->name('generate-csv');
 
 });
