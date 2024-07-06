@@ -49,7 +49,9 @@ class ExportController extends Controller
 
     public function csv($mos)
     {
-        return Excel::download(new CSVExport($mos), 'csvreport_' . today()->toDateString() . '.csv');
+        return Excel::download(new CSVExport($mos), 'supplies-for-import-' . $mos . '.csv', \Maatwebsite\Excel\Excel::CSV, [
+            'Content-Type' => 'text/csv',
+      ]);
     }
 
 }

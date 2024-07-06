@@ -55,8 +55,8 @@
                                             Batch Order Receive</a>
                                     @endif
                                 </div>
-
                             </div>
+
                             <div class="relative">
 
                                 <a href="javascript:" wire:click="resetCache"

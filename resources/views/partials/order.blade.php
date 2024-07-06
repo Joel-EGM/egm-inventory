@@ -1,4 +1,6 @@
 <!--Body-->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <div class="flex flex-row -mx-3 mb-6 space-x-4">
 
     <div class="w-full px-3">
@@ -114,7 +116,6 @@
         <div class="w-full px-3">
             @if ($item_id != 30)
                 <x-jet-label value="{{ __('Feature Not Available') }}" />
-
                 <x-jet-input type="text" maxlength="50"
                     class="block appearance-none w-full bg-gray-300 border border-gray-400
                     hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
@@ -122,13 +123,17 @@
                     placeholder="N/A" readonly />
             @else
                 <x-jet-label value="{{ __('Rain Coat') }}" />
-                <x-jet-input id="requester" type="text" maxlength="50" wire:model="requester"
+                <select name="requester" wire:model="requester"
                     class="block appearance-none w-full bg-white border border-gray-400
-            hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
-            leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Input Name of Requester" autocomplete="requester" />
+                hover:border-gray-500 px-4 py-2 pr-8 rounded shadow 
+                leading-tight focus:outline-none focus:shadow-outline"
+                    multiple>
+                    @foreach ($result as $ao_name)
+                        <option value="{{ $ao_name }}">{{ $ao_name }}
+                        </option>
+                    @endforeach
 
-                <x-jet-input-error for="requester" class="mt-2" />
+                </select>
             @endif
 
         </div>
@@ -138,10 +143,16 @@
 
 </div>
 <br />
-<div class="flex flex-row space-x-4">
-
-    <x-jet-input wire:model.debounce.500ms="quantity" id="quantity" type="number" maxlength="50"
-        class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
+<div class="flex
+                            flex-row space-x-4">
+    @if ($item_id != 30)
+        <x-jet-input wire:model.debounce.500ms="quantity" id="quantity" type="number" maxlength="50"
+            class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
+    @else
+        <x-jet-input wire:model.debounce.500ms="quantity" id="quantity" type="number" maxlength="50"
+            class="mt-1 block w-full text-center bg-gray-300" placeholder="Input Quantity" autocomplete="quantity"
+            readonly />
+    @endif
 
 
     <x-jet-input wire:model="unitPrice" id="unitPrice" type="text" maxlength="50"
@@ -226,8 +237,8 @@
                                                 viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd"
                                                     d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2
-                                                2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
-                                                1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                            2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
+                                                            1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </a>
@@ -239,9 +250,10 @@
                                             class="text-gray-500 mt-1 ml-2 inline-flex">
                                             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2
-                                        2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
-                                        1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                <path fill-rule="evenodd"
+                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2
+                                                    2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1
+                                                    1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </a>

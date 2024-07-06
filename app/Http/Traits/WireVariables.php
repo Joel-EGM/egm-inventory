@@ -82,7 +82,7 @@ trait WireVariables
     public $unitPriceID;
 
     public $users;
-    public $requester = '';
+    public $requester = [];
 
     public $completedOrder = false;
     public $unitString;

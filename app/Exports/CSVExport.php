@@ -78,16 +78,53 @@ class CSVExport implements FromArray, WithMapping, WithHeadings
         $total_branch = 0;
         $GL_total = 1201;
         $branch_name = '';
+        $description = 'Supplies Used/Req';
+        $total_rows = collect($this->arrayData)
+        ->where('branch_name','!=', 'Head Office Emp')
+        ->where('branch_name','!=', 'Ho Sattelite Emp')
+        ->pluck('branch_name')->unique()->count() + count($this->arrayData);
 
         foreach($this->arrayData as $key => $data) {
             if(! in_array($data->branch_name, ['Ho Sattelite Emp', 'Head Office Emp'])) {
+                if ($branch_name === '') {
+                    $branch_name = $data->branch_name;
+                }
+
+                if ($branch_name != $data->branch_name) {
+                    $report_data = array(
+
+                        'a0' => $data->lastday,
+                        'b0' => $description,
+                        'c0' => '',
+                        'd0' => $total_rows,
+                        'e0' => $GL_total,
+                        'f0' => strtoupper($branch_name),
+                        'g0' => -$total_branch,
+                        'h0' => '',
+                        'i0' => 'FALSE',
+                        'j0' => $data->month,
+                        'k0' => $data->day,
+                        'l0' => '0',
+                        'm0' => '0',
+                    );
+
+                    array_push($monthly_report, $report_data);
+
+                    $total_branch = 0;
+
+                    $branch_name = $data->branch_name;
+                    $total_branch = $data->Total;
+                } else {
+                    $total_branch += $data->Total;
+                }
+
                 $report_data = array(
 
                     'a0' => $data->lastday,
-                    'b0' => 'Supplies Used/Requested',
+                    'b0' => $description,
                     'c0' => '',
-                    'd0' => '160',
-                    'e0' => $data->acc_number.'-A' ,
+                    'd0' => $total_rows,
+                    'e0' => $data->acc_number.'-A',
                     'f0' => 'OR # '.$data->or_number,
                     'g0' => $data->Total,
                     'h0' => '',
@@ -100,51 +137,38 @@ class CSVExport implements FromArray, WithMapping, WithHeadings
                 );
 
                 array_push($monthly_report, $report_data);
-
-                if($branch_name === '' || $branch_name === $data->branch_name) {
-                    $branch_name = $data->branch_name;
-                    $total_branch += $data->Total;
-                }
-
-                if ($branch_name != $data->branch_name || $key === array_key_last($this->arrayData)) {
-                    $report_data = array(
-
-                        'a0' => $data->lastday,
-                        'b0' => 'Supplies Used/Requested',
-                        'c0' => '',
-                        'd0' => '160',
-                        'e0' => $GL_total,
-                        'f0' => '',
-                        'g0' => -$total_branch,
-                        'h0' => '',
-                        'i0' => 'FALSE',
-                        'j0' => $data->month,
-                        'k0' => $data->day,
-                        'l0' => '0',
-                        'm0' => '0',
-                    );
-
-                    array_push($monthly_report, $report_data);
-
-                    $branch_name = '';
-                    $total_branch = 0;
-
-                    $branch_name = $data->branch_name;
-                    $total_branch += $data->Total;
-                }
             } else {
                 $total_HO += $data->Total;
             }
 
         }
 
+        $report_data = array(
+
+            'a0' => $data->lastday,
+            'b0' => $description,
+            'c0' => '',
+            'd0' => $total_rows,
+            'e0' => $GL_total,
+            'f0' => strtoupper($branch_name),
+            'g0' => -$total_branch,
+            'h0' => '',
+            'i0' => 'FALSE',
+            'j0' => $data->month,
+            'k0' => $data->day,
+            'l0' => '0',
+            'm0' => '0',
+        );
+
+        array_push($monthly_report, $report_data);
+
         if($total_HO > 0) {
             $report_data = array(
 
                 'a0' => $data->lastday,
-                'b0' => 'Supplies Used/Requested',
+                'b0' => $description,
                 'c0' => '',
-                'd0' => '160',
+                'd0' => $total_rows,
                 'e0' => $GL_id_HO,
                 'f0' => 'HEAD OFFICE SUPPLIES '. $data->MonthName .' '.$data->Year,
                 'g0' => $total_HO,
@@ -162,9 +186,9 @@ class CSVExport implements FromArray, WithMapping, WithHeadings
             $report_data = array(
 
                 'a0' => $data->lastday,
-                'b0' => 'Supplies Used/Requested',
+                'b0' => $description,
                 'c0' => '',
-                'd0' => '160',
+                'd0' => $total_rows,
                 'e0' => $GL_total,
                 'f0' => 'HEAD OFFICE',
                 'g0' => -$total_HO,
@@ -182,6 +206,5 @@ class CSVExport implements FromArray, WithMapping, WithHeadings
 
         }
         return $monthly_report;
-
     }
 }

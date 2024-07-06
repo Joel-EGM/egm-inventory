@@ -7,7 +7,7 @@ use App\Http\Controllers\ExportUserController;
 use App\Http\Controllers\ChartController;
 use App\Models\OrderDetail;
 use App\Exports\MonthlyReport;
-
+use Illuminate\Support\Facades\Http;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

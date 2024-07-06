@@ -22,7 +22,7 @@
     </div>
 
     <!--Footer-->
-    @if ($formTitle === 'Order Details' || $formTitle === 'View Details')
+    @if ($formTitle === 'Order Details' || $formTitle === 'View Details' || $formTitle === 'Record of Rain Coat Request')
     @else
         <div class="modal-content flex justify-end p-4 bg-gray-100">
             <x-jet-secondary-button wire:click.prevent="modalToggle" wire:loading.attr="disabled">

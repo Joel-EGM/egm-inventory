@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+
 
 class WireOrder extends Component implements FieldValidationMessage
 {
@@ -44,6 +46,7 @@ class WireOrder extends Component implements FieldValidationMessage
     public $batchcomplete;
     public $filteredHOsupplier;
     public $itemPieces;
+    public $result;
 
     protected $rules = [
         'item_id' => 'bail|required',
@@ -215,6 +218,7 @@ class WireOrder extends Component implements FieldValidationMessage
 
         $this->filteredBranches->values()->all();
 
+      
     }
 
     public function render()
@@ -384,6 +388,8 @@ class WireOrder extends Component implements FieldValidationMessage
     {
         $this->validate();
 
+        $requester_name = collect($this->requester)->implode(' | ');
+
         $branchName = '';
         foreach ($this->branches as $branch) {
             if ($branch->id === (int) $this->branch_id) {
@@ -440,7 +446,7 @@ class WireOrder extends Component implements FieldValidationMessage
             'item_id' => $this->item_id,
             'item_name'  => $itemName,
 
-            'requester' => $this->requester,
+            'requester' => $requester_name,
 
             'unit_name' => ($this->unitString != 'Unit') ? $this->unitString : $unitName,
 
@@ -802,6 +808,18 @@ class WireOrder extends Component implements FieldValidationMessage
 
     public function updatedItemId()
     {
+        if($this->item_id === '30'){
+            $response = Http::get('http://192.168.0.217:8001/updates?branchID='.Auth()->user()->url_code);
+
+            $data = $response->collect();
+        
+            $result = $data->whereNotIn('position',['Field Auditor','Area Manager','Accounting Clerk']);
+    
+            $result->all();
+    
+            $this->result = $result->pluck('name');
+
+        }
 
         $this->reset([
                 'quantity',
@@ -1383,5 +1401,11 @@ class WireOrder extends Component implements FieldValidationMessage
             'selectALLOrders'
         ]);
 
+    }
+
+    public function updatedRequester()
+    {
+        $this->quantity = count($this->requester);
+        $this->computeTotalAmount();
     }
 }
