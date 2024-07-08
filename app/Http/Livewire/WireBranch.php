@@ -68,7 +68,14 @@ class WireBranch extends Component implements FieldValidationMessage
 
     public function mount()
     {
-        $this->allbranches = Branch::select('id', 'branch_name', 'branch_address', 'branch_contactNo', 'status', 'has_inventory', 'can_createall')->get();
+        $this->allbranches = Branch::select('id', 
+        'branch_name', 
+        'branch_address', 
+        'branch_contactNo', 
+        'status', 
+        'has_inventory', 
+        'can_createall')
+        ->get();
 
     }
 

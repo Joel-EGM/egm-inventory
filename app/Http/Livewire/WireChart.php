@@ -27,6 +27,7 @@ class WireChart extends Component
                 'requester' => $data->requester,
             ];
         });
+
     }
 
     public function render()
@@ -56,6 +57,7 @@ class WireChart extends Component
 
     public function modalToggle($formAction = null)
     {
+
         if (!$formAction) {
             if ($this->Index === null) {
                 $this->formTitle = 'Record of Rain Coat Request';
@@ -63,9 +65,32 @@ class WireChart extends Component
 
             $this->isFormOpen = !$this->isFormOpen;
             $this->clearAndResetForm();
+            
         } else {
             $this->isDeleteOpen = !$this->isDeleteOpen;
             $this->clearAndResetDelete();
         }
+
+    }
+
+        public function clearFormVariables()
+    {
+        $this->reset([
+            'isFormOpen'
+        ]);
+    }
+
+    public function updatedSearch($search){
+
+        $search = $this->search;
+        if($search === "")
+        
+            $this->mount();
+
+        else
+
+            $this->data_requester = $this->data_requester->filter( function ($data) {
+            return false !== stripos($data['requester'], $this->search);
+            });
     }
 }
