@@ -145,7 +145,7 @@
 <br />
 <div class="flex
                             flex-row space-x-4">
-    @if ($item_id != 30)
+    @if ($item_id != 30 || Auth()->user()->role === 'admin')
         <x-jet-input wire:model.debounce.500ms="quantity" id="quantity" type="number" maxlength="50"
             class="mt-1 block w-full text-center" placeholder="Input Quantity" autocomplete="quantity" />
     @else
